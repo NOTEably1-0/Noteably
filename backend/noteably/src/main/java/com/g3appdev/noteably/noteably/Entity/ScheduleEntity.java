@@ -1,4 +1,4 @@
-package com.g3appdev.noteably.Entity;
+package com.g3appdev.noteably.noteably.Entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

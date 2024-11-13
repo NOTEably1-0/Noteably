@@ -1,7 +1,7 @@
 package com.g3appdev.noteably.noteably.Service;
 
-import com.g3appdev.noteably.Entity.ScheduleEntity;
-import com.g3appdev.noteably.Repository.ScheduleRepo;
+import com.g3appdev.noteably.noteably.Entity.ScheduleEntity;
+import com.g3appdev.noteably.noteably.Repository.ScheduleRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
