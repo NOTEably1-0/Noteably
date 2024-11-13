@@ -1,4 +1,4 @@
-package com.g3appdev.noteably.Service;
+package com.g3appdev.noteably.noteably.Service;
 
 import com.g3appdev.noteably.Entity.ScheduleEntity;
 import com.g3appdev.noteably.Repository.ScheduleRepo;
