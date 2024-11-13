@@ -1,10 +1,10 @@
-package com.g3appdev.noteably.noteably.service;
+package com.g3appdev.noteably.noteably.Service;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.g3appdev.noteably.noteably.entity.TimerEntity;
-import com.g3appdev.noteably.noteably.repository.TimerRepository;
+import com.g3appdev.noteably.noteably.Entity.TimerEntity;
+import com.g3appdev.noteably.noteably.Repository.TimerRepository;
 
 @Service
 public class TimerService {

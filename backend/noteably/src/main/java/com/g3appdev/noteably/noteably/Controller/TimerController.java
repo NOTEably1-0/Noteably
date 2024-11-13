@@ -1,4 +1,4 @@
-package com.g3appdev.noteably.noteably.controller;
+package com.g3appdev.noteably.noteably.Controller;
 
 import java.util.List;
 
@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.g3appdev.noteably.noteably.entity.TimerEntity;
-import com.g3appdev.noteably.noteably.service.TimerService;
+import com.g3appdev.noteably.noteably.Entity.TimerEntity;
+import com.g3appdev.noteably.noteably.Service.TimerService;
 
 @RestController
 @RequestMapping("/api/timer")

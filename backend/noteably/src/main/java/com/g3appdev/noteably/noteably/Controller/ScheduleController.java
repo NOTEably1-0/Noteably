@@ -1,7 +1,7 @@
-package com.g3appdev.noteably.Controller;
+package com.g3appdev.noteably.noteably.Controller;
 
-import com.g3appdev.noteably.Entity.ScheduleEntity;
-import com.g3appdev.noteably.Service.ScheduleService;
+import com.g3appdev.noteably.noteably.Entity.ScheduleEntity;
+import com.g3appdev.noteably.noteably.Service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

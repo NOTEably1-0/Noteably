@@ -1,4 +1,4 @@
-package com.g3appdev.noteably.noteably.entity;
+package com.g3appdev.noteably.noteably.Entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
