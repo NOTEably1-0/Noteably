@@ -10,6 +10,7 @@ import NoteApp from './NoteApp'; // Import NoteApp
 import TimerSetup from './Timer/TimerSetup'; // Three timer callouts
 import TimerRunning from './Timer/TimerRunning';
 import TimerList from './Timer/TimerList'; 
+import ToDoList from './ToDoList';
 
 // Define theme colors
 const themeColors = {
@@ -81,6 +82,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/calendar" element={<Schedule />} />
             <Route path="/folders" element={<FolderApp />} />
+            <Route path="/todo" element={<ToDoList />} />
             <Route path="/notes" element={<NoteApp />} /> {/* Add route for NoteApp */}
             <Route path="/timer" element={<TimerSetup />} />
             <Route path="/running" element={<TimerRunning />} />
