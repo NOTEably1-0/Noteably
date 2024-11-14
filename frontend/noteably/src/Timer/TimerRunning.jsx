@@ -13,7 +13,7 @@ function TimerRunning() {
 
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [isPaused, setIsPaused] = useState(false);
-  const audioRef = useRef(new Audio('/TimerSound.mp4'));
+  const audioRef = useRef(new Audio('/TimerSound.mp3'));
 
   useEffect(() => {
     if (!isPaused && timeLeft > 0) {

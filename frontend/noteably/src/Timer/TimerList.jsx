@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Typography, List, ListItem, ListItemText, IconButton, Dialog, DialogTitle, DialogContent, TextField, DialogActions, Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const colorPalette = ['#EF476F', '#F78C6B', '#FFD166', '#06D6A0', '#118AB2'];
 const ITEMS_PER_PAGE = 5; // Number of timers per page
+const url = "http://localhost:8080/api/timer"; // URL for your API
 
-function TimerList({ timerList = [], deleteTimer, updateTimer }) {
+function TimerList({ deleteTimer, updateTimer }) {
   const navigate = useNavigate();
+  const [timerList, setTimerList] = useState([]);
   const [open, setOpen] = useState(false);
   const [currentTimer, setCurrentTimer] = useState(null);
   const [newTitle, setNewTitle] = useState('');
@@ -18,6 +21,20 @@ function TimerList({ timerList = [], deleteTimer, updateTimer }) {
   const [newMinutes, setNewMinutes] = useState('');
   const [newSeconds, setNewSeconds] = useState('');
   const [currentPage, setCurrentPage] = useState(0); // Pagination state
+
+  // Fetch timers from the backend
+  const fetchTimers = async () => {
+    try {
+      const response = await axios.get(`${url}/getAll`);
+            setTimerList(response.data); // Populate the timerList with data from the backend
+    } catch (error) {
+      console.error("Error fetching timers:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchTimers(); // Fetch timers when component mounts
+  }, []);
 
   const handleOpen = (timer) => {
     setCurrentTimer(timer);
@@ -50,11 +67,11 @@ function TimerList({ timerList = [], deleteTimer, updateTimer }) {
   };
 
   const handleBack = () => {
-    navigate('/timer');
+    navigate('/');
   };
 
   // Pagination controls
-  const totalPages = timerList ? Math.ceil(timerList.length / ITEMS_PER_PAGE) : 1;
+  const totalPages = Math.ceil(timerList.length / ITEMS_PER_PAGE);
 
   const handleNextPage = () => {
     if (currentPage < totalPages - 1) {
@@ -127,7 +144,7 @@ function TimerList({ timerList = [], deleteTimer, updateTimer }) {
               secondaryTypographyProps={{ style: { color: 'white' } }} // White 0h 0m 0s text
               primary={timer.title}
               secondary={`${timer.hours}h ${timer.minutes}m ${timer.seconds}s`}
-            />
+              />
             <IconButton onClick={() => handleOpen(timer)} sx={{ color: 'white' }}>
               <EditIcon />
             </IconButton>

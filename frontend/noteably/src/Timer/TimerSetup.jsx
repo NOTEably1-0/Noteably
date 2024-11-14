@@ -6,41 +6,63 @@ import RefreshIcon from '@mui/icons-material/Refresh';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-const url = "http://localhost:8080/api/timer"; // Update this URL as needed
-
 function TimerSetup() {
+  const url = "http://localhost:8080/api/timer";
+  const [timerList, setTimerList] = useState([]);
+  const [activeTimer, setActiveTimer] = useState(null);
+
   const [title, setTitle] = useState('');
   const [hours, setHours] = useState('00');
   const [minutes, setMinutes] = useState('00');
   const [seconds, setSeconds] = useState('00');
-  const [timerList, setTimerList] = useState([]);
   const navigate = useNavigate();
 
-  const resetFields = () => {
-    setTitle('');
-    setHours('00');
-    setMinutes('00');
-    setSeconds('00');
-  };
-
+  // Fetch timers from backend
   const fetchTimers = async () => {
     try {
-      const response = await axios.get(url);
+      const response = await axios.get(`${url}/getAll`);
       setTimerList(response.data);
     } catch (error) {
       console.error("Error fetching timers:", error);
     }
   };
 
-  const addTimer = async () => {
+  // Add timer
+  const addTimer = async (title, hours, minutes, seconds) => {
     const newTimer = { title, hours, minutes, seconds };
     try {
-      const response = await axios.post(url, newTimer);
+      const response = await axios.post(`${url}/create`, newTimer);
       setTimerList([...timerList, response.data]);
-      resetFields();
     } catch (error) {
       console.error("Error adding timer:", error);
     }
+  };
+
+  // Delete timer
+  const deleteTimer = async (timerID) => {
+    try {
+      await axios.delete(`${url}/delete/${timerID}`);
+      setTimerList(timerList.filter((timer) => timer.timerID !== timerID));
+    } catch (error) {
+      console.error("Error deleting timer:", error);
+    }
+  };
+
+  // Update timer
+  const updateTimer = async (timerID, updatedTimer) => {
+    try {
+      const response = await axios.put(`${url}/update/${timerID}`, updatedTimer);
+      setTimerList(timerList.map((timer) => (timer.timerID === timerID ? response.data : timer)));
+    } catch (error) {
+      console.error("Error updating timer:", error);
+    }
+  };
+
+  const resetFields = () => {
+    setTitle('');
+    setHours('00');
+    setMinutes('00');
+    setSeconds('00');
   };
 
   const handleStart = () => {
@@ -50,7 +72,7 @@ function TimerSetup() {
       parseInt(seconds || '0', 10);
 
     if (totalSeconds > 0) {
-      addTimer();
+      addTimer(title, hours, minutes, seconds);
       navigate('/running', { state: { title, initialTime: totalSeconds } });
     } else {
       alert('Please enter a valid time.');
@@ -66,6 +88,7 @@ function TimerSetup() {
     (!/^\d+$/.test(minutes) || minutes === '00' || minutes === '') && 
     (!/^\d+$/.test(seconds) || seconds === '00' || seconds === '');
 
+  // Fetch timers on initial load
   useEffect(() => {
     fetchTimers();
   }, []);
@@ -77,26 +100,26 @@ function TimerSetup() {
         justifyContent: 'center',
         alignItems: 'center',
         height: '90vh',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        border: '1px solid lightgray',
-        borderRadius: '30px',
-        padding: '20px',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)', // Semi-transparent background
+        border: '1px solid lightgray', // Border for the outer container
+        borderRadius: '30px', // Rounded corners for outer container
+        padding: '20px', // Padding around inner box
         backgroundImage: 'url("/polkadot.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        boxSizing: 'border-box',
+        boxSizing: 'border-box', // Ensures padding and border don't expand the container
       }}
     >
       <Box
         sx={{
           padding: '20px',
           backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          border: '1px solid lightgray',
+          border: '1px solid lightgray', // Border for the outer container
           borderRadius: '30px',
           width: '90%',
           maxWidth: '500px',
           textAlign: 'center',
-          boxShadow: 'inset 0 2px 2px rgba(0, 0, 0, 0.2)',
+          boxShadow: 'inset 0 2px 2px rgba(0, 0, 0, 0.2)', // Inner shadow effect
         }}
       >
         <Grid container spacing={2} justifyContent="center" alignItems="center">
@@ -160,11 +183,10 @@ function TimerSetup() {
           inputProps={{ maxLength: 20 }}
           sx={{
             "& .MuiOutlinedInput-root": {
-              borderColor: '#118AB2',
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: '#06D6A0' },
-            },
-            marginTop: '20px', width: '38%' 
-          }}
+                  borderColor: '#118AB2',
+                  "&.Mui-focused .MuiOutlinedInput-notchedOutline": { borderColor: '#06D6A0' },
+                },
+                marginTop: '20px', width: '38%' }}
         />
 
         <div style={{ marginTop: '20px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
