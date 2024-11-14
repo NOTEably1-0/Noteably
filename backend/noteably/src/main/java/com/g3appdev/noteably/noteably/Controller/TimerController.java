@@ -17,8 +17,8 @@ import com.g3appdev.noteably.noteably.Entity.TimerEntity;
 import com.g3appdev.noteably.noteably.Service.TimerService;
 
 @RestController
-@RequestMapping("/api/timer")
 @CrossOrigin(origins = "http://localhost:3000")
+@RequestMapping("/api/timer")
 public class TimerController {
 
     @Autowired

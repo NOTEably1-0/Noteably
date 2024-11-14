@@ -35,7 +35,7 @@ function App() {
           }}
         >
           <Box p={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}>
-            <img src="/logo.png" alt="Logo" width="100%" />
+            <img src="/noteably_logo.png" alt="Logo" width="100%" />
             <TextField
               variant="outlined"
               placeholder="Search..."
