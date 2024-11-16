@@ -1,8 +1,10 @@
 package com.g3appdev.noteably.noteably.Service;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.g3appdev.noteably.noteably.Entity.TimerEntity;
 import com.g3appdev.noteably.noteably.Repository.TimerRepository;
 
@@ -10,7 +12,7 @@ import com.g3appdev.noteably.noteably.Repository.TimerRepository;
 public class TimerService {
 
     @Autowired
-    TimerRepository timerRepo;
+    private TimerRepository timerRepo;
 
     public TimerEntity createTimer(TimerEntity timer) {
         return timerRepo.save(timer);
