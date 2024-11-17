@@ -24,6 +24,34 @@ const themeColors = {
   dark: "#073B4C"
 };
 
+// Component to render the sidebar list with active state
+function SidebarItem({ to, icon, text, color }) {
+  const location = useLocation();
+  const isActive = location.pathname === to;
+
+  return (
+    <ListItem
+      button
+      component={Link}
+      to={to}
+      sx={{
+        backgroundColor: isActive ? color : 'transparent',
+        borderRadius: '15px',
+        color: isActive ? 'white' : color,
+        margin: '5px 10px', // Add horizontal margins to prevent touching the sidebar edges
+        padding: '10px 15px', // Add padding for inner spacing
+        width: 'calc(100% - 20px)', // Shrink the width slightly to match the margins
+        transition: 'background-color 0.3s, color 0.3s',
+      }}
+    >
+      <ListItemIcon sx={{ color: isActive ? 'white' : color }}>
+        {icon}
+      </ListItemIcon>
+      <ListItemText primary={text} />
+    </ListItem>
+  );
+}
+
 function App() {
   const location = useLocation();
   const isFullScreenPage = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/register';
@@ -109,4 +137,4 @@ function AppWrapper() {
   );
 }
 
-export default AppWrapper;
+export default App;

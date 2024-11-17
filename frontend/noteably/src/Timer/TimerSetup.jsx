@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Button, TextField, Typography, Grid, Box, List, ListItem, ListItemText, IconButton, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import {
+  Button,TextField,Typography,Grid,Box,List,ListItem,ListItemText,IconButton,Dialog,DialogTitle,DialogContent,DialogActions,
+} from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import ListIcon from '@mui/icons-material/List';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -11,18 +12,18 @@ import axios from 'axios';
 function TimerSetup() {
   const url = "http://localhost:8080/api/timer";
   const [timerList, setTimerList] = useState([]);
-  const [activeTimer, setActiveTimer] = useState(null);
+  const [confirmDialogOpen, setConfirmDialogOpen] = useState(false);
+  const [editDialogOpen, setEditDialogOpen] = useState(false);
+  const [timerToDelete, setTimerToDelete] = useState(null);
+  const [timerToEdit, setTimerToEdit] = useState(null);
   const [title, setTitle] = useState('');
   const [hours, setHours] = useState('00');
   const [minutes, setMinutes] = useState('00');
   const [seconds, setSeconds] = useState('00');
-  const [open, setOpen] = useState(false);
-  const [currentTimer, setCurrentTimer] = useState(null);
-  const [newTitle, setNewTitle] = useState('');
-  const [newHours, setNewHours] = useState('');
-  const [newMinutes, setNewMinutes] = useState('');
-  const [newSeconds, setNewSeconds] = useState('');
   const navigate = useNavigate();
+
+
+  // CRUD
 
   const fetchTimers = async () => {
     try {
@@ -57,14 +58,71 @@ function TimerSetup() {
     }
   };
 
-  const updateTimer = async (timerID, updatedTimer) => {
-    try {
-      const response = await axios.put(`${url}/update/${timerID}`, updatedTimer);
-      setTimerList(timerList.map((timer) => (timer.timerID === timerID ? response.data : timer)));
-    } catch (error) {
-      console.error("Error updating timer:", error);
+  const updateTimer = async () => {
+    if (timerToEdit) {
+      const updatedTimer = {
+        timerID: timerToEdit.timerID,
+        title,
+        hours: parseInt(hours || '0', 10),
+        minutes: parseInt(minutes || '0', 10),
+        seconds: parseInt(seconds || '0', 10),
+      };
+      try {
+        const response = await axios.put(`${url}/update/${timerToEdit.timerID}`, updatedTimer);
+        setTimerList(timerList.map((timer) => 
+          timer.timerID === timerToEdit.timerID ? response.data : timer
+        ));
+        setEditDialogOpen(false);
+      } catch (error) {
+        console.error("Error updating timer:", error);
+      }
     }
   };
+
+  //
+
+  const handlePlayClick = (timer) => {
+    // Calculate total seconds for the selected timer
+    const totalSeconds =
+      timer.hours * 3600 + timer.minutes * 60 + timer.seconds;
+  
+    // Navigate to /running with the timer data
+    navigate('/running', {
+      state: {
+        title: timer.title,
+        initialTime: totalSeconds, // You can add any other relevant data here
+      },
+    });
+  };
+
+  const handleEditClick = (timer) => {
+    setTimerToEdit(timer);
+    setTitle(timer.title);
+    setHours(timer.hours);
+    setMinutes(timer.minutes);
+    setSeconds(timer.seconds);
+    setEditDialogOpen(true);
+  };
+
+  const handleDeleteClick = (timerID) => {
+    setTimerToDelete(timerID);
+    setConfirmDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = () => {
+    if (timerToDelete) {
+      deleteTimer(timerToDelete);
+    }
+    setConfirmDialogOpen(false);
+    setTimerToDelete(null);
+  };
+
+  const handleDeleteCancel = () => {
+    setConfirmDialogOpen(false);
+    setTimerToDelete(null);
+  };
+
+  //
 
   const resetFields = () => {
     setTitle('');
@@ -75,8 +133,8 @@ function TimerSetup() {
 
   const handleStart = () => {
     const totalSeconds =
-      (parseInt(hours || '0', 10) * 3600) +
-      (parseInt(minutes || '0', 10) * 60) +
+      parseInt(hours || '0', 10) * 3600 +
+      parseInt(minutes || '0', 10) * 60 +
       parseInt(seconds || '0', 10);
 
     if (totalSeconds > 0) {
@@ -87,37 +145,16 @@ function TimerSetup() {
     }
   };
 
-  const handleOpen = (timer) => {
-    setCurrentTimer(timer);
-    setNewTitle(timer.title);
-    setNewHours(timer.hours);
-    setNewMinutes(timer.minutes);
-    setNewSeconds(timer.seconds);
-    setOpen(true);
-  };
-
-  const handleClose = () => setOpen(false);
-
-  const handleSave = () => {
-    const updatedTimer = {
-      ...currentTimer,
-      title: newTitle,
-      hours: parseInt(newHours, 10),
-      minutes: parseInt(newMinutes, 10),
-      seconds: parseInt(newSeconds, 10),
-    };
-    updateTimer(currentTimer.timerID, updatedTimer);
-    setOpen(false);
-  };
-
-  const isStartDisabled =
-    (!/^\d+$/.test(hours) || hours === '00' || hours === '0' || hours === '') &&
-    (!/^\d+$/.test(minutes) || minutes === '00' ||  minutes === '0' || minutes === '') &&
-    (!/^\d+$/.test(seconds) || seconds === '00' ||  seconds === '0' || seconds === '');
+  //
 
   useEffect(() => {
     fetchTimers();
   }, []);
+
+  const isStartDisabled =
+    (!/^\d+$/.test(hours) || hours === '00' || hours === '0' || hours === '') &&
+    (!/^\d+$/.test(minutes) || minutes === '00' || minutes === '0' || minutes === '') &&
+    (!/^\d+$/.test(seconds) || seconds === '00' || seconds === '0' || seconds === '');
 
   return (
     <Box
@@ -125,18 +162,20 @@ function TimerSetup() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '94vh',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)', // Semi-transparent background
-        border: '1px solid lightgray', // Border for the outer container
-        borderRadius: '30px', // Rounded corners for outer container
-        padding: '20px', // Padding around inner box
+        height: '100%',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        border: '1px solid lightgray',
+        borderRadius: '30px',
+        padding: '20px',
         backgroundImage: 'url("/polkadot.png")',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        boxSizing: 'border-box', // Ensures padding and border don't expand the container
+        boxSizing: 'border-box',
       }}
     >
-      <Grid container spacing={3} sx={{ width: '90%', height: '90%' }}>
+
+
+    <Grid container spacing={3} sx={{ width: '90%', height: '100%' }}>
         {/* Timer Setup */}
         <Grid item xs={12} md={6}>
           <Box
@@ -146,11 +185,11 @@ function TimerSetup() {
               backgroundColor: 'rgba(255, 255, 255, 0.8)',
               border: '1px solid lightgray', // Light gray solid border
               boxShadow: 'inset 0 2px 2px rgba(0, 0, 0, 0.2)', // Shadow for depth
-              height: '100%',
+              height: '540px',
               overflow: 'auto',
             }}
           >
-            <Typography variant="h5" textAlign="center" marginBottom="85px">
+            <Typography variant="h5" textAlign="center" marginBottom="100px">
               Timer Setup
             </Typography>
 
@@ -160,8 +199,9 @@ function TimerSetup() {
                 Timer Title
               </Typography>
               <TextField
-                value={title} // Use the state variable `title`
-                onChange={(e) => setTitle(e.target.value)} // Update `title` state on change
+                value={title} // Use the state variable title
+                onChange={(e) => setTitle(e.target.value)} // Update title state on change
+                inputProps={{ maxLength: 20 }}
                 placeholder="Enter Timer Title"
                 variant="outlined"
                 sx={{
@@ -271,6 +311,8 @@ function TimerSetup() {
           </Box>
         </Grid>
 
+
+
         {/* Timer List */}
         <Grid item xs={12} md={6}>
           <Box
@@ -278,25 +320,122 @@ function TimerSetup() {
               padding: '20px',
               borderRadius: '30px',
               backgroundColor: 'rgba(255, 255, 255, 0.8)',
-              border: '1px solid lightgray', // Light gray solid border
-              boxShadow: 'inset 0 2px 2px rgba(0, 0, 0, 0.2)', // Shadow for depth
-              height: '100%',
+              border: '1px solid lightgray',
+              boxShadow: 'inset 0 2px 2px rgba(0, 0, 0, 0.2)',
+              height: '540px',
               overflow: 'auto',
+              '&::-webkit-scrollbar': {
+                width: '1px',
+              },
+              '&::-webkit-scrollbar-thumb': {
+                backgroundColor: '#D3D3D3',
+                borderRadius: '4px',
+              },
+              '&::-webkit-scrollbar-thumb:hover': {
+                backgroundColor: '#6A6A6A',
+              },
             }}
           >
-            <Typography variant="h5" textAlign="center" marginBottom="20px">
+            <Typography variant="h5" textAlign="center" marginBottom="25px">
               Timer List
             </Typography>
             <List>
               {timerList.map((timer, index) => (
-                <ListItem key={timer.timerID}>
-                  <ListItemText primary={timer.title} secondary={`${timer.hours}h ${timer.minutes}m ${timer.seconds}s`} />
-                  <IconButton onClick={() => handleOpen(timer)}><EditIcon /></IconButton>
-                  <IconButton onClick={() => deleteTimer(timer.timerID)}><DeleteIcon /></IconButton>
+                <ListItem
+                  key={timer.timerID}
+                  sx={{
+                    borderRadius: '15px',
+                    marginBottom: '15px',
+                    padding: '15px',
+                    backgroundColor: ['#EF476F', '#F78C6B', '#FFD166', '#06D6A0', '#118AB2'][index % 5],
+                    color: 'white',
+                    boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  <ListItemText
+                    primary={timer.title}
+                    secondary={`${timer.hours}h ${timer.minutes}m ${timer.seconds}s`}
+                    primaryTypographyProps={{ style: { color: 'white', fontWeight: 'bold' } }}
+                    secondaryTypographyProps={{ style: { color: 'white' } }}
+                  />
+                  <IconButton onClick={() => handleEditClick(timer)} sx={{ color: 'white' }}>
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handleDeleteClick(timer.timerID)} sx={{ color: 'white' }}>
+                    <DeleteIcon />
+                  </IconButton>
+                  <IconButton onClick={() => handlePlayClick(timer)} sx={{ color: 'white' }}>
+                    <PlayArrowIcon />
+                  </IconButton>
                 </ListItem>
               ))}
             </List>
           </Box>
+
+          {/* Edit Dialog */}
+          <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
+            <DialogTitle>Edit Timer</DialogTitle>
+            <DialogContent>
+              <TextField
+                label="Title"
+                fullWidth
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                inputProps={{ maxLength: 20 }}
+                sx={{ marginBottom: '10px', marginTop: '10px' }}
+              />
+              <Grid container justifyContent="center" alignItems="center" spacing={2}>
+                <Grid item>
+                  <TextField
+                    label="Hours"
+                    value={hours}
+                    onChange={(e) => setHours(e.target.value)}
+                    inputProps={{ maxLength: 2 }}
+                    style={{ width: '100px' }}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Minutes"
+                    value={minutes}
+                    onChange={(e) => setMinutes(e.target.value)}
+                    inputProps={{ maxLength: 2 }}
+                    style={{ width: '100px' }}
+                  />
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Seconds"
+                    value={seconds}
+                    onChange={(e) => setSeconds(e.target.value)}
+                    inputProps={{ maxLength: 2 }}
+                    style={{ width: '100px' }}
+                  />
+                </Grid>
+              </Grid>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setEditDialogOpen(false)} color="primary">
+                Cancel
+              </Button>
+              <Button onClick={updateTimer} color="primary">
+                Save
+              </Button>
+            </DialogActions>
+          </Dialog>
+
+          {/* Confirm Delete Dialog */}
+          <Dialog open={confirmDialogOpen} onClose={handleDeleteCancel}>
+            <DialogTitle>Are you sure?</DialogTitle>
+            <DialogActions>
+              <Button onClick={handleDeleteCancel} style={{ color: '#118AB2' }}>
+                Cancel
+              </Button>
+              <Button onClick={handleDeleteConfirm} style={{ color: '#EF476F' }}>
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Grid>
       </Grid>
     </Box>

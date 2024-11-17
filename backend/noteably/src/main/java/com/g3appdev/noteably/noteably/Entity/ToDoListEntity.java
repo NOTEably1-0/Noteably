@@ -6,16 +6,16 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "todo_list")
 public class ToDoListEntity {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int todolistID;
 	
-	private int dashboardID;
 	private String title;
-	private int scheduleID; // ScheduleEntity which displays the schedule to do the tasks
 	private String description;
 
     @ManyToOne
@@ -26,17 +26,9 @@ public class ToDoListEntity {
 		this.todolistID = todolistID;
 	}
 	
-	public void setDashboardID(int dashboardID) {
-		this.dashboardID = dashboardID;
-	}
-	
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
-    public void setScheduleID(int scheduleID) {
-        this.scheduleID = scheduleID;
-    }
 	
 	public void setDescription(String description) {
 		this.description = description;
@@ -50,16 +42,8 @@ public class ToDoListEntity {
 		return todolistID;
 	}
 	
-	public int getDashboardID() {
-		return dashboardID;
-	}
-	
 	public String getTitle() {
 		return title;
-	}
-	
-    public int getScheduleID() {
-		return scheduleID;
 	}
 	
 	public String getDescription() {

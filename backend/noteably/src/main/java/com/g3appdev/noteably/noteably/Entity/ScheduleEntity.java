@@ -11,7 +11,7 @@ public class ScheduleEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int scheduleID;
 
-    private int dashboardID;
+   
     private String title;
     private String priority;
     private String colorCode;
@@ -29,14 +29,6 @@ public class ScheduleEntity {
 
     public void setScheduleID(int scheduleID) {
         this.scheduleID = scheduleID;
-    }
-
-    public int getDashboardID() {
-        return dashboardID;
-    }
-
-    public void setDashboardID(int dashboardID) {
-        this.dashboardID = dashboardID;
     }
 
     public String getTitle() {
