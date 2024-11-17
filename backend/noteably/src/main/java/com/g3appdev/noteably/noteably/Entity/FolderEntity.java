@@ -55,6 +55,6 @@ public class FolderEntity {
 
     @Override
     public String toString() {
-        return "FolderEntity{folderId=" + folderId + ", title='" + title + "}"; 
+        return "FolderEntity{folderId=" + folderId + ", title='" + title + "}";
     }
 }
