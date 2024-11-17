@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { IconButton, Box, Typography, TextField, Button, Checkbox } from '@mui/material';
+import { IconButton, Box, Typography, TextField, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import { Edit, Delete, Add } from '@mui/icons-material';
 
 const apiUrl = "http://localhost:8080/api/TodoList";
 
 function ToDoList() {
   const [toDoItems, setToDoItems] = useState([]);
-  const [formData, setFormData] = useState({ title: "", description: "", scheduleID: 0, dashboardID: 0 });
+  const [formData, setFormData] = useState({ title: "", description: ""});
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [dialog, setDialog] = useState({ open: false, type: "", item: null });
 
   useEffect(() => {
     fetchToDoItems();
@@ -25,7 +26,6 @@ function ToDoList() {
   };
 
   const sortItems = (items) => {
-    // Sort to place completed tasks at the end
     return items.sort((a, b) => a.completed - b.completed);
   };
 
@@ -42,7 +42,7 @@ function ToDoList() {
         headers: { "Content-Type": "application/json" }
       });
 
-      setFormData({ title: "", description: "", scheduleID: 0, dashboardID: 0 });
+      setFormData({ title: "", description: ""});
       setIsEditMode(false);
       setSelectedId(null);
       fetchToDoItems();
@@ -76,14 +76,29 @@ function ToDoList() {
   };
 
   const handleEdit = (item) => {
-    setFormData({
-      title: item.title,
-      description: item.description,
-      scheduleID: 0,
-      dashboardID: 0
-    });
-    setIsEditMode(true);
-    setSelectedId(item.toDoListID);
+    setDialog({ open: true, type: "edit", item });
+  };
+
+  const handleDelete = (item) => {
+    setDialog({ open: true, type: "delete", item });
+  };
+
+  const confirmDialog = () => {
+    if (dialog.type === "delete") {
+      deleteToDoItem(dialog.item.toDoListID);
+    } else if (dialog.type === "edit") {
+      setFormData({
+        title: dialog.item.title,
+        description: dialog.item.description
+      });
+      setIsEditMode(true);
+      setSelectedId(dialog.item.toDoListID);
+    }
+    setDialog({ open: false, type: "", item: null });
+  };
+
+  const cancelDialog = () => {
+    setDialog({ open: false, type: "", item: null });
   };
 
   const handleFormChange = (e) => {
@@ -92,7 +107,7 @@ function ToDoList() {
   };
 
   const handleCancelEdit = () => {
-    setFormData({ title: "", description: "", scheduleID: 0, dashboardID: 0 });
+    setFormData({ title: "", description: ""});
     setIsEditMode(false);
     setSelectedId(null);
   };
@@ -175,23 +190,13 @@ function ToDoList() {
                   >
                     {item.description}
                   </Typography>
-                  <Typography
-                    variant="caption"
-                    style={{
-                      fontWeight: 'bold',
-                      display: 'block',
-                      textDecoration: item.completed ? 'line-through' : 'none',
-                    }}
-                  >
-                    Tomorrow - 11:59 PM
-                  </Typography>
                 </Box>
               </Box>
               <Box style={{ display: 'flex', gap: '10px' }}>
                 <IconButton onClick={() => handleEdit(item)} style={{ color: '#6A0572' }}>
                   <Edit />
                 </IconButton>
-                <IconButton onClick={() => deleteToDoItem(item.toDoListID)} style={{ color: '#FF6B6B' }}>
+                <IconButton onClick={() => handleDelete(item)} style={{ color: '#FF6B6B' }}>
                   <Delete />
                 </IconButton>
               </Box>
@@ -199,6 +204,24 @@ function ToDoList() {
           );
         })}
       </Box>
+
+      {/* Confirmation Dialog */}
+      <Dialog open={dialog.open} onClose={cancelDialog}>
+        <DialogTitle>
+          {dialog.type === "delete" ? "Delete Task" : "Edit Task"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            {dialog.type === "delete"
+              ? "Are you sure you want to delete this record?"
+              : "Are you sure you want to update this record?"}
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={cancelDialog} color="secondary">Cancel</Button>
+          <Button onClick={confirmDialog} color="primary">Confirm</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
