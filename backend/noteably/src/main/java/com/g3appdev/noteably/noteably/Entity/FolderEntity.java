@@ -21,8 +21,6 @@ public class FolderEntity {
     @Column(name = "title")
     private String title;
 
-    private Integer dashboardId;
-
     // One folder can have many notes
     @OneToMany(mappedBy = "folderId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<NoteEntity> notes;
@@ -45,14 +43,6 @@ public class FolderEntity {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public Integer getDashboardId() {
-        return dashboardId;
-    }
-
-    public void setDashboardId(Integer dashboardId) {
-        this.dashboardId = dashboardId;
     }
 
     public List<NoteEntity> getNotes() {

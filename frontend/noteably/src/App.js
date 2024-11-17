@@ -83,7 +83,7 @@ function App() {
             <Route path="/calendar" element={<Schedule />} />
             <Route path="/folders" element={<FolderApp />} />
             <Route path="/todo" element={<ToDoList />} />
-            <Route path="/notes" element={<NoteApp />} /> {/* Add route for NoteApp */}
+            <Route path="/noteApp/:folderId" element={<NoteApp />} />
             <Route path="/timer" element={<TimerSetup />} />
             <Route path="/running" element={<TimerRunning />} />
             <Route path="/list" element={<TimerList />} /> {/* Add route for Timers */}

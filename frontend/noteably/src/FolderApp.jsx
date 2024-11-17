@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Axios from 'axios';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { useNavigate } from 'react-router-dom';  // Add React Router's navigate hook
+import { useNavigate } from 'react-router-dom'; // Add React Router's navigate hook
 import './FolderApp.css'; // Import CSS for custom styles
 
 function FolderApp() {
@@ -102,7 +102,7 @@ function FolderApp() {
 
     // Navigate to the NoteApp page when a folder is clicked
     const openFolder = (folderId) => {
-        navigate(`/noteApp/${folderId}`); // Use navigate to go to NoteApp page with folderId as a parameter
+        navigate(`/noteApp/${folderId}`); // Use navigate to go to the NoteApp page with folderId as a parameter
     };
 
     return (
