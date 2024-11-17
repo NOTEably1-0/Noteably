@@ -18,7 +18,7 @@ public class StudentController {
 
     @GetMapping("/ping")
     public String test() {
-        return "Nigana";
+        return "Niggana";
 
     }
 
