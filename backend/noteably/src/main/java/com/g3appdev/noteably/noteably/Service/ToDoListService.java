@@ -37,6 +37,7 @@ public class ToDoListService {
 				todolist.setDescription(newToDoListDetails.getDescription());
 				todolist.setScheduleID(newToDoListDetails.getScheduleID());
 				todolist.setDashboardID(newToDoListDetails.getDashboardID());
+                todolist.setSchedule(newToDoListDetails.getSchedule());
 				return tdlrepo.save(todolist);
 			}).orElseThrow(() -> new NoSuchElementException("ToDoList not found for id: " + id));
 	}

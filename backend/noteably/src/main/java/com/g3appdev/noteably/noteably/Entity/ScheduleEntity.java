@@ -1,9 +1,15 @@
 package com.g3appdev.noteably.noteably.Entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 
@@ -33,6 +39,9 @@ public class ScheduleEntity {
     @Column(nullable = true)
     private String endDate; 
     
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sched", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ToDoListEntity> tasks;
+
     // Getters and Setters
     public int getScheduleID() {
         return scheduleID;
@@ -92,4 +101,3 @@ public class ScheduleEntity {
 
     
 }
-
