@@ -18,8 +18,6 @@ public class FolderEntity {
     @Column(nullable = false)
     private String title;
 
-    private Integer dashboardId;
-
     // Default constructor
     public FolderEntity() {}
 
@@ -40,16 +38,9 @@ public class FolderEntity {
         this.title = title;
     }
 
-    public Integer getDashboardId() {
-        return dashboardId;
-    }
-
-    public void setDashboardId(Integer dashboardId) {
-        this.dashboardId = dashboardId;
-    }
 
     @Override
     public String toString() {
-        return "FolderEntity{folderId=" + folderId + ", title='" + title + "', dashboardId=" + dashboardId + "}";
+        return "FolderEntity{folderId=" + folderId + ", title='" + title + "}";
     }
 }

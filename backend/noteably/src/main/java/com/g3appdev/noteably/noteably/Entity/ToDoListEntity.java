@@ -13,7 +13,7 @@ public class ToDoListEntity {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int todolistID;
 	
-	private int dashboardID;
+	
 	private String title;
 	private int scheduleID; // ScheduleEntity which displays the schedule to do the tasks
 	private String description;
@@ -26,9 +26,6 @@ public class ToDoListEntity {
 		this.todolistID = todolistID;
 	}
 	
-	public void setDashboardID(int dashboardID) {
-		this.dashboardID = dashboardID;
-	}
 	
 	public void setTitle(String title) {
 		this.title = title;
@@ -50,9 +47,6 @@ public class ToDoListEntity {
 		return todolistID;
 	}
 	
-	public int getDashboardID() {
-		return dashboardID;
-	}
 	
 	public String getTitle() {
 		return title;
