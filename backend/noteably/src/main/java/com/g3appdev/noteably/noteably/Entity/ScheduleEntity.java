@@ -9,10 +9,6 @@ import jakarta.persistence.OneToMany;
 
 import java.util.List;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
-
 @Entity
 @Table(name = "schedule")
 public class ScheduleEntity {
