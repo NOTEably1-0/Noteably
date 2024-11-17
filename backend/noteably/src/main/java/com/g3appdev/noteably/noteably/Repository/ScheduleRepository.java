@@ -1,11 +1,11 @@
 package com.g3appdev.noteably.noteably.Repository;
 
+import com.g3appdev.noteably.noteably.Entity.ScheduleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.g3appdev.noteably.noteably.Entity.TimerEntity;
-
 
 @Repository
-public interface TimerRepository extends JpaRepository<TimerEntity, Integer> {
+public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Integer> {
 }
+

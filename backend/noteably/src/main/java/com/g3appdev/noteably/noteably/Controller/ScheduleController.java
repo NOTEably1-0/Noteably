@@ -3,71 +3,75 @@ package com.g3appdev.noteably.noteably.Controller;
 import com.g3appdev.noteably.noteably.Entity.ScheduleEntity;
 import com.g3appdev.noteably.noteably.Service.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/schedules")
+@RequestMapping("/api/schedule")
 public class ScheduleController {
 
     @Autowired
     private ScheduleService scheduleService;
 
-    // Get all schedules (READ)
-    @GetMapping("/getAll")
+    // Create
+    @PostMapping("/create")
+    public ResponseEntity<?> createSchedule(@RequestBody ScheduleEntity schedule) {
+        try {
+            ScheduleEntity savedSchedule = scheduleService.createSchedule(schedule);
+            return ResponseEntity.ok(savedSchedule);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    // Read all
+    @GetMapping("/all")
     public List<ScheduleEntity> getAllSchedules() {
         return scheduleService.getAllSchedules();
     }
 
-    // Get a specific schedule by ID (READ)
-    @GetMapping("/getSched/{id}")
+    // Read by ID
+    @GetMapping("/{id}")
     public ResponseEntity<ScheduleEntity> getScheduleById(@PathVariable int id) {
-        Optional<ScheduleEntity> schedule = scheduleService.getScheduleById(id);
-        return schedule.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        ScheduleEntity schedule = scheduleService.getScheduleById(id);
+        return schedule != null ? ResponseEntity.ok(schedule) : ResponseEntity.notFound().build();
     }
 
-    // Create a new schedule (CREATE)
-    @PostMapping("/postSched")
-    public ScheduleEntity createSchedule(@RequestBody ScheduleEntity schedule) {
-        return scheduleService.saveOrUpdate(schedule);
-    }
-
-    // Edit an existing schedule (UPDATE)
-    @PutMapping("/editSched/{id}")
-    public ResponseEntity<ScheduleEntity> editSchedule(@PathVariable int id, @RequestBody ScheduleEntity schedule) {
-        Optional<ScheduleEntity> existingSchedule = scheduleService.getScheduleById(id);
-        if (existingSchedule.isPresent()) {
-            schedule.setScheduleID(id);
-            return ResponseEntity.ok(scheduleService.saveOrUpdate(schedule));
-        } else {
-            return ResponseEntity.notFound().build();
+    // Update
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> updateSchedule(@PathVariable int id, @RequestBody ScheduleEntity newScheduleDetails) {
+        try {
+            ScheduleEntity updatedSchedule = scheduleService.updateSchedule(id, newScheduleDetails);
+            return updatedSchedule != null ? ResponseEntity.ok(updatedSchedule) : ResponseEntity.notFound().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
-    // Delete a schedule by ID (DELETE)
-    @DeleteMapping("/deleteSched/{id}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable int id) {
-        if (scheduleService.getScheduleById(id).isPresent()) {
-            scheduleService.deleteSchedule(id);
-            return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    // Delete
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> deleteSchedule(@PathVariable int id) {
+        String response = scheduleService.deleteSchedule(id);
+        return response.equals("Deleted successfully.") ?
+                ResponseEntity.ok(response) :
+                ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     // Get schedules by priority
-    @GetMapping("/getByPriority/{priority}")
+    @GetMapping("/byPriority/{priority}")
     public List<ScheduleEntity> getSchedulesByPriority(@PathVariable String priority) {
         return scheduleService.getSchedulesByPriority(priority);
     }
 
     // Get schedules within a date range
-    @GetMapping("/getByDateRange")
-    public List<ScheduleEntity> getSchedulesInDateRange(@RequestParam String startDate, @RequestParam String endDate) {
-        return scheduleService.getSchedulesInDateRange(startDate, endDate);
+    @GetMapping("/byDateRange")
+    public List<ScheduleEntity> getSchedulesWithinDateRange(
+            @RequestParam String startDate,
+            @RequestParam String endDate) {
+        return scheduleService.getSchedulesWithinDateRange(startDate, endDate);
     }
 }

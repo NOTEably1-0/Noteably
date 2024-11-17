@@ -1,38 +1,27 @@
 package com.g3appdev.noteably.noteably.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.persistence.OneToMany;
+
+import java.util.List;
 
 @Entity
-@Table(name = "schedule")
 public class ScheduleEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int scheduleID;
 
-    @Column(nullable = false)
-    private int dashboardID;
    
-    @Column(nullable = false)
     private String title;
+    private String priority;
+    private String colorCode;
+    private String startDate;
+    private String endDate;
+    private String description;
 
-    @Column(nullable = false)
-    private String priority; 
+    @OneToMany(mappedBy = "sched", cascade = CascadeType.ALL)
+    private List<ToDoListEntity> toDoLists;
 
-    @Column(nullable = false)
-    private String colorCode; 
-
-    @Column(nullable = false)
-    private String startDate; 
-
-    @Column(nullable = true)
-    private String endDate; 
-    
     // Getters and Setters
     public int getScheduleID() {
         return scheduleID;
@@ -40,14 +29,6 @@ public class ScheduleEntity {
 
     public void setScheduleID(int scheduleID) {
         this.scheduleID = scheduleID;
-    }
-
-    public int getDashboardID() {
-        return dashboardID;
-    }
-
-    public void setDashboardID(int dashboardID) {
-        this.dashboardID = dashboardID;
     }
 
     public String getTitle() {
@@ -90,6 +71,19 @@ public class ScheduleEntity {
         this.endDate = endDate;
     }
 
-    
-}
+    public String getDescription() {
+        return description;
+    }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<ToDoListEntity> getToDoLists() {
+        return toDoLists;
+    }
+
+    public void setToDoLists(List<ToDoListEntity> toDoLists) {
+        this.toDoLists = toDoLists;
+    }
+}

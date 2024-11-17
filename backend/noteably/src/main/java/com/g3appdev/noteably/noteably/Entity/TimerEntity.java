@@ -14,7 +14,7 @@ public class TimerEntity {
     @Column(name = "id") // Specify the actual column name in the database
     private int timerID;
 
-    private int dashboardID;
+    
     private int hours;
     private int minutes;
     private int seconds;
@@ -26,9 +26,8 @@ public class TimerEntity {
     }
 
     // Constructor with parameters
-    public TimerEntity(int dashboardID, int timerID, int hours, int minutes, int seconds, String title) {
+    public TimerEntity(int timerID, int hours, int minutes, int seconds, String title) {
         super();
-        this.dashboardID = dashboardID;
         this.timerID = timerID;
         this.hours = hours;
         this.minutes = minutes;
@@ -37,10 +36,6 @@ public class TimerEntity {
     }
 
     // Getters and setters
-    
-    public int getDashboardID() {
-        return dashboardID;
-    }
     
     public int getTimerID() {
         return timerID;

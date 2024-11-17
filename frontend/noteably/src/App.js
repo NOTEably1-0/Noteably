@@ -9,7 +9,6 @@ import FolderApp from './FolderApp'; // Import FolderApp
 import NoteApp from './NoteApp'; // Import NoteApp
 import TimerSetup from './Timer/TimerSetup'; // Three timer callouts
 import TimerRunning from './Timer/TimerRunning';
-import TimerList from './Timer/TimerList'; 
 import ToDoList from './ToDoList';
 
 // Define theme colors
@@ -86,7 +85,6 @@ function App() {
             <Route path="/noteApp/:folderId" element={<NoteApp />} />
             <Route path="/timer" element={<TimerSetup />} />
             <Route path="/running" element={<TimerRunning />} />
-            <Route path="/list" element={<TimerList />} /> {/* Add route for Timers */}
             {/* Add other routes here */}
           </Routes>
         </Box>
