@@ -3,7 +3,6 @@ import { Typography, IconButton, Box } from '@mui/material';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import StopIcon from '@mui/icons-material/Stop';
-import ListIcon from '@mui/icons-material/List';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 function TimerRunning() {
@@ -13,15 +12,19 @@ function TimerRunning() {
 
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [isPaused, setIsPaused] = useState(false);
+  
   const audioRef = useRef(new Audio('/TimerSound.mp3'));
-
+  audioRef.current.preload = "auto";
+  
   useEffect(() => {
     if (!isPaused && timeLeft > 0) {
       const timer = setInterval(() => setTimeLeft(prev => prev - 1), 1000);
       return () => clearInterval(timer);
     }
     if (timeLeft === 0) {
-      audioRef.current.play();
+      audioRef.current.play().catch((error) => {
+        console.error("Audio playback failed:", error);
+      });
     }
   }, [timeLeft, isPaused]);
 
@@ -29,8 +32,10 @@ function TimerRunning() {
     return () => {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
+      audioRef.current.load();
     };
   }, []);
+  
 
   const handlePausePlay = () => {
     setIsPaused(prev => !prev);
@@ -59,7 +64,7 @@ function TimerRunning() {
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    height: '90vh',
+    height: '100%',
     backgroundImage: `url('/polkadot.png')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center',
@@ -118,9 +123,6 @@ function TimerRunning() {
 
         {/* Control buttons */}
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: '20px', marginTop: '20px' }}>
-          <IconButton onClick={() => { navigate('/list'); stopAudio(); }} sx={{ backgroundColor: '#FFD166', color: 'white', minWidth: '50px', minHeight: '50px', borderRadius: '50%' }}>
-            <ListIcon />
-          </IconButton>
 
           <IconButton
             onClick={handlePausePlay}
