@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ScheduleRepo extends JpaRepository<ScheduleEntity, Integer> {
-    List<ScheduleEntity> findByPriority(String priority);
-    List<ScheduleEntity> findByStartDateBetween(String startDate, String endDate);
+public interface ScheduleRepository extends JpaRepository<ScheduleEntity, Integer> {
 }
 

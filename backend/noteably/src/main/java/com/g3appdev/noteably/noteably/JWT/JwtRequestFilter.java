@@ -1,4 +1,4 @@
-package noteably.noteably.JWT;
+package com.g3appdev.noteably.noteably.JWT;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

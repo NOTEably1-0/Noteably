@@ -10,33 +10,21 @@ import jakarta.persistence.OneToMany;
 import java.util.List;
 
 @Entity
-@Table(name = "schedule")
 public class ScheduleEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int scheduleID;
 
-    @Column(nullable = false)
     private int dashboardID;
-   
-    @Column(nullable = false)
     private String title;
+    private String priority;
+    private String colorCode;
+    private String startDate;
+    private String endDate;
+    private String description;
 
-    @Column(nullable = false)
-    private String priority; 
-
-    @Column(nullable = false)
-    private String colorCode; 
-
-    @Column(nullable = false)
-    private String startDate; 
-
-    @Column(nullable = true)
-    private String endDate; 
-    
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sched", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ToDoListEntity> tasks;
+    @OneToMany(mappedBy = "sched", cascade = CascadeType.ALL)
+    private List<ToDoListEntity> toDoLists;
 
     // Getters and Setters
     public int getScheduleID() {
@@ -95,5 +83,19 @@ public class ScheduleEntity {
         this.endDate = endDate;
     }
 
-    
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<ToDoListEntity> getToDoLists() {
+        return toDoLists;
+    }
+
+    public void setToDoLists(List<ToDoListEntity> toDoLists) {
+        this.toDoLists = toDoLists;
+    }
 }
