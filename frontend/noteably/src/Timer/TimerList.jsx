@@ -67,7 +67,7 @@ function TimerList({ deleteTimer, updateTimer }) {
   };
 
   const handleBack = () => {
-    navigate('/');
+    navigate('/timer');
   };
 
   // Pagination controls

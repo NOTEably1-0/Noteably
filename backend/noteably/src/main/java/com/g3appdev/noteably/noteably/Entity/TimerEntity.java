@@ -14,6 +14,7 @@ public class TimerEntity {
     @Column(name = "id") // Specify the actual column name in the database
     private int timerID;
 
+    
     private int dashboardID;
     private int hours;
     private int minutes;
