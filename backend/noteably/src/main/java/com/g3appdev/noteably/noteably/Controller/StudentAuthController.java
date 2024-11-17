@@ -1,10 +1,10 @@
-package com.g3appdev.noteably.Controller;
+package com.g3appdev.noteably.noteably.Controller;
 
-import com.g3appdev.noteably.Entity.StudentEntity;
-import com.g3appdev.noteably.JWT.AuthenticationRequest;
-import com.g3appdev.noteably.JWT.JwtUtil;
-import com.g3appdev.noteably.Service.CustomUserDetailsService;
-import com.g3appdev.noteably.Service.StudentService;
+import com.g3appdev.noteably.noteably.Entity.StudentEntity;
+import com.g3appdev.noteably.noteably.JWT.AuthenticationRequest;
+import com.g3appdev.noteably.noteably.JWT.JwtUtil;
+import com.g3appdev.noteably.noteably.Service.CustomUserDetailsService;
+import com.g3appdev.noteably.noteably.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

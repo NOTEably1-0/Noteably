@@ -1,7 +1,7 @@
 package com.g3appdev.noteably.noteably.Service;
 
-import noteably.noteably.Entity.StudentEntity;
-import noteably.noteably.Repository.StudentRepo;
+import com.g3appdev.noteably.noteably.Entity.StudentEntity;
+import com.g3appdev.noteably.noteably.Repository.StudentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;

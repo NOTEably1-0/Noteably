@@ -1,4 +1,4 @@
-package com.g3appdev.noteably.noteably.JWT;
+package com.g3appdev.noteably.noteably.Service;
 
 import com.g3appdev.noteably.noteably.Entity.StudentEntity;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,13 +8,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetailsService implements UserDetails {
     private String email;
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
 
 
-    public CustomUserDetails(StudentEntity student) {
+    public CustomUserDetailsService(StudentEntity student) {
         this.email = student.getEmail();
         this.password = student.getPassword();
         this.authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_STUDENT"));
