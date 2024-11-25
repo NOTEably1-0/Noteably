@@ -42,6 +42,7 @@ public class ScheduleService {
             schedule.setStartDate(newScheduleDetails.getStartDate());
             schedule.setEndDate(newScheduleDetails.getEndDate());
             schedule.setDescription(newScheduleDetails.getDescription());
+            schedule.setDashboardID(newScheduleDetails.getDashboardID());
             return scheduleRepository.save(schedule);
         }).orElse(null);
     }

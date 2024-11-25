@@ -7,28 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.g3appdev.noteably.noteably.Entity.NoteEntity;
-import com.g3appdev.noteably.noteably.Entity.FolderEntity;
 import com.g3appdev.noteably.noteably.Repository.NoteRepository;
-import com.g3appdev.noteably.noteably.Repository.FolderRepository;
 
 @Service
 public class NoteService {
     @Autowired 
     NoteRepository nrepo;
-    
-    @Autowired
-    FolderRepository frepo; // Ensure FolderRepository is injected
 
     public NoteEntity postNoteRecord(NoteEntity note) {
-        // Ensure folder is saved first if it's not already in the database
-        FolderEntity folder = note.getFolderId();
-        if (folder != null) {
-            // Save the folder if it's not already persisted
-            FolderEntity savedFolder = frepo.save(folder); 
-            note.setFolderId(savedFolder);  // Set the folder to the note
-        }
-
-        // Now save the note with the associated folder
         return nrepo.save(note);
     }
 
@@ -40,20 +26,12 @@ public class NoteService {
         NoteEntity note = nrepo.findById(noteId)
             .orElseThrow(() -> new NoSuchElementException("Note " + noteId + " not found"));
 
-        // Ensure folder is saved before associating with the note
-        FolderEntity folder = newNoteDetails.getFolderId();
-        if (folder != null) {
-            // Save the folder if it's not already persisted
-            FolderEntity savedFolder = frepo.save(folder); 
-            note.setFolderId(savedFolder);  // Set the folder to the note
-        }
-
-        // Update other note details
+        
+        note.setFolderId(newNoteDetails.getFolderId()); 
         note.setDate(newNoteDetails.getDate());
         note.setTitle(newNoteDetails.getTitle());
-        note.setNote(newNoteDetails.getNote());
+        note.setNote(newNoteDetails.getNote()); 
 
-        // Save and return the updated note
         return nrepo.save(note);
     }
 

@@ -1,15 +1,12 @@
 package com.g3appdev.noteably.noteably.Entity;
 
-import java.util.List;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+
 
 @Entity
 public class FolderEntity {
@@ -18,12 +15,10 @@ public class FolderEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int folderId;
 
-    @Column(name = "title")
+    @Column(nullable = false)
     private String title;
 
-    // One folder can have many notes
-    @OneToMany(mappedBy = "folderId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<NoteEntity> notes;
+    private Integer dashboardId;
 
     // Default constructor
     public FolderEntity() {}
@@ -45,16 +40,16 @@ public class FolderEntity {
         this.title = title;
     }
 
-    public List<NoteEntity> getNotes() {
-        return notes;
+    public Integer getDashboardId() {
+        return dashboardId;
     }
 
-    public void setNotes(List<NoteEntity> notes) {
-        this.notes = notes;
+    public void setDashboardId(Integer dashboardId) {
+        this.dashboardId = dashboardId;
     }
 
     @Override
     public String toString() {
-        return "FolderEntity{folderId=" + folderId + ", title='" + title + "}";
+        return "FolderEntity{folderId=" + folderId + ", title='" + title + "', dashboardId=" + dashboardId + "}";
     }
 }

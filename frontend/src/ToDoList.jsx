@@ -7,7 +7,7 @@ const apiUrl = "http://localhost:8080/api/TodoList";
 
 function ToDoList() {
   const [toDoItems, setToDoItems] = useState([]);
-  const [formData, setFormData] = useState({ title: "", description: ""});
+  const [formData, setFormData] = useState({ title: "", description: "", scheduleID: 0, dashboardID: 0 });
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [dialog, setDialog] = useState({ open: false, type: "", item: null });
@@ -42,7 +42,7 @@ function ToDoList() {
         headers: { "Content-Type": "application/json" }
       });
 
-      setFormData({ title: "", description: ""});
+      setFormData({ title: "", description: "", scheduleID: 0, dashboardID: 0 });
       setIsEditMode(false);
       setSelectedId(null);
       fetchToDoItems();
@@ -89,7 +89,9 @@ function ToDoList() {
     } else if (dialog.type === "edit") {
       setFormData({
         title: dialog.item.title,
-        description: dialog.item.description
+        description: dialog.item.description,
+        scheduleID: 0,
+        dashboardID: 0
       });
       setIsEditMode(true);
       setSelectedId(dialog.item.toDoListID);
@@ -107,7 +109,7 @@ function ToDoList() {
   };
 
   const handleCancelEdit = () => {
-    setFormData({ title: "", description: ""});
+    setFormData({ title: "", description: "", scheduleID: 0, dashboardID: 0 });
     setIsEditMode(false);
     setSelectedId(null);
   };
