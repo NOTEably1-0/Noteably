@@ -2,9 +2,12 @@ import React, { useState, useEffect, useRef } from 'react';
 import Axios from 'axios';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 <<<<<<< HEAD:frontend/src/FolderApp.jsx
+<<<<<<< HEAD:frontend/src/FolderApp.jsx
 import { useNavigate } from 'react-router-dom';
 import './FolderApp.css';
 =======
+=======
+>>>>>>> parent of c4fd8db (Merge branch 'main' of https://github.com/NOTEably1-0/Noteably):frontend/noteably/src/FolderApp.jsx
 import { useNavigate } from 'react-router-dom';  // Add React Router's navigate hook
 import './FolderApp.css'; // Import CSS for custom styles
 >>>>>>> parent of c4fd8db (Merge branch 'main' of https://github.com/NOTEably1-0/Noteably):frontend/noteably/src/FolderApp.jsx
@@ -132,7 +135,11 @@ function FolderApp() {
 
     const openFolder = (folderId) => {
 <<<<<<< HEAD:frontend/src/FolderApp.jsx
+<<<<<<< HEAD:frontend/src/FolderApp.jsx
         navigate(`/noteApp/${folderId}`);
+=======
+        navigate(`/noteApp/${folderId}`); // Use navigate to go to NoteApp page with folderId as a parameter
+>>>>>>> parent of c4fd8db (Merge branch 'main' of https://github.com/NOTEably1-0/Noteably):frontend/noteably/src/FolderApp.jsx
 =======
         navigate(`/noteApp/${folderId}`); // Use navigate to go to NoteApp page with folderId as a parameter
 >>>>>>> parent of c4fd8db (Merge branch 'main' of https://github.com/NOTEably1-0/Noteably):frontend/noteably/src/FolderApp.jsx

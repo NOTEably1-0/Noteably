@@ -98,8 +98,12 @@ function App() {
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 export default App;
 >>>>>>> parent of cdbe6f6 (ui)
+=======
+export default AppWrapper;
+>>>>>>> parent of c4fd8db (Merge branch 'main' of https://github.com/NOTEably1-0/Noteably)
 =======
 export default AppWrapper;
 >>>>>>> parent of c4fd8db (Merge branch 'main' of https://github.com/NOTEably1-0/Noteably)

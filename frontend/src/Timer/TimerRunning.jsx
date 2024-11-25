@@ -37,6 +37,9 @@ function TimerRunning() {
 =======
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
+<<<<<<< HEAD:frontend/src/Timer/TimerRunning.jsx
+>>>>>>> parent of c4fd8db (Merge branch 'main' of https://github.com/NOTEably1-0/Noteably):frontend/noteably/src/Timer/TimerRunning.jsx
+=======
 >>>>>>> parent of c4fd8db (Merge branch 'main' of https://github.com/NOTEably1-0/Noteably):frontend/noteably/src/Timer/TimerRunning.jsx
     };
   }, []);
