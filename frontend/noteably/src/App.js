@@ -1,5 +1,8 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of cdbe6f6 (ui)
 // App.js
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
@@ -99,6 +102,7 @@ function App() {
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 export default App;
 >>>>>>> parent of cdbe6f6 (ui)
 =======
@@ -107,3 +111,6 @@ export default AppWrapper;
 =======
 export default AppWrapper;
 >>>>>>> parent of c4fd8db (Merge branch 'main' of https://github.com/NOTEably1-0/Noteably)
+=======
+export default App;
+>>>>>>> parent of cdbe6f6 (ui)
