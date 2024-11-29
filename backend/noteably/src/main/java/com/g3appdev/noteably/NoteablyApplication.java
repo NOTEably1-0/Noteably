@@ -1,4 +1,4 @@
-package com.g3appdev.noteably.noteably;
+package com.g3appdev.noteably;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

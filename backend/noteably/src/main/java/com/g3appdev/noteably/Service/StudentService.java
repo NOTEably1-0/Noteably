@@ -3,7 +3,6 @@ package com.g3appdev.noteably.Service;
 import com.g3appdev.noteably.Entity.StudentEntity;
 import com.g3appdev.noteably.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,9 +12,6 @@ public class StudentService {
 
     @Autowired
     private StudentRepository studentRepo;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     // Get all students
     public List<StudentEntity> getAllStudents() {
@@ -36,8 +32,8 @@ public class StudentService {
 
     // Register (save) a new student with custom StudentID
     public StudentEntity registerStudent(StudentEntity studentEntity) {
-        // Encrypt the password
-        studentEntity.setPassword(passwordEncoder.encode(studentEntity.getPassword()));
+        // Log plain password for debugging
+        System.out.println("Registering student with password: " + studentEntity.getPassword());
 
         // Save the entity to assign an auto-increment ID
         StudentEntity savedStudent = studentRepo.save(studentEntity);
@@ -54,11 +50,14 @@ public class StudentService {
         StudentEntity existingStudent = studentRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
 
+        // Log plain password for debugging
+        System.out.println("Updating student with password: " + studentEntity.getPassword());
+
         existingStudent.setName(studentEntity.getName());
         existingStudent.setCourse(studentEntity.getCourse());
         existingStudent.setContactNumber(studentEntity.getContactNumber());
         existingStudent.setEmail(studentEntity.getEmail());
-        existingStudent.setPassword(passwordEncoder.encode(studentEntity.getPassword()));
+        existingStudent.setPassword(studentEntity.getPassword());
 
         return studentRepo.save(existingStudent);
     }
@@ -69,4 +68,3 @@ public class StudentService {
         return "Student deleted successfully";
     }
 }
-

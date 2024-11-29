@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/students")
-@CrossOrigin(origins = "http://localhost:3000") // Allow requests from React app
+//@CrossOrigin(origins = "http://localhost:3000") // Allow requests from React app
 public class StudentController {
 
     @Autowired
@@ -18,36 +18,51 @@ public class StudentController {
     // Get all students
     @GetMapping
     public List<StudentEntity> getAllStudents() {
+        System.out.println("Fetching all students...");
         return studentService.getAllStudents();
     }
 
     // Get a student by their ID
     @GetMapping("/{id}")
     public StudentEntity getStudentById(@PathVariable int id) {
+        System.out.println("Fetching student with ID: " + id);
         return studentService.getStudentById(id);
     }
 
     // Get a student by their custom StudentID
     @GetMapping("/find/{studentId}")
     public StudentEntity getStudentByStudentId(@PathVariable String studentId) {
+        System.out.println("Fetching student with StudentID: " + studentId);
         return studentService.getStudentByStudentId(studentId);
     }
 
     // Register a new student
     @PostMapping("/register")
     public StudentEntity registerStudent(@RequestBody StudentEntity studentEntity) {
+        // Log sensitive information carefully: Passwords should ideally be encrypted or hidden in logs
+        System.out.println("Registering new student: " + studentEntity.getName() + 
+                           ", Email: " + studentEntity.getEmail());
+        // You might still want to print the password here, but keep it safe and secure
+        // If you really need to log the password for debugging purposes (development only):
+        System.out.println("Password (Plain-text for debugging): " + studentEntity.getPassword());
+
         return studentService.registerStudent(studentEntity);
     }
 
     // Update an existing student
     @PutMapping("/{id}")
     public StudentEntity updateStudent(@RequestBody StudentEntity studentEntity, @PathVariable int id) {
+        // Log the ID and other fields
+        System.out.println("Updating student with ID: " + id + 
+                           ", New Password: " + studentEntity.getPassword());
+        // Again, avoid logging passwords in production but it’s okay for development
         return studentService.updateStudent(studentEntity, id);
     }
 
     // Delete a student by ID
     @DeleteMapping("/{id}")
     public String deleteStudent(@PathVariable int id) {
+        System.out.println("Deleting student with ID: " + id);
         return studentService.deleteStudent(id);
     }
 }
