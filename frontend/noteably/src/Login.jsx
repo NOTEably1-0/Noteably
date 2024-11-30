@@ -22,9 +22,10 @@ const Login = () => {
                     'Content-Type': 'application/json'
                 }
             });
-
+    
             if (response.data) {
                 localStorage.setItem('studentId', response.data.id);
+                localStorage.setItem('studentName', response.data.name); // Store student name
                 alert('Login successful!');
                 navigate('/dashboard');
             } else {
@@ -35,6 +36,7 @@ const Login = () => {
             setMessage('Error logging in. Please check your credentials.');
         }
     };
+    
 
     return (
         <div className="login-page">

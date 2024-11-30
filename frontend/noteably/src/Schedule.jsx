@@ -98,7 +98,7 @@ const addOrUpdateSchedule = async () => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        backgroundImage: 'url(/polkadot.png)',
+        backgroundImage: 'url(/ASSETS/polkadot.png)',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
       }}
