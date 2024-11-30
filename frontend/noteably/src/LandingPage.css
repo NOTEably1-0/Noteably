@@ -6,7 +6,7 @@
 }
 
 body, html {
-    font-family: Arial, sans-serif;
+    font-family: 'Arial', sans-serif;
     background-color: #f7f8fc;
     display: flex;
     justify-content: center;
@@ -20,30 +20,34 @@ body, html {
     max-width: 1200px;
     padding: 20px;
     text-align: center;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
 }
 
 .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 20px 0;
-    background-color: #fff;
+    padding: 20px;
+    background-color: #f7f8fc;
 }
 
 .logo {
-    width: 120px;
+    width: 140px;
     height: auto;
 }
 
 .auth-buttons {
     display: flex;
-    gap: 10px;
+    gap: 15px;
 }
 
 .auth-button {
-    padding: 10px 20px;
+    padding: 10px 25px;
     border: none;
-    border-radius: 6px;
+    border-radius: 20px;
     font-size: 16px;
     font-weight: bold;
     cursor: pointer;
@@ -73,44 +77,51 @@ body, html {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px 20px;
-    background-image: url('C:\Users\Janine P. Giducos\OneDrive\Desktop\GIT_sana_final_noteably\Noteably\frontend\noteably\public\ASSETS\polkadot.png'); /* Use public folder path */
+    min-height: 80vh; /* Minimum height for better responsiveness */
+    padding: 40px 20px;
+    background: url('C:\Users\Janine P. Giducos\OneDrive\Desktop\GIT_sana_final_noteably\Noteably\frontend\noteably\public\ASSETS\polkadot.png') no-repeat center center;
     background-size: cover;
-    background-position: center;
-    color: #fff;
+}
+
+.content-box {
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 40px 20px;
+    border-radius: 12px;
+    max-width: 600px;
+    width: 100%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 .main-logo {
-    width: 150px;
+    width: 120px;
     height: auto;
     margin-bottom: 20px;
 }
 
 .main-heading {
-    font-size: 48px;
+    font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #ffffff;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: #333;
 }
 
 .subtext {
-    font-size: 18px;
-    max-width: 600px;
+    font-size: 1.1rem;
     margin-bottom: 15px;
     line-height: 1.6;
-    color: #f0f0f0;
+    color: #555;
 }
 
 .cta-text {
-    font-size: 20px;
+    font-size: 1.2rem;
     margin-bottom: 30px;
-    color: #ffeb3b;
+    color: #333;
 }
 
 .register-button {
-    padding: 15px 30px;
-    font-size: 18px;
+    padding: 15px 40px;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #fff;
     background-color: #ff6b6b;
@@ -122,4 +133,41 @@ body, html {
 
 .register-button:hover {
     background-color: #ff5252;
+}
+
+/* Responsive Design for Smaller Screens */
+@media (max-width: 768px) {
+    .main-heading {
+        font-size: 2rem;
+    }
+
+    .subtext,
+    .cta-text {
+        font-size: 1rem;
+    }
+
+    .register-button {
+        padding: 12px 30px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .content-box {
+        padding: 30px 15px;
+    }
+
+    .main-heading {
+        font-size: 1.8rem;
+    }
+
+    .subtext,
+    .cta-text {
+        font-size: 0.9rem;
+    }
+
+    .register-button {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
 }

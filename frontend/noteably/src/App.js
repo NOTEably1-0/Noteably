@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
-import { Dashboard as DashboardIcon, Folder, Timer as TimerIcon, Assignment as ToDoIcon, Event as CalendarIcon, Settings } from '@mui/icons-material';
+import { Dashboard as DashboardIcon, Folder, Timer as TimerIcon, Assignment as ToDoIcon, Event as CalendarIcon, Settings ,CheckCircle,} from '@mui/icons-material';
 import Dashboard from './Dashboard';
 import Schedule from './Schedule';
 import FolderApp from './FolderApp';
@@ -86,6 +86,7 @@ function App() {
             <SidebarItem to="/schedule" icon={<CalendarIcon />} text="Schedule" color={themeColors.green} />
             <SidebarItem to="/timer" icon={<TimerIcon />} text="Timer" color={themeColors.blue} />
             <SidebarItem to="/settings" icon={<Settings />} text="Settings" color={themeColors.dark} />
+            <SidebarItem to="/notes" icon={<CheckCircle />} text="Notes" color={themeColors.accent} />
           </List>
         </Drawer>
       )}
@@ -102,6 +103,7 @@ function App() {
           <Route path="/running" element={<TimerRunning />} />
           <Route path="/todo" element={<ToDoList />} />
           <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/noteApp/:folderId" element={<NoteApp />} />
         </Routes>
       </Box>
     </Box>
