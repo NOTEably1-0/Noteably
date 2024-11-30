@@ -126,7 +126,7 @@ function FolderApp() {
                 {filteredFolders.map((folder, index) => (
                     <div key={folder.folderId} className="folder-item" onClick={() => openFolder(folder.folderId)}>
                         <img
-                            src={`/folder-${['blue', 'green', 'orange', 'red', 'yellow'][index % 5]}.png`}
+                            src={`./ASSETS/folder-${['blue', 'green', 'orange', 'red', 'yellow'][index % 5]}.png`}
                             alt="Folder Icon"
                             className="folder-icon"
                         />
