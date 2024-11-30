@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/students")
-//@CrossOrigin(origins = "http://localhost:3000") // Allow requests from React app
+@CrossOrigin(origins = "http://localhost:3000") // Allow requests from React app
 public class StudentController {
 
     @Autowired
