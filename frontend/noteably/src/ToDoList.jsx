@@ -1,17 +1,19 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
-import { IconButton, Box, Typography, TextField, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { IconButton, Box, Typography, TextField, Button, Checkbox, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { Edit, Delete, Add } from '@mui/icons-material';
 
 const apiUrl = "http://localhost:8080/api/TodoList";
 
 function ToDoList() {
   const [toDoItems, setToDoItems] = useState([]);
-  const [formData, setFormData] = useState({ title: "", description: ""});
+  const [schedules, setSchedules] = useState([]); // Added to manage schedules
+  const [formData, setFormData] = useState({ title: "", description: "", scheduleId: "" }); // Added scheduleId
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [dialog, setDialog] = useState({ open: false, type: "", item: null });
 
+  // Fetch ToDo Items
   const fetchToDoItems = useCallback(async () => {
     try {
       const response = await axios.get(`${apiUrl}/getList`);
@@ -21,14 +23,26 @@ function ToDoList() {
     }
   }, []);
 
+  // Fetch Schedules
+  const fetchSchedules = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/schedules/getAll");
+      setSchedules(response.data);
+    } catch (error) {
+      console.error("Error fetching schedules", error);
+    }
+  };
+
   useEffect(() => {
     fetchToDoItems();
+    fetchSchedules(); // Fetch schedules on component mount
   }, [fetchToDoItems]);
 
   const sortItems = (items) => {
     return items.sort((a, b) => a.completed - b.completed);
   };
 
+  // Add or Update ToDo Item
   const addOrUpdateToDoItem = async () => {
     try {
       const isUpdating = isEditMode && selectedId !== null;
@@ -42,7 +56,7 @@ function ToDoList() {
         headers: { "Content-Type": "application/json" }
       });
 
-      setFormData({ title: "", description: ""});
+      setFormData({ title: "", description: "", scheduleId: "" }); // Reset form data
       setIsEditMode(false);
       setSelectedId(null);
       fetchToDoItems();
@@ -51,6 +65,7 @@ function ToDoList() {
     }
   };
 
+  // Delete ToDo Item
   const deleteToDoItem = async (id) => {
     try {
       if (id === undefined) {
@@ -64,6 +79,7 @@ function ToDoList() {
     }
   };
 
+  // Toggle Completion Status
   const toggleComplete = async (id) => {
     const updatedItems = toDoItems.map((item) => {
       if (item.toDoListID === id) {
@@ -75,21 +91,25 @@ function ToDoList() {
     setToDoItems(sortItems(updatedItems));
   };
 
+  // Handle Edit
   const handleEdit = (item) => {
     setDialog({ open: true, type: "edit", item });
   };
 
+  // Handle Delete
   const handleDelete = (item) => {
     setDialog({ open: true, type: "delete", item });
   };
 
+  // Confirm Dialog
   const confirmDialog = () => {
     if (dialog.type === "delete") {
       deleteToDoItem(dialog.item.toDoListID);
     } else if (dialog.type === "edit") {
       setFormData({
         title: dialog.item.title,
-        description: dialog.item.description
+        description: dialog.item.description,
+        scheduleId: dialog.item.scheduleId // Set scheduleId for editing
       });
       setIsEditMode(true);
       setSelectedId(dialog.item.toDoListID);
@@ -97,17 +117,20 @@ function ToDoList() {
     setDialog({ open: false, type: "", item: null });
   };
 
+  // Cancel Dialog
   const cancelDialog = () => {
     setDialog({ open: false, type: "", item: null });
   };
 
+  // Handle Form Change
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // Handle Cancel Edit
   const handleCancelEdit = () => {
-    setFormData({ title: "", description: ""});
+    setFormData({ title: "", description: "", scheduleId: "" });
     setIsEditMode(false);
     setSelectedId(null);
   };
@@ -133,6 +156,25 @@ function ToDoList() {
           variant="outlined"
           style={{ marginBottom: '10px' }}
         />
+        <FormControl fullWidth style={{ marginBottom: '10px' }}>
+          <InputLabel>Schedule</InputLabel>
+          <Select
+            label="Schedule"
+            name="scheduleId"
+            value={formData.scheduleId}
+            onChange={handleFormChange}
+            variant="outlined"
+          >
+            <MenuItem value="">
+              <em>None</em>
+            </MenuItem>
+            {schedules.map((schedule) => (
+              <MenuItem key={schedule.scheduleID} value={schedule.scheduleID}>
+                {schedule.title}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
         <Button
           variant="contained"
           color="primary"
@@ -190,6 +232,12 @@ function ToDoList() {
                   >
                     {item.description}
                   </Typography>
+                  {item.scheduleId && (
+                    <Typography variant="body2" style={{ fontStyle: 'italic' }}>
+                      <strong>Schedule: </strong>
+                      {schedules.find(schedule => schedule.scheduleID === item.scheduleId)?.title}
+                    </Typography>
+                  )}
                 </Box>
               </Box>
               <Box style={{ display: 'flex', gap: '10px' }}>
