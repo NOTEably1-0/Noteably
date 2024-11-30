@@ -1,7 +1,7 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
-import { Dashboard as DashboardIcon, Folder, CheckCircle, CalendarToday, Timer, Settings as SettingsIcon } from '@mui/icons-material';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Dashboard as DashboardIcon, Folder, Timer as TimerIcon, Assignment as ToDoIcon, Event as CalendarIcon } from '@mui/icons-material';
 import Dashboard from './Dashboard';
 import Schedule from './Schedule';
 import FolderApp from './FolderApp';
@@ -12,14 +12,14 @@ import ToDoList from './ToDoList';
 import Login from './Login';
 import Register from './Register';
 import LandingPage from './LandingPage';
-import SettingsPage from './Settings';
+import Setting from './Setting';
 
 function App() {
   const location = useLocation();
   const isFullScreenPage = location.pathname === '/' || location.pathname === '/login' || location.pathname === '/register';
 
   React.useEffect(() => {
-    document.querySelector('link[rel="icon"]').href = '/ASSETS/noteably_logo.png'; // Set favicon
+    document.querySelector('link[rel="icon"]').href = '/ASSETS/noteably_logo.png';
   }, []);
 
   return (
@@ -44,6 +44,18 @@ function App() {
               <ListItemIcon><Folder /></ListItemIcon>
               <ListItemText primary="Folders" />
             </ListItem>
+            <ListItem button component={Link} to="/timer">
+              <ListItemIcon><TimerIcon /></ListItemIcon>
+              <ListItemText primary="Timer" />
+            </ListItem>
+            <ListItem button component={Link} to="/todo">
+              <ListItemIcon><ToDoIcon /></ListItemIcon>
+              <ListItemText primary="To-Do List" />
+            </ListItem>
+            <ListItem button component={Link} to="/schedule">
+              <ListItemIcon><CalendarIcon /></ListItemIcon>
+              <ListItemText primary="Schedule" />
+            </ListItem>
           </List>
         </Drawer>
       )}
@@ -52,6 +64,14 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/folders" element={<FolderApp />} />
+          <Route path="/notes" element={<NoteApp />} />
+          <Route path="/schedule" element={<Schedule />} />
+          <Route path="/timer" element={<TimerSetup />} />
+          <Route path="/running" element={<TimerRunning />} />
+          <Route path="/todo" element={<ToDoList />} />
+          <Route path="/settings" element={<Setting />} />
         </Routes>
       </Box>
     </Box>

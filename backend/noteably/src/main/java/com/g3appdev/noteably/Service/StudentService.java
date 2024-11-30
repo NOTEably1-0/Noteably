@@ -67,4 +67,16 @@ public class StudentService {
         studentRepo.deleteById(id);
         return "Student deleted successfully";
     }
+
+    // Login student
+    public StudentEntity loginStudent(String email, String password) {
+        StudentEntity student = studentRepo.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("Student not found with email: " + email));
+        
+        if (!student.getPassword().equals(password)) {
+            throw new RuntimeException("Invalid password");
+        }
+        
+        return student;
+    }
 }

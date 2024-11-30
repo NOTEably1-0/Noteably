@@ -42,4 +42,16 @@ public class TimerService {
         timerRepo.deleteById(id);
         return "Timer with ID: " + id + " deleted.";
     }
+
+    public void startTimer(int timerID) {
+        TimerEntity timer = getTimerById(timerID);
+        if (timer != null) {
+            // Logic to start the timer (e.g., set a status, schedule a job, etc.)
+            // This is a placeholder for actual timer logic.
+            // You may want to implement a scheduling mechanism or a background job.
+            System.out.println("Timer started: " + timer.getTitle());
+        } else {
+            throw new RuntimeException("Timer not found");
+        }
+    }
 }

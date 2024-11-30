@@ -1,0 +1,125 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    font-family: Arial, sans-serif;
+    background-color: #f7f8fc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    color: #333;
+}
+
+.landing-container {
+    width: 100%;
+    max-width: 1200px;
+    padding: 20px;
+    text-align: center;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    background-color: #fff;
+}
+
+.logo {
+    width: 120px;
+    height: auto;
+}
+
+.auth-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.auth-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.auth-button.register {
+    background-color: #ff6b6b;
+    color: #fff;
+}
+
+.auth-button.login {
+    background-color: #4CAF50;
+    color: #fff;
+}
+
+.auth-button.register:hover {
+    background-color: #ff5252;
+}
+
+.auth-button.login:hover {
+    background-color: #45a049;
+}
+
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+    background-image: url('C:\Users\Janine P. Giducos\OneDrive\Desktop\GIT_sana_final_noteably\Noteably\frontend\noteably\public\ASSETS\polkadot.png'); /* Use public folder path */
+    background-size: cover;
+    background-position: center;
+    color: #fff;
+}
+
+.main-logo {
+    width: 150px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.main-heading {
+    font-size: 48px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.subtext {
+    font-size: 18px;
+    max-width: 600px;
+    margin-bottom: 15px;
+    line-height: 1.6;
+    color: #f0f0f0;
+}
+
+.cta-text {
+    font-size: 20px;
+    margin-bottom: 30px;
+    color: #ffeb3b;
+}
+
+.register-button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+    background-color: #ff6b6b;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.register-button:hover {
+    background-color: #ff5252;
+}

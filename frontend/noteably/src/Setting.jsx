@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import './Settings.css';
 import { useNavigate } from 'react-router-dom';
@@ -16,14 +16,9 @@ function SettingsPage() {
 
     const navigate = useNavigate();
 
-    useEffect(() => {
-        fetchStudentData();
-    }, []);
-
-    // Fetch the logged-in student's data dynamically
-    const fetchStudentData = async () => {
+    const fetchStudentData = useCallback(async () => {
         try {
-            const studentId = localStorage.getItem('studentId'); // Retrieve the logged-in student ID from localStorage
+            const studentId = localStorage.getItem('studentId');
             if (!studentId) {
                 alert('No student ID found. Please log in again.');
                 navigate('/login');
@@ -43,7 +38,11 @@ function SettingsPage() {
             console.error('Error fetching student data:', error);
             alert('Failed to fetch student data. Please try again.');
         }
-    };
+    }, [navigate]);
+
+    useEffect(() => {
+        fetchStudentData();
+    }, [fetchStudentData]);
 
     const handleInputChange = (e) => {
         const { id, value } = e.target;
@@ -60,7 +59,7 @@ function SettingsPage() {
                 return;
             }
 
-            const studentId = localStorage.getItem('studentId'); // Use the logged-in student ID
+            const studentId = localStorage.getItem('studentId');
             await axios.put(
                 `http://localhost:8080/api/students/${studentId}`,
                 {
@@ -91,8 +90,8 @@ function SettingsPage() {
     };
 
     const handleLogout = () => {
-        localStorage.clear(); // Clear all items in localStorage
-        navigate('/login'); // Redirect to the login page
+        localStorage.clear();
+        navigate('/login');
     };
 
     return (

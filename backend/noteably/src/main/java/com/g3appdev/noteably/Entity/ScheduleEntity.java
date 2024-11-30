@@ -1,17 +1,8 @@
 package com.g3appdev.noteably.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
+import jakarta.persistence.*;
+import java.time.LocalDate;
 import java.util.List;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "schedule")
@@ -20,26 +11,27 @@ public class ScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int scheduleID;
-   
+
     @Column(nullable = false)
     private String title;
 
     @Column(nullable = false)
-    private String priority; 
+    private String priority;
 
     @Column(nullable = false)
-    private String colorCode; 
+    private String colorCode;
 
     @Column(nullable = false)
-    private String startDate; 
+    private LocalDate startDate; // Use LocalDate for date validation
 
-    @Column(nullable = true)
-    private String endDate; 
-    
+    @Column
+    private LocalDate endDate;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sched", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ToDoListEntity> tasks;
 
     // Getters and Setters
+
     public int getScheduleID() {
         return scheduleID;
     }
@@ -72,21 +64,27 @@ public class ScheduleEntity {
         this.colorCode = colorCode;
     }
 
-    public String getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public String getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
-    
+    public List<ToDoListEntity> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<ToDoListEntity> tasks) {
+        this.tasks = tasks;
+    }
 }

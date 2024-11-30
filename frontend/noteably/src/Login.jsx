@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_ENDPOINTS } from './config/api';
 import './Login.css';
 
 const Login = () => {
@@ -13,17 +14,19 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         try {
-            // Make a POST request to verify credentials
-            const response = await axios.post('http://localhost:8080/api/students/login', {
+            const response = await axios.post(API_ENDPOINTS.STUDENT.LOGIN, {
                 email: email,
                 password: password,
+            }, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
             });
 
             if (response.data) {
-                // Save the student ID to localStorage for future API calls
                 localStorage.setItem('studentId', response.data.id);
                 alert('Login successful!');
-                navigate('/dashboard'); // Redirect to the dashboard
+                navigate('/dashboard');
             } else {
                 setMessage('Invalid credentials. Please try again.');
             }

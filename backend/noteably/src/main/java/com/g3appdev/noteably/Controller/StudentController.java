@@ -4,8 +4,8 @@ import com.g3appdev.noteably.Entity.StudentEntity;
 import com.g3appdev.noteably.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/students")
@@ -64,5 +64,12 @@ public class StudentController {
     public String deleteStudent(@PathVariable int id) {
         System.out.println("Deleting student with ID: " + id);
         return studentService.deleteStudent(id);
+    }
+
+    // Login endpoint
+    @PostMapping("/login")
+    public StudentEntity loginStudent(@RequestBody Map<String, String> credentials) {
+        System.out.println("Login attempt for email: " + credentials.get("email"));
+        return studentService.loginStudent(credentials.get("email"), credentials.get("password"));
     }
 }
