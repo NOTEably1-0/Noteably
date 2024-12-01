@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import axios from 'axios';
+import { getImageUrl, uploadProfilePicture } from './studentService';
 import './Settings.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
+const AVATAR_OPTIONS = [
+    { name: 'Blue', path: '/ASSETS/Profile_blue.png' },
+    { name: 'Green', path: '/ASSETS/Profile_green.png' },
+    { name: 'Orange', path: '/ASSETS/Profile_orange.png' },
+    { name: 'Red', path: '/ASSETS/Profile_red.png' },
+    { name: 'Yellow', path: '/ASSETS/Profile_yellow.png' }
+];
 
 function SettingsPage() {
     const [student, setStudent] = useState({
@@ -12,6 +21,7 @@ function SettingsPage() {
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
+        profilePicture: '',
     });
 
     const navigate = useNavigate();
@@ -33,6 +43,7 @@ function SettingsPage() {
                 course: studentData.course || '',
                 contactNumber: studentData.contactNumber || '',
                 email: studentData.email || '',
+                profilePicture: studentData.profilePicture || '/ASSETS/Profile_blue.png',
             }));
         } catch (error) {
             console.error('Error fetching student data:', error);
@@ -52,6 +63,26 @@ function SettingsPage() {
         }));
     };
 
+    const handleFileUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        try {
+            const studentId = localStorage.getItem('studentId');
+            const response = await uploadProfilePicture(studentId, file);
+            
+            setStudent(prev => ({
+                ...prev,
+                profilePicture: response.profilePicture
+            }));
+            
+            alert('Profile picture updated successfully!');
+        } catch (error) {
+            console.error('Error uploading profile picture:', error);
+            alert('Failed to upload profile picture. Please try again.');
+        }
+    };
+
     const handleSubmit = async () => {
         try {
             if (student.newPassword && student.newPassword !== student.confirmPassword) {
@@ -68,6 +99,7 @@ function SettingsPage() {
                     contactNumber: student.contactNumber,
                     email: student.email,
                     password: student.newPassword || undefined,
+                    profilePicture: student.profilePicture,
                 },
                 {
                     headers: { 'Content-Type': 'application/json' },
@@ -96,6 +128,42 @@ function SettingsPage() {
 
     return (
         <div className="settings-container">
+            <div className="profile-picture-section">
+                <div className="current-avatar">
+                    <h2>Profile Picture</h2>
+                <img 
+                    src={getImageUrl(student.profilePicture)} 
+                    alt="Current Profile" 
+                    className="current-avatar-img"
+                />
+                    <div className="upload-section">
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileUpload}
+                            className="file-input"
+                            id="profile-upload"
+                        />
+                        <label htmlFor="profile-upload" className="upload-button">
+                            Upload New Picture
+                        </label>
+                    </div>
+                </div>
+                <div className="avatar-gallery">
+                    <h3>Or Choose an Avatar</h3>
+                    <div className="avatar-options">
+                        {AVATAR_OPTIONS.map((avatar) => (
+                            <div 
+                                key={avatar.name} 
+                                className={`avatar-option ${student.profilePicture === avatar.path ? 'selected' : ''}`}
+                                onClick={() => setStudent(prev => ({ ...prev, profilePicture: avatar.path }))}
+                            >
+                                <img src={avatar.path} alt={`${avatar.name} Avatar`} />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
             <div className="settings-grid">
                 <div className="settings-card">
                     <div className="card-header">

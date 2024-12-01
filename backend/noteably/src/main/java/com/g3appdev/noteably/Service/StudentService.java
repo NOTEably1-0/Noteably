@@ -3,12 +3,22 @@ package com.g3appdev.noteably.Service;
 import com.g3appdev.noteably.Entity.StudentEntity;
 import com.g3appdev.noteably.Repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.multipart.MultipartFile;
+import java.io.IOException;
+import net.coobird.thumbnailator.Thumbnails;
+import java.io.File;
 import java.util.List;
 
 @Service
 public class StudentService {
+    @Value("${file.upload-dir}")
+    private String uploadDir;
+
+    private String getAbsoluteUploadPath() {
+        return new File(uploadDir).getAbsolutePath();
+    }
 
     @Autowired
     private StudentRepository studentRepo;
@@ -78,5 +88,26 @@ public class StudentService {
         }
         
         return student;
+    }
+
+    @Autowired
+    private FileService fileService;
+
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    // Handle profile picture upload
+    public StudentEntity updateProfilePicture(int id, MultipartFile file) throws IOException {
+        StudentEntity student = getStudentById(id);
+        
+        try {
+            String fileUrl = fileStorageService.storeFile(id, file);
+            student.setProfilePicture(fileUrl);
+            System.out.println("Profile picture URL set to: " + fileUrl);
+        } catch (IOException e) {
+            System.err.println("Error saving file: " + e.getMessage());
+            throw new RuntimeException("Failed to process and save the image", e);
+        }
+        return studentRepo.save(student);
     }
 }

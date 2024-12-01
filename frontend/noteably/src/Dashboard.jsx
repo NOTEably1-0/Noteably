@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios'; // Axios for API requests
 import { Box, Grid, Typography, Paper } from '@mui/material';
 import TimerIcon from '@mui/icons-material/Timer';
 import FolderIcon from '@mui/icons-material/Folder';
-import Calendar from './Calendar'; // Import Calendar component
-import { API_ENDPOINTS, axiosConfig } from './config/api'; // Import API config
+import Calendar from './Calendar';
+import { API_ENDPOINTS, axiosConfig } from './config/api';
+import { getImageUrl } from './studentService';
+import axios from 'axios';
 
 // Define theme colors
 const themeColors = {
@@ -34,8 +35,12 @@ function Dashboard() {
         console.log('API Response:', response.data);  // Log the response for debugging
   
         // Destructure the correct values from the response data
-        const { studentId: apiStudentId, name } = response.data; // Ensure correct names are used here
-        setStudentData({ studentId: apiStudentId, studentName: name }); // Update state with fetched data
+        const { studentId: apiStudentId, name, profilePicture } = response.data;
+        setStudentData({ 
+          studentId: apiStudentId, 
+          studentName: name,
+          profilePicture: profilePicture || '/ASSETS/Profile_blue.png'
+        });
       } catch (error) {
         console.error('Error fetching student data:', error.response?.data || error.message);
       }
@@ -56,15 +61,39 @@ function Dashboard() {
       }}
     >
       {/* Header Section */}
-      <Typography variant="h4" sx={{ color: themeColors.primary, mb: 1 }}>
-        Hello, {studentData.studentName || 'Student'}!
-      </Typography>
-      <Typography variant="subtitle1" sx={{ color: themeColors.secondary, mb: 2 }}>
-        Student ID: {studentData.studentId || 'Unknown ID'}
-      </Typography>
-      <Typography variant="subtitle2" sx={{ color: themeColors.secondary, mb: 4 }}>
-        Stay organized, stay ahead!
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', mb: 4 }}>
+        <Box
+          sx={{
+            width: 100,
+            height: 100,
+            borderRadius: '10px',
+            overflow: 'hidden',
+            mr: 3,
+            border: `2px solid ${themeColors.primary}`,
+          }}
+        >
+          <img
+            src={getImageUrl(studentData.profilePicture)}
+            alt="Profile"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}
+          />
+        </Box>
+        <Box>
+          <Typography variant="h4" sx={{ color: themeColors.primary, mb: 1 }}>
+            Hello, {studentData.studentName || 'Student'}!
+          </Typography>
+          <Typography variant="subtitle1" sx={{ color: themeColors.secondary, mb: 1 }}>
+            Student ID: {studentData.studentId || 'Unknown ID'}
+          </Typography>
+          <Typography variant="subtitle2" sx={{ color: themeColors.secondary }}>
+            Stay organized, stay ahead!
+          </Typography>
+        </Box>
+      </Box>
 
       {/* Grid Layout for Widgets */}
       <Grid container spacing={3}>

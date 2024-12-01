@@ -2,13 +2,96 @@
     padding: 2rem;
     max-width: 1200px;
     margin: 0 auto;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 30px;
-    border: 1px solid lightgray;
-    background-image: url('../public/ASSETS/polkadot.png');
-    background-size: cover;
-    background-position: center;
-    min-height: calc(100vh - 4rem);
+}
+
+.profile-picture-section {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2rem;
+}
+
+.current-avatar {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.current-avatar h2 {
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.current-avatar-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid #118AB2;
+}
+
+.upload-section {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.file-input {
+    display: none;
+}
+
+.upload-button {
+    background-color: #118AB2;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: inline-block;
+    transition: background-color 0.3s;
+    font-size: 0.9rem;
+}
+
+.upload-button:hover {
+    background-color: #0F7A9B;
+}
+
+.avatar-gallery {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.avatar-gallery h3 {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.avatar-options {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 1rem;
+}
+
+.avatar-option {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    transition: transform 0.2s;
+}
+
+.avatar-option:hover {
+    transform: scale(1.1);
+}
+
+.avatar-option.selected {
+    border: 3px solid #118AB2;
+}
+
+.avatar-option img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
 }
 
 .settings-grid {
@@ -20,7 +103,7 @@
 
 .settings-card {
     background-color: white;
-    border-radius: 15px;
+    border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
@@ -33,7 +116,7 @@
 
 .card-header h2 {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 }
 
 .card-content {
@@ -41,45 +124,36 @@
 }
 
 .input-group {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .input-group label {
     display: block;
     margin-bottom: 0.5rem;
     color: #666;
-    font-weight: 500;
 }
 
 .input-group input {
     width: 100%;
-    padding: 0.75rem;
+    padding: 0.5rem;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: 4px;
     font-size: 1rem;
-    transition: border-color 0.2s;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: #118AB2;
 }
 
 .settings-footer {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     gap: 1rem;
-    padding-top: 1rem;
 }
 
 .save-button, .logout-button {
-    padding: 0.75rem 2rem;
+    padding: 0.8rem 2rem;
     border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: 600;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    font-size: 1rem;
+    transition: background-color 0.3s;
 }
 
 .save-button {
@@ -88,7 +162,7 @@
 }
 
 .save-button:hover {
-    background-color: #04B58D;
+    background-color: #05BF8F;
 }
 
 .logout-button {
@@ -97,15 +171,5 @@
 }
 
 .logout-button:hover {
-    background-color: #D94262;
-}
-
-@media (max-width: 768px) {
-    .settings-container {
-        padding: 1rem;
-    }
-
-    .settings-grid {
-        grid-template-columns: 1fr;
-    }
+    background-color: #D63D63;
 }

@@ -15,47 +15,42 @@ body, html {
     color: #333;
 }
 
-.landing-container {
-    width: 100%;
-    max-width: 1200px;
-    padding: 20px;
-    text-align: center;
-    background-color: #fff;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-}
-
+/* Header */
 .header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-between; /* Ensures logo and buttons are spaced apart */
     align-items: center;
-    padding: 20px;
-    background-color: #f7f8fc;
+    width: 100%; /* Make sure the header spans the full container */
+    padding: 0px 20px 10px; /* Adjust padding for more consistent spacing */
+    background: transparent; /* Remove background */
 }
 
 .logo {
-    width: 140px;
+    width: 120px;
     height: auto;
+    margin-right: auto; /* Push the logo away from the buttons */
 }
 
 .auth-buttons {
     display: flex;
     gap: 15px;
+    margin-left: auto; /* Prevent buttons from sticking to the logo */
 }
+
 
 .auth-button {
     padding: 10px 25px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     border: none;
     border-radius: 20px;
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 14px;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
 .auth-button.register {
-    background-color: #ff6b6b;
+    background-color: #EF476F;
     color: #fff;
 }
 
@@ -72,31 +67,53 @@ body, html {
     background-color: #45a049;
 }
 
+/* Main Content */
 .main-content {
     display: flex;
     flex-direction: column;
-    align-items: center;
     justify-content: center;
-    min-height: 80vh; /* Minimum height for better responsiveness */
-    padding: 40px 20px;
-    background: url('C:\Users\Janine P. Giducos\OneDrive\Desktop\GIT_sana_final_noteably\Noteably\frontend\noteably\public\ASSETS\polkadot.png') no-repeat center center;
-    background-size: cover;
+    align-items: center;
+
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+    border: 2px solid lightgray; /* Border style */
+    border-radius: 30px; /* Rounded corners */
+    padding: 20px; /* Inner padding */
+    background: url('C:\Users\Janine P. Giducos\OneDrive\Desktop\GIT_sana_final_noteably\Noteably\frontend\noteably\public\ASSETS\polkadot.png') no-repeat center center; /* Polkadot background */
+    background-size: cover; /* Ensure background image fills the area */
+   
+    box-sizing: border-box; /* Ensure padding and border are included in size */
+    overflow: hidden; /* Prevent overflow */
+
+    z-index: 0; /* Ensure it's behind other elements */
+    position: relative;
+    min-height: 100vh;
 }
+
 
 .content-box {
     background-color: rgba(255, 255, 255, 0.9);
-    padding: 40px 20px;
+    padding: 0px 0px 30px 0px;
     border-radius: 12px;
-    max-width: 600px;
+    max-width: 700px;
     width: 100%;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
     text-align: center;
+    z-index: 2; /* Position above the background */
+    border: 2px solid lightgray; /* Border style */
+    border-radius: 30px; /* Rounded corners */
+}
+
+.welcome-image {
+    max-width: 100%; /* Prevent the image from exceeding the container width */
+    height: auto; /* Maintain aspect ratio */
+    margin-bottom: 20px; /* Add space between the image and the text */
+    border-top-left-radius: 30px;
+    border-top-right-radius: 30px;
 }
 
 .main-logo {
     width: 120px;
     height: auto;
-    margin-bottom: 20px;
 }
 
 .main-heading {
@@ -124,15 +141,17 @@ body, html {
     font-size: 1.2rem;
     font-weight: bold;
     color: #fff;
-    background-color: #ff6b6b;
+    background-color: #f58c6c;
     border: none;
-    border-radius: 8px;
+    border-radius: 20px;
     cursor: pointer;
     transition: background-color 0.3s;
+
+    margin-top: -10px;
 }
 
 .register-button:hover {
-    background-color: #ff5252;
+    background-color: #febd59;
 }
 
 /* Responsive Design for Smaller Screens */
@@ -169,5 +188,14 @@ body, html {
     .register-button {
         padding: 10px 20px;
         font-size: 0.9rem;
+    }
+
+    .logo {
+        margin-right: 15px;
+    }
+
+    .auth-buttons {
+        gap: 10px;
+        margin-left: 15px;
     }
 }

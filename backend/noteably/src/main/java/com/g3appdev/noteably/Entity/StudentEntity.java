@@ -17,6 +17,7 @@ public class StudentEntity {
     private String contactNumber;
     private String email;
     private String password;
+    private String profilePicture;
 
     // Auto-generate the custom StudentID
     public void generateStudentId() {
@@ -73,5 +74,13 @@ public class StudentEntity {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
     }
 }

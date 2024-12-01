@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { addStudent } from './studentService';
+import { Link } from 'react-router-dom';
 import './Register.css';
 
 const Register = () => {
@@ -30,48 +31,76 @@ const Register = () => {
     };
 
     return (
-        <div className="auth-container">
-            <img src="/ASSETS/noteably_logo.png" alt="Noteably Logo" className="logo" />
-            <h1 className="auth-title">Register</h1>
-            <form onSubmit={handleSubmit} className="auth-form">
-                <input
-                    type="text"
-                    name="name"
-                    placeholder="Name"
-                    onChange={handleChange}
-                    className="auth-input"
-                />
-                <input
-                    type="text"
-                    name="course"
-                    placeholder="Course"
-                    onChange={handleChange}
-                    className="auth-input"
-                />
-                <input
-                    type="text"
-                    name="contactNumber"
-                    placeholder="Contact Number"
-                    onChange={handleChange}
-                    className="auth-input"
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    onChange={handleChange}
-                    className="auth-input"
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Password"
-                    onChange={handleChange}
-                    className="auth-input"
-                />
-                <button type="submit" className="auth-button">Register</button>
-            </form>
-        </div>
+
+        <div className="register-page">
+            {/* Header Section */}
+            <header className="header">
+                <Link to="/">
+                    <img src="/ASSETS/noteably_logo.png" alt="Noteably Logo" className="logo" />
+                </Link>
+                <div className="auth-buttons">
+                    <Link to="/register">
+                        <button className="auth-button register">Register</button>
+                    </Link>
+                    <Link to="/login">
+                        <button className="auth-button login">Log In</button>
+                    </Link>
+                </div>
+            </header>
+
+            <main className="main-content">
+                <div className="auth-container">
+                    <div className="register-content">
+                        {/* Left: Image */}
+                        <div className="register-image">
+                            <img src="/ASSETS/Cutie.png" alt="Register" />
+                        </div>
+                        {/* Right: Registration Form */}
+                        <div className="register-form">
+                            <h1 className="auth-title">Register</h1>
+                            <form onSubmit={handleSubmit} className="auth-form">
+                                <input
+                                    type="text"
+                                    name="name"
+                                    placeholder="Name"
+                                    onChange={handleChange}
+                                    className="auth-input"
+                                />
+                                <input
+                                    type="text"
+                                    name="course"
+                                    placeholder="Course"
+                                    onChange={handleChange}
+                                    className="auth-input"
+                                />
+                                <input
+                                    type="text"
+                                    name="contactNumber"
+                                    placeholder="Contact Number"
+                                    onChange={handleChange}
+                                    className="auth-input"
+                                />
+                                <input
+                                    type="email"
+                                    name="email"
+                                    placeholder="Email"
+                                    onChange={handleChange}
+                                    className="auth-input"
+                                />
+                                <input
+                                    type="password"
+                                    name="password"
+                                    placeholder="Password"
+                                    onChange={handleChange}
+                                    className="auth-input"
+                                />
+                                <button type="submit" className="auth-button">Register</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+</div>
     );
 };
 

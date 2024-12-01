@@ -4,12 +4,18 @@ import com.g3appdev.noteably.Entity.StudentEntity;
 import com.g3appdev.noteably.Service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 import java.util.Map;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/api/students")
-@CrossOrigin(origins = "http://localhost:3000") // Allow requests from React app
+@CrossOrigin(origins = "http://localhost:3000", 
+    allowedHeaders = "*",
+    methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE},
+    allowCredentials = "true",
+    maxAge = 3600)
 public class StudentController {
 
     @Autowired
@@ -71,5 +77,15 @@ public class StudentController {
     public StudentEntity loginStudent(@RequestBody Map<String, String> credentials) {
         System.out.println("Login attempt for email: " + credentials.get("email"));
         return studentService.loginStudent(credentials.get("email"), credentials.get("password"));
+    }
+
+    // Upload profile picture
+    @PostMapping("/{id}/profile-picture")
+    public StudentEntity uploadProfilePicture(@PathVariable int id, @RequestParam("file") MultipartFile file) {
+        try {
+            return studentService.updateProfilePicture(id, file);
+        } catch (IOException e) {
+            throw new RuntimeException("Could not upload profile picture", e);
+        }
     }
 }

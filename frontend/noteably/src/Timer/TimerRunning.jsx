@@ -32,7 +32,9 @@ function TimerRunning() {
         setTimeLeft((prevTime) => {
           if (prevTime <= 1) {
             setIsRunning(false);
-            audioRef.current?.play();
+audioRef.current?.play().catch((error) => {
+    console.error("Error playing audio:", error);
+});
           }
           return prevTime - 1;
         });
