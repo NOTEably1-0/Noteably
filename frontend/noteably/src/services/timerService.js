@@ -57,6 +57,15 @@ const timerService = {
         }
     },
 
+    getTimersByStudentId: async (studentId) => {
+        try {
+            const response = await axios.get(`${BASE_URL}/getByStudent/${studentId}`);
+            return response.data;
+        } catch (error) {
+            throw error;
+        }
+    },
+
     startTimer: async (timerID) => {
         try {
             const response = await axios.post(`${BASE_URL}/start/${timerID}`);

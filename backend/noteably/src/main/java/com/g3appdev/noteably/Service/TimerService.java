@@ -14,8 +14,16 @@ public class TimerService {
     @Autowired
     private TimerRepository timerRepo;
 
-    public TimerEntity createTimer(TimerEntity timer) {
+    public TimerEntity createTimer(TimerEntity timer) { 
+        // Set the studentId for the timer
+        if (timer.getStudentId() == 0) {
+            throw new IllegalArgumentException("Student ID must be provided");
+        }
         return timerRepo.save(timer);
+    }
+    
+    public List<TimerEntity> getTimersByStudentId(int studentId) {
+        return timerRepo.findByStudentId(studentId);
     }
 
     public List<TimerEntity> getAllTimers() {

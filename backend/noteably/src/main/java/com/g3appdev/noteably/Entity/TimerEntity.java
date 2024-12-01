@@ -19,6 +19,9 @@ public class TimerEntity {
     private int minutes;
     private int seconds;
     private String title;
+    
+
+    private int studentId; // New field to associate timer with a student
 
     // Default constructor
     public TimerEntity() {
@@ -64,7 +67,15 @@ public class TimerEntity {
     public void setSeconds(int seconds) {
         this.seconds = seconds;
     }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
     
+    public int getStudentId() { // New getter for studentId
+        return studentId;
+    }
+
     public String getTitle() {
     	return title;
     }

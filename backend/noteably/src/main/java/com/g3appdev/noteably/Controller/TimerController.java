@@ -30,6 +30,12 @@ public class TimerController {
         return timerService.createTimer(timer);
     }
 
+    // Read all Timers for a specific student
+    @GetMapping("/getByStudent/{studentId}")
+    public List<TimerEntity> getTimersByStudentId(@PathVariable int studentId) {
+        return timerService.getTimersByStudentId(studentId);
+    }
+
     // Read all Timers
     @GetMapping("/getAll")
     public List<TimerEntity> getAllTimers() {

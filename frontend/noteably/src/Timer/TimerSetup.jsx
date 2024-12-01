@@ -21,31 +21,33 @@ function TimerSetup() {
   const [minutes, setMinutes] = useState('00');
   const [seconds, setSeconds] = useState('00');
   const navigate = useNavigate();
+  const studentId = localStorage.getItem('studentId');
 
   // CRUD
   const fetchTimers = async () => {
     try {
-      const response = await axios.get(`${url}/getAll`);
-      setTimerList(response.data);
+        const response = await axios.get(`${url}/getByStudent/${studentId}`);
+        setTimerList(response.data);
     } catch (error) {
-      console.error("Error fetching timers:", error);
+        console.error("Error fetching timers:", error);
     }
-  };
+};
 
   const addTimer = async (title, hours, minutes, seconds) => {
-    const formattedTimer = {
+  const formattedTimer = {
       title: title.trim(),
       hours: parseInt(hours || '0', 10),
       minutes: parseInt(minutes || '0', 10),
       seconds: parseInt(seconds || '0', 10),
-    };
-    try {
+      studentId: parseInt(studentId, 10)
+  };
+  try {
       const response = await axios.post(`${url}/create`, formattedTimer);
       setTimerList([...timerList, response.data]);
-    } catch (error) {
+  } catch (error) {
       console.error("Error adding timer:", error);
-    }
-  };
+  }
+};
 
   const deleteTimer = async (timerID) => {
     try {
@@ -58,25 +60,25 @@ function TimerSetup() {
 
   const updateTimer = async () => {
     if (timerToEdit) {
-      const updatedTimer = {
-        timerID: timerToEdit.timerID,
-        title,
-        hours: parseInt(hours || '0', 10),
-        minutes: parseInt(minutes || '0', 10),
-        seconds: parseInt(seconds || '0', 10),
-      };
-      try {
-        const response = await axios.put(`${url}/update/${timerToEdit.timerID}`, updatedTimer);
-        setTimerList(timerList.map((timer) => 
-          timer.timerID === timerToEdit.timerID ? response.data : timer
-        ));
-        setEditDialogOpen(false);
-      } catch (error) {
-        console.error("Error updating timer:", error);
-      }
+        const updatedTimer = {
+            timerID: timerToEdit.timerID,
+            title,
+            hours: parseInt(hours || '0', 10),
+            minutes: parseInt(minutes || '0', 10),
+            seconds: parseInt(seconds || '0', 10),
+            studentId: parseInt(studentId, 10)
+        };
+        try {
+            const response = await axios.put(`${url}/update/${timerToEdit.timerID}`, updatedTimer);
+            setTimerList(timerList.map((timer) => 
+                timer.timerID === timerToEdit.timerID ? response.data : timer
+            ));
+            setEditDialogOpen(false);
+        } catch (error) {
+            console.error("Error updating timer:", error);
+        }
     }
-  };
-
+};
   const handlePlayClick = (timer) => {
     const totalSeconds =
       timer.hours * 3600 + timer.minutes * 60 + timer.seconds;
