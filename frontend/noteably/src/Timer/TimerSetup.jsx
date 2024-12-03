@@ -154,7 +154,7 @@ function TimerSetup() {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        height: '100%',
+        minHeight: '100vh',
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
         border: '1px solid lightgray',
         borderRadius: '30px',

@@ -5,11 +5,11 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const AVATAR_OPTIONS = [
-    { name: 'Blue', path: '/ASSETS/Profile_blue.png' },
-    { name: 'Green', path: '/ASSETS/Profile_green.png' },
-    { name: 'Orange', path: '/ASSETS/Profile_orange.png' },
     { name: 'Red', path: '/ASSETS/Profile_red.png' },
-    { name: 'Yellow', path: '/ASSETS/Profile_yellow.png' }
+    { name: 'Orange', path: '/ASSETS/Profile_orange.png' },
+    { name: 'Yellow', path: '/ASSETS/Profile_yellow.png' },
+    { name: 'Green', path: '/ASSETS/Profile_green.png' },
+    { name: 'Blue', path: '/ASSETS/Profile_blue.png' }
 ];
 
 function SettingsPage() {

@@ -32,6 +32,19 @@
   justify-content: center;
 }
 
+.register-form p {
+  font-size: 14px;
+  color:#1b8eb1;
+  margin-bottom: 15px;
+  margin-top: -15px;
+}
+
+.register-form a {
+  text-decoration: none;
+  color: #44d49c;
+  font-weight: bold;
+}
+
 .auth-title {
   font-size: 28px;
   font-weight: bold;
@@ -91,3 +104,4 @@
     padding: 20px; /* Adjust padding for smaller screens */
   }
 }
+  

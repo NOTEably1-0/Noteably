@@ -31,9 +31,7 @@ const Register = () => {
     };
 
     return (
-
         <div className="register-page">
-            {/* Header Section */}
             <header className="header">
                 <Link to="/">
                     <img src="/ASSETS/noteably_logo.png" alt="Noteably Logo" className="logo" />
@@ -58,6 +56,7 @@ const Register = () => {
                         {/* Right: Registration Form */}
                         <div className="register-form">
                             <h1 className="auth-title">Register</h1>
+                            <p>Existing User? <Link to="/login">Sign in</Link></p>
                             <form onSubmit={handleSubmit} className="auth-form">
                                 <input
                                     type="text"
@@ -100,7 +99,7 @@ const Register = () => {
                     </div>
                 </div>
             </main>
-</div>
+        </div>
     );
 };
 
