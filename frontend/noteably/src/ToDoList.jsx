@@ -58,7 +58,25 @@ function ToDoList() {
       const url = isUpdating ? `${apiUrl}/putList/${selectedId}` : `${apiUrl}/postListRecord`;
       const method = isUpdating ? "put" : "post";
 
-      const toDoData = { ...formData, studentId: parseInt(studentId, 10) }; // Include studentId
+      // Prepare todo data with schedule
+      const toDoData = {
+        title: formData.title,
+        description: formData.description,
+        studentId: parseInt(studentId, 10)
+      };
+      
+      // Only add sched if scheduleId is selected
+      if (formData.scheduleId) {
+        toDoData.sched = {
+          scheduleID: parseInt(formData.scheduleId, 10)
+        };
+        console.log('Adding schedule with ID:', formData.scheduleId);
+        console.log('Schedule object:', toDoData.sched);
+      } else {
+        console.log('No schedule selected');
+      }
+
+      console.log('Sending todo data:', toDoData);
 
       await axios({
         method,
@@ -118,7 +136,7 @@ function ToDoList() {
       setFormData({
         title: dialog.item.title,
         description: dialog.item.description,
-        scheduleId: dialog.item.scheduleId // Set scheduleId for editing
+        scheduleId: dialog.item.sched ? dialog.item.sched.scheduleID : "" // Set scheduleId from sched object
       });
       setIsEditMode(true);
       setSelectedId(dialog.item.toDoListID);
@@ -298,10 +316,10 @@ function ToDoList() {
                   >
                     {item.description}
                   </Typography>
-                  {item.scheduleId && (
+                  {item.sched && (
                     <Typography variant="body2" style={{ fontStyle: 'italic' }}>
                       <strong>Schedule: </strong>
-                      {schedules.find(schedule => schedule.scheduleID === item.scheduleId)?.title}
+                      {schedules.find(schedule => schedule.scheduleID === item.sched.scheduleID)?.title}
                     </Typography>
                   )}
                 </Box>

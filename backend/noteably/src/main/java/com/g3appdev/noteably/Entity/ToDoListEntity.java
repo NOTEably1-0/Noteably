@@ -45,7 +45,7 @@ public class ToDoListEntity {
 		this.description = description;
 	}
 
-    public void setSchedule(ScheduleEntity sched) {
+    public void setSched(ScheduleEntity sched) {
 		this.sched = sched;
 	}
 	
@@ -61,7 +61,7 @@ public class ToDoListEntity {
 		return description;
 	}
 
-    public ScheduleEntity getSchedule() {
+    public ScheduleEntity getSched() {
 		return sched;
 	}
 }
