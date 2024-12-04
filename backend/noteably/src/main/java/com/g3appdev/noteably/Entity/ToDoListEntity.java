@@ -17,10 +17,21 @@ public class ToDoListEntity {
 	
 	private String title;
 	private String description;
+	private int studentId;
 
-    @ManyToOne
+   
+
+	@ManyToOne
     @JoinColumn(name = "sched")
 	private ScheduleEntity sched; 
+	
+	public void setStudentId(int studentId) {
+		this.studentId = studentId;
+	}
+
+	public int getStudentId() {
+		return studentId;
+	}
 	
 	public void setToDoListID(int todolistID) {
 		this.todolistID = todolistID;

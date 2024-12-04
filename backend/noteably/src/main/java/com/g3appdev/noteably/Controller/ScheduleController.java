@@ -67,6 +67,11 @@ public class ScheduleController {
         }
     }
 
+     // Read all Schedule for a specific student
+    @GetMapping("/getByStudent/{studentId}")
+    public List<ScheduleEntity> getScheduleByStudentId(@PathVariable int studentId) {
+        return scheduleService.getScheduleByStudentId(studentId);
+    }
     // Delete a schedule by ID (DELETE)
     @DeleteMapping("/deleteSched/{id}")
     public ResponseEntity<Void> deleteSchedule(@PathVariable int id) {

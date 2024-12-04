@@ -1,5 +1,6 @@
 package com.g3appdev.noteably.Service;
 
+import com.g3appdev.noteably.Entity.FolderEntity;
 import com.g3appdev.noteably.Entity.ScheduleEntity;
 import com.g3appdev.noteably.Entity.ToDoListEntity;
 import com.g3appdev.noteably.Repository.ScheduleRepository;
@@ -10,7 +11,6 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @Service
 public class ScheduleService {
@@ -23,6 +23,11 @@ public class ScheduleService {
 
     // Create or Update Schedule
     public ScheduleEntity saveOrUpdate(ScheduleEntity schedule, Iterable<Integer> todoListIds) {
+        // Ensure studentId is set
+        if (schedule.getStudentId() == 0) {
+            throw new IllegalArgumentException("Student ID must be provided");
+        }
+
         // Validate schedule start date
         if (schedule.getStartDate() != null && schedule.getStartDate().isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("Schedule start date cannot be in the past.");
@@ -40,6 +45,11 @@ public class ScheduleService {
     // Get all schedules
     public List<ScheduleEntity> getAllSchedules() {
         return scheduleRepository.findAll();
+    }
+
+    // Get schedules by student ID
+    public List<ScheduleEntity> getScheduleByStudentId(int studentId) {
+        return scheduleRepository.findByStudentId(studentId);
     }
 
     // Get a specific schedule by ID

@@ -1,17 +1,20 @@
 .folder-app {
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    height: 100%;
-    width: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
-    border-radius: 20px;
-    overflow: hidden;
+
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent background */
+    border: 2px solid lightgray; /* Border style */
+    border-radius: 30px; /* Rounded corners */
+    padding: 20px; /* Inner padding */
+    background: url('C:\Users\Janine P. Giducos\OneDrive\Desktop\GIT_sana_final_noteably\Noteably\frontend\noteably\public\ASSETS\polkadot.png') no-repeat center center; /* Polkadot background */
+    background-size: cover; /* Ensure background image fills the area */
+   
+    box-sizing: border-box; /* Ensure padding and border are included in size */
+    overflow: hidden; /* Prevent overflow */
+
+    z-index: 0; /* Ensure it's behind other elements */
+    position: relative;
+    min-height: 100vh;
 }
 
 .top-section {
@@ -20,24 +23,54 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .search-bar {
-    width: 50px; /* Adjusted width to be a bit shorter */
+    width: 200px; /* Adjusted width for better usability */
     padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
+    border-radius: 20px;
+    border: 2px solid #ccc;
+    margin: 10px;
+    transition: border-color 0.3s ease; /* Smooth transition */
+    height: 50px;
+    font-size: 15px;
 }
 
+.search-bar:hover {
+    border-color: #F78C6B; /* Border color on hover */
+    border-width: 2px;
+}
+
+.search-bar:hover::placeholder {
+    color: #F78C6B;
+}
+
+.search-bar:focus {
+    border-color: #06D6A0; /* Border color on focus */
+    outline: none; /* Remove default outline */
+}
+
+.search-bar:focus::placeholder {
+    color:#06D6A0;
+}
+
+
 .add-btn {
-    background-color: #118AB2; /* Updated color */
+    background-color: #06D6A0; /* Updated color */
     color: white;
     border: none;
-    padding: 10px;
-    border-radius: 50%;
-    font-size: 20px;
+    width: 50px; /* Ensure width and height are equal */
+    height: 50px; /* Ensure width and height are equal */
+    border-radius: 50%; /* Makes the button circular */
+    font-size: 24px; /* Adjust font size for better appearance */
     cursor: pointer;
+    display: flex; /* Center "+" vertically and horizontally */
+    align-items: center; /* Center "+" vertically */
+    justify-content: center; /* Center "+" horizontally */
+    margin: 10px;
 }
+
 
 .folder-grid {
     display: flex;

@@ -28,6 +28,12 @@ public class ToDoListController {
 		return tdlserv.getAllToDoList();
 	}
 
+	 // Read all Schedule for a specific student
+    @GetMapping("/getByStudent/{studentId}")
+    public List<ToDoListEntity> getScheduleByStudentId(@PathVariable int studentId) {
+        return tdlserv.getToDoByStudentId(studentId);
+    }
+
     // Read by ID
     @GetMapping("/getTask/{id}")
     public ResponseEntity<ToDoListEntity> getToDoListById(@PathVariable int id) {

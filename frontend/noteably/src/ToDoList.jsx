@@ -6,6 +6,7 @@ import { Edit, Delete, Add } from '@mui/icons-material';
 const apiUrl = "http://localhost:8080/api/TodoList";
 
 function ToDoList() {
+  const studentId = localStorage.getItem('studentId'); // Get studentId from local storage
   const [toDoItems, setToDoItems] = useState([]);
   const [schedules, setSchedules] = useState([]); // Added to manage schedules
   const [formData, setFormData] = useState({ title: "", description: "", scheduleId: "" }); // Added scheduleId
@@ -15,18 +16,26 @@ function ToDoList() {
 
   // Fetch ToDo Items
   const fetchToDoItems = useCallback(async () => {
+    if (!studentId) {
+      console.error("Student ID is not available.");
+      return;
+    }
     try {
-      const response = await axios.get(`${apiUrl}/getList`);
+      const response = await axios.get(`${apiUrl}/getByStudent/${studentId}`); // Fetch ToDo items by studentId
       setToDoItems(sortItems(response.data));
     } catch (error) {
       console.error("Error fetching ToDo items", error);
     }
-  }, []);
+  }, [studentId]);
 
   // Fetch Schedules
   const fetchSchedules = async () => {
+    if (!studentId) {
+      console.error("Student ID is not available.");
+      return;
+    }
     try {
-      const response = await axios.get("http://localhost:8080/api/schedules/getAll");
+      const response = await axios.get("http://localhost:8080/api/schedules/getByStudent/" + studentId); // Fetch schedules by studentId
       setSchedules(response.data);
     } catch (error) {
       console.error("Error fetching schedules", error);
@@ -49,10 +58,12 @@ function ToDoList() {
       const url = isUpdating ? `${apiUrl}/putList/${selectedId}` : `${apiUrl}/postListRecord`;
       const method = isUpdating ? "put" : "post";
 
+      const toDoData = { ...formData, studentId: parseInt(studentId, 10) }; // Include studentId
+
       await axios({
         method,
         url,
-        data: { ...formData, toDoListID: isUpdating ? selectedId : undefined },
+        data: toDoData,
         headers: { "Content-Type": "application/json" }
       });
 
@@ -79,16 +90,14 @@ function ToDoList() {
     }
   };
 
-  // Toggle Completion Status
+  // Toggle Complete
   const toggleComplete = async (id) => {
-    const updatedItems = toDoItems.map((item) => {
-      if (item.toDoListID === id) {
-        return { ...item, completed: !item.completed };
-      }
-      return item;
-    });
-
-    setToDoItems(sortItems(updatedItems));
+    try {
+      await axios.put(`${apiUrl}/toggleComplete/${id}`);
+      fetchToDoItems();
+    } catch (error) {
+      console.error("Error toggling completion status:", error);
+    }
   };
 
   // Handle Edit
@@ -136,7 +145,18 @@ function ToDoList() {
   };
 
   return (
-    <div style={{ backgroundColor: '#f9f9f9', minHeight: '100vh', padding: '20px' }}>
+    <Box sx={{
+      display: 'flex',
+      justifyContent: 'center',
+      height: '100vh',
+      backgroundImage: 'url("/ASSETS/polkadot.png")',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      padding: '20px',
+      borderRadius: '30px',
+      border: '1px solid lightgray',
+      padding: '40px',
+    }}>
       <Box style={{ marginBottom: '20px' }}>
         <TextField
           label="Title"
@@ -145,7 +165,17 @@ function ToDoList() {
           onChange={handleFormChange}
           fullWidth
           variant="outlined"
-          style={{ marginBottom: '10px' }}
+          style={{ marginBottom: '10px', backgroundColor: '#fff' }}
+          sx={{
+            '& .MuiOutlinedInput-root:hover fieldset': {
+              borderColor: '#EF476F',
+              borderWidth: '2px',
+            },
+            '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+              borderColor: '#EF476F',
+              borderWidth: '2px',
+            },
+          }}
         />
         <TextField
           label="Description"
@@ -154,9 +184,20 @@ function ToDoList() {
           onChange={handleFormChange}
           fullWidth
           variant="outlined"
-          style={{ marginBottom: '10px' }}
+          style={{ marginBottom: '10px', backgroundColor: '#fff' }}
+          sx={{
+            '& .MuiOutlinedInput-root:hover fieldset': {
+              borderColor: '#FFD166',
+              borderWidth: '2px',
+            },
+            '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+              borderColor: '#FFD166',
+              borderWidth: '2px',
+            },
+          }}
         />
-        <FormControl fullWidth style={{ marginBottom: '10px' }}>
+
+        <FormControl fullWidth style={{ marginBottom: '10px', backgroundColor: '#fff' }}>
           <InputLabel>Schedule</InputLabel>
           <Select
             label="Schedule"
@@ -164,6 +205,17 @@ function ToDoList() {
             value={formData.scheduleId}
             onChange={handleFormChange}
             variant="outlined"
+            sx={{
+              backgroundColor: '#fff', // Sets background color
+              '&:hover .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#06D6A0', // Hover border color
+                borderWidth: '2px',
+              },
+              '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                borderColor: '#06D6A0', // Focus border color
+                borderWidth: '2px',
+              },
+            }}
           >
             <MenuItem value="">
               <em>None</em>
@@ -175,24 +227,38 @@ function ToDoList() {
             ))}
           </Select>
         </FormControl>
+
         <Button
           variant="contained"
           color="primary"
           onClick={addOrUpdateToDoItem}
           startIcon={<Add />}
-          style={{ marginRight: '10px' }}
+          style={{
+            marginRight: '10px',
+            backgroundColor: '#06D6A0',
+            color: '#fff',
+            borderRadius: '20px',
+            padding: '10px 20px',
+          }}
+          sx={{
+            '&:hover': {
+              backgroundColor: '#118AB2',
+            },
+          }}
         >
           {isEditMode ? "Update Task" : "Add Task"}
         </Button>
+
         {isEditMode && (
           <Button variant="outlined" color="secondary" onClick={handleCancelEdit}>
             Cancel
           </Button>
         )}
       </Box>
+
       <Box>
         {toDoItems.map((item, index) => {
-          const colors = ['#F78C6B', '#FFD166', '#06D6A0'];
+          const colors = ['#EF476F', '#F78C6B', '#FFD166', '#06D6A0', '#118AB2'];
           const color = item.completed ? '#D3D3D3' : colors[index % colors.length];
 
           return (
@@ -270,7 +336,7 @@ function ToDoList() {
           <Button onClick={confirmDialog} color="primary">Confirm</Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </Box>
   );
 }
 

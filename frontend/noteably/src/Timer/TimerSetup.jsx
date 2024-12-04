@@ -190,79 +190,103 @@ function TimerSetup() {
               Timer Setup
             </Typography>
 
-            {/* Timer Title */}
             <Grid item sx={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <Typography variant="h6" style={{ color: '#118AB2', marginBottom: '10px' }}>
-                Timer Title
-              </Typography>
+            <Typography variant="h6" style={{ color: '#118AB2', marginBottom: '10px' }}>
+              Timer Title
+            </Typography>
+            <TextField
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              inputProps={{ maxLength: 20 }}
+              placeholder="Enter Timer Title"
+              variant="outlined"
+              sx={{
+                width: '38%',
+                backgroundColor: '#fff', // Set background color
+                '&:hover .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#118AB2', // Hover border color
+                  borderWidth: '2px',
+                },
+                '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                  borderColor: '#118AB2', // Focus border color
+                  borderWidth: '2px',
+                },
+              }}
+            />
+          </Grid>
+
+          {/* Hours, Minutes, and Seconds Inputs */}
+          <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{ marginTop: '10px' }}>
+            {/* Hours */}
+            <Grid item>
+              <Typography variant="h6" style={{ color: '#EF476F' }}>Hours</Typography>
               <TextField
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                inputProps={{ maxLength: 20 }}
-                placeholder="Enter Timer Title"
+                value={hours}
+                onChange={(e) => setHours(e.target.value)}
+                inputProps={{ maxLength: 2 }}
                 variant="outlined"
                 sx={{
-                  width: '38%',
+                  width: '80px',
+                  backgroundColor: '#fff', // Set background color
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#EF476F', // Hover border color
+                    borderWidth: '2px',
+                  },
                   '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: '#118AB2',
+                    borderColor: '#EF476F', // Focus border color
+                    borderWidth: '2px',
                   },
                 }}
               />
             </Grid>
 
-            {/* Hours, Minutes, and Seconds Inputs */}
-            <Grid container spacing={2} justifyContent="center" alignItems="center" sx={{ marginTop: '10px' }}>
-              {/* Hours */}
-              <Grid item>
-                <Typography variant="h6" style={{ color: '#EF476F' }}>Hours</Typography>
-                <TextField
-                  value={hours}
-                  onChange={(e) => setHours(e.target.value)}
-                  inputProps={{ maxLength: 2 }}
-                  variant="outlined"
-                  sx={{
-                    width: '80px',
-                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#EF476F',
-                    },
-                  }}
-                />
-              </Grid>
-
-              {/* Minutes */}
-              <Grid item>
-                <Typography variant="h6" style={{ color: '#FFD166' }}>Minutes</Typography>
-                <TextField
-                  value={minutes}
-                  onChange={(e) => setMinutes(e.target.value)}
-                  inputProps={{ maxLength: 2 }}
-                  variant="outlined"
-                  sx={{
-                    width: '80px',
-                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#FFD166',
-                    },
-                  }}
-                />
-              </Grid>
-
-              {/* Seconds */}
-              <Grid item>
-                <Typography variant="h6" style={{ color: '#06D6A0' }}>Seconds</Typography>
-                <TextField
-                  value={seconds}
-                  onChange={(e) => setSeconds(e.target.value)}
-                  inputProps={{ maxLength: 2 }}
-                  variant="outlined"
-                  sx={{
-                    width: '80px',
-                    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                      borderColor: '#06D6A0',
-                    },
-                  }}
-                />
-              </Grid>
+            {/* Minutes */}
+            <Grid item>
+              <Typography variant="h6" style={{ color: '#FFD166' }}>Minutes</Typography>
+              <TextField
+                value={minutes}
+                onChange={(e) => setMinutes(e.target.value)}
+                inputProps={{ maxLength: 2 }}
+                variant="outlined"
+                sx={{
+                  width: '80px',
+                  backgroundColor: '#fff', // Set background color
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#FFD166', // Hover border color
+                    borderWidth: '2px',
+                  },
+                  '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#FFD166', // Focus border color
+                    borderWidth: '2px',
+                  },
+                }}
+              />
             </Grid>
+
+            {/* Seconds */}
+            <Grid item>
+              <Typography variant="h6" style={{ color: '#06D6A0' }}>Seconds</Typography>
+              <TextField
+                value={seconds}
+                onChange={(e) => setSeconds(e.target.value)}
+                inputProps={{ maxLength: 2 }}
+                variant="outlined"
+                sx={{
+                  width: '80px',
+                  backgroundColor: '#fff', // Set background color
+                  '&:hover .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#06D6A0', // Hover border color
+                    borderWidth: '2px',
+                  },
+                  '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: '#06D6A0', // Focus border color
+                    borderWidth: '2px',
+                  },
+                }}
+              />
+            </Grid>
+          </Grid>
+
 
             {/* Action Buttons */}
             <Grid container justifyContent="center" spacing={2} sx={{ marginTop: '20px' }}>

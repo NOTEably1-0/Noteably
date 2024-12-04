@@ -41,6 +41,8 @@ public class NoteController {
         return noteservice.getAllNotes();
     }
 
+     // Read all Note for a specific student
+
     // Update operation
     @PutMapping("/putNoteDetails/{id}")
     public NoteEntity putNoteDetails(@PathVariable int id, @RequestBody NoteEntity newNoteDetails) {

@@ -72,12 +72,8 @@ function App() {
         >
           <Box p={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}>
             <img src="/ASSETS/noteably_logo.png" alt="Logo" width="100%" />
-            <TextField
-              variant="outlined"
-              placeholder="Search..."
-              size="small"
-              sx={{ backgroundColor: '#fff', borderRadius: '4px', width: '90%' }}
-            />
+            
+            
           </Box>
           <List>
             <SidebarItem to="/dashboard" icon={<DashboardIcon />} text="Dashboard" color={themeColors.primary} />
@@ -86,7 +82,6 @@ function App() {
             <SidebarItem to="/schedule" icon={<CalendarIcon />} text="Schedule" color={themeColors.green} />
             <SidebarItem to="/timer" icon={<TimerIcon />} text="Timer" color={themeColors.blue} />
             <SidebarItem to="/settings" icon={<Settings />} text="Settings" color={themeColors.dark} />
-            <SidebarItem to="/notes" icon={<CheckCircle />} text="Notes" color={themeColors.accent} />
           </List>
         </Drawer>
       )}

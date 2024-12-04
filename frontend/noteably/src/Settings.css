@@ -7,9 +7,10 @@
 .profile-picture-section {
     background-color: white;
     padding: 2rem;
-    border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-bottom: 2rem;
+    border-radius: 20px;
+    border: 1px solid lightgray;
+    margin-bottom: 30px;
 }
 
 .current-avatar {
@@ -44,7 +45,7 @@
     background-color: #118AB2;
     color: white;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 20px;
     cursor: pointer;
     display: inline-block;
     transition: background-color 0.3s;
@@ -52,7 +53,7 @@
 }
 
 .upload-button:hover {
-    background-color: #0F7A9B;
+    background-color: #06D6A0;
 }
 
 .avatar-gallery {
@@ -103,9 +104,10 @@
 
 .settings-card {
     background-color: white;
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     overflow: hidden;
+    border-radius: 20px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid lightgray;
 }
 
 .card-header {

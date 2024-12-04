@@ -226,7 +226,7 @@ function Dashboard() {
               <EventNoteIcon sx={{ color: 'white' }} />
             </Box>
             <Typography variant="h6" sx={{ color: themeColors.green }}>
-              Calendar
+              Schedule
             </Typography>
           </Box>
           <Calendar />

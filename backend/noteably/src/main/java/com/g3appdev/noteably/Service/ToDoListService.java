@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.g3appdev.noteably.Entity.ScheduleEntity;
 import com.g3appdev.noteably.Entity.ToDoListEntity;
 import com.g3appdev.noteably.Repository.ToDoListRepository;
 
@@ -15,9 +16,14 @@ public class ToDoListService {
 	ToDoListRepository tdlrepo;
 	
 	// Create
-	public ToDoListEntity postToDoListRecord(ToDoListEntity todolist) {
-		return tdlrepo.save(todolist);
-	}
+	// Create
+public ToDoListEntity postToDoListRecord(ToDoListEntity todolist) {
+    // Ensure studentId is set
+    if (todolist.getStudentId() == 0) {
+        throw new IllegalArgumentException("Student ID must be provided");
+    }
+    return tdlrepo.save(todolist);
+}
 	
 	// Read
 	public List<ToDoListEntity> getAllToDoList() {
@@ -27,6 +33,10 @@ public class ToDoListService {
 	// Read by ID
     public ToDoListEntity getToDoListById(int id) {
         return tdlrepo.findById(id).orElse(null);
+    }
+	
+	public List<ToDoListEntity> getToDoByStudentId(int studentId) {
+        return tdlrepo.findByStudentId(studentId);
     }
 	
 	// Update

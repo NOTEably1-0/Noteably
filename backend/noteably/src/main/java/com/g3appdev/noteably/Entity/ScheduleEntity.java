@@ -11,6 +11,9 @@ public class ScheduleEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int scheduleID;
+    private int studentId;
+
+   
 
     @Column(nullable = false)
     private String title;
@@ -31,6 +34,14 @@ public class ScheduleEntity {
     private List<ToDoListEntity> tasks;
 
     // Getters and Setters
+
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
 
     public int getScheduleID() {
         return scheduleID;

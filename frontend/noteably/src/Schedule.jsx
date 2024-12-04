@@ -10,6 +10,7 @@ import { Edit, Delete, Event, PriorityHigh, LowPriority, Star, EventNote, Add } 
 const apiUrl = "http://localhost:8080/api/schedules";
 
 function Schedule() {
+  const studentId = localStorage.getItem('studentId'); // Get studentId from local storage
   const [schedules, setSchedules] = useState([]);
   const [toDoItems, setToDoItems] = useState([]);
   const [formData, setFormData] = useState({ title: "", priority: "moderate", startDate: "", endDate: "", colorCode: "", todoListIds: [] });
@@ -25,7 +26,7 @@ function Schedule() {
 
   const fetchSchedules = async () => {
     try {
-      const response = await axios.get(`${apiUrl}/getAll`);
+      const response = await axios.get(`${apiUrl}/getByStudent/${studentId}`); // Fetch schedules by studentId
       setSchedules(response.data);
     } catch (error) {
       console.error("Error fetching schedules", error);
@@ -34,7 +35,7 @@ function Schedule() {
 
   const fetchToDoItems = async () => {
     try {
-      const response = await axios.get("http://localhost:8080/api/TodoList/getList");
+      const response = await axios.get("http://localhost:8080/api/TodoList/getByStudent/" + studentId); // Fetch ToDo items by studentId
       setToDoItems(response.data);
     } catch (error) {
       console.error("Error fetching ToDo items", error);
@@ -57,7 +58,9 @@ function Schedule() {
       const url = isEditMode ? `${apiUrl}/editSched/${selectedId}` : `${apiUrl}/postSched`;
       const method = isEditMode ? "put" : "post";
 
-      await axios({ method, url, data: { ...formData, todoListIds: formData.todoListIds }, headers: { "Content-Type": "application/json" } });
+      const scheduleData = { ...formData, studentId: parseInt(studentId, 10) }; // Include studentId
+
+      await axios({ method, url, data: scheduleData, headers: { "Content-Type": "application/json" } });
       setFormData({ title: "", priority: "moderate", startDate: "", endDate: "", colorCode: "", todoListIds: [] });
       setIsEditMode(false);
       setSelectedId(null);
@@ -99,7 +102,8 @@ function Schedule() {
 
   const addNewToDo = async () => {
     try {
-      const response = await axios.post("http://localhost:8080/api/TodoList/postListRecord", { ...newToDo, scheduleId: selectedId });
+      const newToDoData = { ...newToDo, studentId: parseInt(studentId, 10) }; // Include studentId
+      const response = await axios.post("http://localhost:8080/api/TodoList/postListRecord", { ...newToDoData, scheduleId: selectedId });
       setNewToDo({ title: "", description: "" });
       setOpenToDoDialog(false);
       fetchToDoItems();
@@ -128,7 +132,7 @@ function Schedule() {
         flexDirection: 'column',
         alignItems: 'center',
         backgroundImage: 'url(/ASSETS/polkadot.png)',
-        backgroundSize: 'cover',
+        backgroundSize: '100% 100%',
         backgroundPosition: 'center',
       }}
     >
@@ -177,9 +181,9 @@ function Schedule() {
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
           initialView="dayGridMonth"
           headerToolbar={{
-            left: '<',
+            left: 'prev,next today',
             center: 'title',
-            right: '>',
+            right: 'dayGridMonth,timeGridWeek,dayGridDay,listWeek'
           }}
           events={schedules.map((s) => ({
             title: s.title,
@@ -188,13 +192,18 @@ function Schedule() {
             backgroundColor: s.colorCode,
           }))}
           height="600px"
+          buttonText={{
+            today: 'Today',
+            month: 'Month',
+            week: 'Week',
+            day: 'Day',
+            list: 'List'
+          }}
         />
       </Box>
-
-      <Typography variant="h6" sx={{ mb: 3, color: '#4A90E2' }}>SCHEDULES</Typography>
       <Box sx={{ width: '100%', maxWidth: '1000px', p: 3, borderRadius: '12px', boxShadow: 3, mb: 4, display: 'flex', gap: 2 }}>
         {Object.keys(groupedSchedules).map((priority, index) => (
-          <Box key={index} sx={{ flex: 1, backgroundColor: '#f4f4f4', borderRadius: '12px', padding: '16px', boxShadow: 3 }}>
+          <Box key={index} sx={{ flex: 1, backgroundColor: '#ffffff', borderRadius: '12px', padding: '16px', boxShadow: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, color: priority === 'high' ? '#EF476F' : priority === 'moderate' ? '#FFD166' : '#06D6A0', textAlign: 'center' }}>
               {priority.toUpperCase()} PRIORITY
             </Typography>

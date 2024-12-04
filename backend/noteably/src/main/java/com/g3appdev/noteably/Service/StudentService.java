@@ -45,6 +45,11 @@ public class StudentService {
         // Log plain password for debugging
         System.out.println("Registering student with password: " + studentEntity.getPassword());
 
+        // Check if a student with the same email already exists
+        if (studentRepo.findByEmail(studentEntity.getEmail()).isPresent()) {
+            throw new RuntimeException("A student with this email already exists.");
+        }
+
         // Save the entity to assign an auto-increment ID
         StudentEntity savedStudent = studentRepo.save(studentEntity);
 

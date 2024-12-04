@@ -1,5 +1,6 @@
 package com.g3appdev.noteably.Entity;
 
+import jakarta.persistence.Column; // Importing Column annotation
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,9 +16,13 @@ public class StudentEntity {
     private String name;
     private String course;
     private String contactNumber;
-    private String email;
+private String email; // Unique email for student accounts
+
+// Add unique constraint
+ @Column(unique = true)
     private String password;
     private String profilePicture;
+    
 
     // Auto-generate the custom StudentID
     public void generateStudentId() {

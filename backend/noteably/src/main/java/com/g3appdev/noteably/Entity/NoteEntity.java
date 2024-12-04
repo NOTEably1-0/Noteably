@@ -15,6 +15,9 @@ public class NoteEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int noteId;
+    
+
+ 
 
     private String date;
 
@@ -32,6 +35,9 @@ public class NoteEntity {
     }
 
     // Getters and Setters
+
+
+    
     public int getNoteId() {
         return noteId;
     }

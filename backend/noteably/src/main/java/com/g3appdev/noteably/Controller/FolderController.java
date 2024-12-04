@@ -35,6 +35,12 @@ public class FolderController {
         return folderService.getAllFolders();
     }
 
+    // Read all Folder for a specific student
+    @GetMapping("/getByStudent/{studentId}")
+    public List<FolderEntity> getFolderByStudentId(@PathVariable int studentId) {
+        return folderService.getFolderByStudentId(studentId);
+    }
+
     // Update a folder by ID
     @PutMapping("/putFolderDetails/{id}")
     public FolderEntity putFolderDetails(@PathVariable int id, @RequestBody FolderEntity folder) {

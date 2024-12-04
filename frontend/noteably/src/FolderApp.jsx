@@ -7,6 +7,7 @@ import './FolderApp.css'; // Import CSS for custom styles
 function FolderApp() {
     const url = "http://localhost:8080/api/folders"; // Backend URL
     const navigate = useNavigate();  // Initialize navigate for routing
+    const studentId = localStorage.getItem('studentId'); // Get studentId from local storage
 
     const [data, setData] = useState({
         folderId: "",
@@ -40,7 +41,7 @@ function FolderApp() {
 
     const fetchFolders = async () => {
         try {
-            const res = await Axios.get(`${url}/getAllFolders`);
+            const res = await Axios.get(`${url}/getByStudent/${studentId}`); // Fetch folders by studentId
             setFolders(res.data);
         } catch (error) {
             console.error("Error fetching folders:", error);
@@ -53,10 +54,12 @@ function FolderApp() {
             const postUrl = `${url}/postFolderRecord`;  // URL for creating a folder
             const putUrl = `${url}/putFolderDetails/${data.folderId}`; // URL for updating a folder
 
+            const folderData = { ...data, studentId: parseInt(studentId, 10) }; // Include studentId
+
             if (data.folderId) {
-                await Axios.put(putUrl, data, { headers: { 'Content-Type': 'application/json' } });
+                await Axios.put(putUrl, folderData, { headers: { 'Content-Type': 'application/json' } });
             } else {
-                await Axios.post(postUrl, data, { headers: { 'Content-Type': 'application/json' } });
+                await Axios.post(postUrl, folderData, { headers: { 'Content-Type': 'application/json' } });
             }
 
             setData({ folderId: "", title: "", dashboardId: 1 });
@@ -104,13 +107,8 @@ function FolderApp() {
         navigate(`/noteApp/${folderId}`, { state: { folderId } });
     };
     
-    
-    
     return (
-        <div
-            className="folder-app"
-            style={{ backgroundImage: `url(${process.env.PUBLIC_URL + '/polkadot.png'})` }}
-        >
+        <main className='folder-app'>
             <div className="top-section">
                 <input
                     type="text"
@@ -166,7 +164,7 @@ function FolderApp() {
                     </div>
                 </div>
             )}
-        </div>
+        </main>
     );
 }
 

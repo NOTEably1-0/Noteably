@@ -8,10 +8,13 @@ import java.util.List;
 
 @Entity
 public class FolderEntity {
-
     @Id
     private int folderId;
     private String title;
+    private int studentId;
+
+
+    
 
     @OneToMany(mappedBy = "folder")
     @JsonManagedReference  // Manages the serialization of this list
@@ -22,6 +25,13 @@ public class FolderEntity {
         super();
     }
 
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+    public int getStudentId() {
+        return studentId;
+    }
     // Getters and Setters
     public int getFolderId() {
         return folderId;

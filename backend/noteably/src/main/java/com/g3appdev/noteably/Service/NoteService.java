@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.g3appdev.noteably.Entity.FolderEntity;
 import com.g3appdev.noteably.Entity.NoteEntity;
 import com.g3appdev.noteably.Repository.NoteRepository;
 import com.g3appdev.noteably.Repository.FolderRepository;  // Assuming you have this repository

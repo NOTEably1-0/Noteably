@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { getImageUrl, uploadProfilePicture } from './studentService';
+import { IconButton, Box} from '@mui/material';
 import './Settings.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -127,6 +128,16 @@ function SettingsPage() {
     };
 
     return (
+        <Box sx={{
+            minHeight: '100vh',
+            backgroundImage: 'url("/ASSETS/polkadot.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            padding: '20px',
+            borderRadius: '30px',
+            border: '1px solid lightgray',
+            padding: '40px',
+          }}>
         <div className="settings-container">
             <div className="profile-picture-section">
                 <div className="current-avatar">
@@ -244,6 +255,7 @@ function SettingsPage() {
                 </button>
             </div>
         </div>
+        </Box>
     );
 }
 

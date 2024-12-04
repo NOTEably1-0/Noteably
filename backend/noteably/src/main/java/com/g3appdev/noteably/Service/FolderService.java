@@ -20,9 +20,16 @@ public class FolderService {
     }
 
     public FolderEntity postFolderRecord(FolderEntity folder) {
+        // Ensure studentId is set
+        if (folder.getStudentId() == 0) {
+            throw new IllegalArgumentException("Student ID must be provided");
+        }
         return folderRepository.save(folder);
     }
 
+    public List<FolderEntity> getFolderByStudentId(int studentId) {
+        return folderRepository.findByStudentId(studentId);
+    }
     public List<FolderEntity> getAllFolders() {
         return folderRepository.findAll();
     }
