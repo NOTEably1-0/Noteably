@@ -17,6 +17,8 @@ function Schedule() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
   const [openToDoDialog, setOpenToDoDialog] = useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+  const [scheduleToDelete, setScheduleToDelete] = useState(null);
   const [newToDo, setNewToDo] = useState({ title: "", description: "", scheduleId: null });
 
   useEffect(() => {
@@ -70,10 +72,17 @@ function Schedule() {
     }
   };
 
+  const handleDeleteClick = (id) => {
+    setScheduleToDelete(id);
+    setOpenDeleteDialog(true);
+  };
+
   const deleteSchedule = async (id) => {
     try {
       await axios.delete(`${apiUrl}/deleteSched/${id}`);
       fetchSchedules();
+      setOpenDeleteDialog(false);
+      setScheduleToDelete(null);
     } catch (error) {
       console.error("Error deleting schedule", error);
     }
@@ -134,15 +143,18 @@ function Schedule() {
         backgroundImage: 'url(/ASSETS/polkadot.png)',
         backgroundSize: '100% 100%',
         backgroundPosition: 'center',
+        border: '1px solid lightgray',
+        borderRadius: '30px',
+        marginTop: '50px',
       }}
     >
-      <Box sx={{ width: '100%', maxWidth: '1000px', textAlign: 'left', mb: 4, p: 3, backgroundColor: '#f9f9f9', borderRadius: '12px', boxShadow: 3 }}>
-        <Typography variant="h5" sx={{ color: '#073B4C', mb: 2 }}>SCHEDULE MANAGER</Typography>
-        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+      <Box sx={{ width: '100%', maxWidth: '1000px', textAlign: 'left', mb: 4, p: 3, backgroundColor: '#f9f9f9', borderRadius: '12px', boxShadow: 'inset 0px 2px 2px 0px rgba(0, 0, 0, 0.1)', border: '1px solid lightgray'}}>
+        <Typography variant="h4" sx={{ color: '#073B4C', mb: 2 }}>Schedule Manager</Typography>
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', border: '1px solid lightgray' }}>
           <TextField label="Title" name="title" value={formData.title} onChange={handleFormChange} fullWidth />
           <TextField label="Start Date" type="date" name="startDate" value={formData.startDate} onChange={handleFormChange} InputLabelProps={{ shrink: true }} />
           <TextField label="End Date" type="date" name="endDate" value={formData.endDate} onChange={handleFormChange} InputLabelProps={{ shrink: true }} />
-          <Select name="priority" value={formData.priority} onChange={handleFormChange}>
+          <Select name="priority" value={formData.priority} onChange={handleFormChange}  >
             <MenuItem value="high">HIGH</MenuItem>
             <MenuItem value="moderate">MODERATE</MenuItem>
             <MenuItem value="low">LOW</MenuItem>
@@ -176,7 +188,45 @@ function Schedule() {
         </DialogActions>
       </Dialog>
 
-      <Box sx={{ width: '100%', maxWidth: '1000px', backgroundColor: '#ffffff', borderRadius: '12px', boxShadow: 3, overflow: 'hidden', p: 3, mb: 4 }}>
+      <Dialog 
+        open={openDeleteDialog} 
+        onClose={() => setOpenDeleteDialog(false)}
+        sx={{
+          '& .MuiDialog-paper': {
+            borderRadius: '12px',
+            padding: '20px',
+            maxWidth: '400px'
+          }
+        }}
+      >
+        <DialogTitle sx={{ textAlign: 'center', color: '#073B4C' }}>
+          Delete Schedule
+        </DialogTitle>
+        <DialogContent>
+          <Typography>
+            Are you sure you want to delete this file?
+          </Typography>
+        </DialogContent>
+        <DialogActions sx={{ justifyContent: 'center', gap: 2 }}>
+          <Button 
+            onClick={() => deleteSchedule(scheduleToDelete)}
+            variant="contained"
+            color="error"
+            sx={{ borderRadius: '20px' }}
+          >
+            OK
+          </Button>
+          <Button 
+            onClick={() => setOpenDeleteDialog(false)}
+            variant="contained"
+            sx={{ borderRadius: '20px', bgcolor: '#6c757d' }}
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Box sx={{ width: '100%', maxWidth: '1000px', backgroundColor: '#ffffff', borderRadius: '12px', boxShadow: 3, overflow: 'hidden', p: 3, mb: 4, color: '#073B4C' }}>
         <FullCalendar
           plugins={[dayGridPlugin, timeGridPlugin, listPlugin]}
           initialView="dayGridMonth"
@@ -201,7 +251,7 @@ function Schedule() {
           }}
         />
       </Box>
-      <Box sx={{ width: '100%', maxWidth: '1000px', p: 3, borderRadius: '12px', boxShadow: 3, mb: 4, display: 'flex', gap: 2 }}>
+      <Box sx={{ width: '100%', maxWidth: '1000px', p: 3, backgroundColor: '#ffffff', borderRadius: '12px', boxShadow: 'inset 0px 2px 2px 0px rgba(0, 0, 0, 0.1)', border: '1px solid lightgray',  mb: 4, display: 'flex', gap: 2 }}>
         {Object.keys(groupedSchedules).map((priority, index) => (
           <Box key={index} sx={{ flex: 1, backgroundColor: '#ffffff', borderRadius: '12px', padding: '16px', boxShadow: 3 }}>
             <Typography variant="h6" sx={{ mb: 2, color: priority === 'high' ? '#EF476F' : priority === 'moderate' ? '#FFD166' : '#06D6A0', textAlign: 'center' }}>
@@ -209,14 +259,92 @@ function Schedule() {
             </Typography>
             {groupedSchedules[priority].map(schedule => (
               <Box key={schedule.scheduleID} sx={{ backgroundColor: schedule.colorCode, borderRadius: '15px', padding: '16px', mb: 3, color: '#ffffff', boxShadow: 3 }}>
-                <Typography variant="h6" sx={{ color: '#ffffff' }}>{getPriorityIcon(schedule.priority)} {schedule.title}</Typography>
-                <Typography variant="body2" sx={{ color: '#ffffff' }}><EventNote /> {schedule.startDate} {schedule.endDate && `- ${schedule.endDate}`}</Typography>
-                <Box sx={{ display: 'flex', gap: '1', mt: 2 }}>
-                  <Button variant="contained" startIcon={<Add />} onClick={() => setOpenToDoDialog(true)} sx={{ backgroundColor: '#A5D6A7', color: '#fff', borderRadius: '20px' }}>Add ToDo</Button>
-                  <Button variant="contained" startIcon={<Edit />} onClick={() => handleEdit(schedule)} sx={{ backgroundColor: '#A5D6A7', color: '#fff', borderRadius: '20px' }}>Edit</Button>
-                  <Button variant="contained" startIcon={<Delete />} color="error" onClick={() => deleteSchedule(schedule.scheduleID)} sx={{ borderRadius: '20px' }}>Delete</Button>
-                </Box>
-              </Box>
+              <Typography variant="h6" sx={{ color: '#073B4C'}}>
+                {getPriorityIcon(schedule.priority)} {schedule.title}
+              </Typography>
+              <Typography variant="body2" sx={{ color: '#073B4C' }}>
+                <EventNote /> {schedule.startDate} {schedule.endDate && `- ${schedule.endDate}`}
+              </Typography>
+                <Box
+                    sx={{
+                      display: 'flex',
+                      gap: 1,
+                      mt: 2,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      startIcon={<Add />}
+                      onClick={() => setOpenToDoDialog(true)}
+                      sx={{
+                        backgroundColor: '#fff',
+                        color: '#06D6A0',
+                        borderRadius: '50%',
+                        height: '40px',
+                        width: '40px',
+                        minWidth: 'unset',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        '& .MuiButton-startIcon': {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          margin: 0, // Ensures no unexpected icon margin
+                        },
+                      }}
+                    ></Button>
+                    <Button
+                      variant="contained"
+                      onClick={() => handleEdit(schedule)}
+                      startIcon={<Edit />}
+                      sx={{
+                        backgroundColor: '#fff',
+                        color: '#118AB2',
+                        borderRadius: '50%',
+                        height: '40px',
+                        width: '40px',
+                        minWidth: 'unset',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        '& .MuiButton-startIcon': {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          margin: 0,
+                        },
+                      }}
+                    ></Button>
+                    <Button
+                      variant="contained"
+                      startIcon={<Delete />}
+                      color="error"
+                      onClick={() => handleDeleteClick(schedule.scheduleID)}
+                      sx={{
+                        backgroundColor: '#fff',
+                        color: '#EF476F',
+                        borderRadius: '50%',
+                        height: '40px',
+                        width: '40px',
+                        minWidth: 'unset',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        '& .MuiButton-startIcon': {
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          margin: 0,
+                        },
+                      }}
+                    ></Button>
+                  </Box>
+
+            </Box>
+            
             ))}
           </Box>
         ))}

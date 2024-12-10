@@ -1,6 +1,7 @@
 package com.g3appdev.noteably.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,40 +9,52 @@ import org.springframework.stereotype.Service;
 import com.g3appdev.noteably.Entity.FolderEntity;
 import com.g3appdev.noteably.Repository.FolderRepository;
 
-
 @Service
 public class FolderService {
 
-    private final FolderRepository folderRepository;
-
     @Autowired
-    public FolderService(FolderRepository folderRepository) {
-        this.folderRepository = folderRepository;
-    }
+    private FolderRepository folderRepository;
 
+    // Create
     public FolderEntity postFolderRecord(FolderEntity folder) {
-        // Ensure studentId is set
-        if (folder.getStudentId() == 0) {
-            throw new IllegalArgumentException("Student ID must be provided");
-        }
         return folderRepository.save(folder);
     }
 
-    public List<FolderEntity> getFolderByStudentId(int studentId) {
-        return folderRepository.findByStudentId(studentId);
-    }
+    // Read all
     public List<FolderEntity> getAllFolders() {
         return folderRepository.findAll();
     }
 
-    public FolderEntity putFolderDetails(int folderId, FolderEntity newFolderDetails) {
-        newFolderDetails.setFolderId(folderId);
-        return folderRepository.save(newFolderDetails);
+    // Read by student ID
+    public List<FolderEntity> getFoldersByStudentId(int studentId) {
+        return folderRepository.findByStudentId(studentId);
     }
 
-    public String deleteFolder(int folderId) {
-        folderRepository.deleteById(folderId);
-        return "Folder with ID: " + folderId + " deleted successfully.";
+    // Read by ID
+    public Optional<FolderEntity> getFolderById(int id) {
+        return folderRepository.findById(id);
+    }
+
+    // Update
+    public FolderEntity putFolderDetails(int id, FolderEntity folder) {
+        if (folderRepository.existsById(id)) {
+            folder.setFolderId(id);
+            // Preserve the existing notes if not provided in the update
+            if (folder.getNotes() == null) {
+                folderRepository.findById(id)
+                    .ifPresent(existingFolder -> folder.setNotes(existingFolder.getNotes()));
+            }
+            return folderRepository.save(folder);
+        }
+        return null;
+    }
+
+    // Delete
+    public boolean deleteFolder(int id) {
+        if (folderRepository.existsById(id)) {
+            folderRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
-

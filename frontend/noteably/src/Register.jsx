@@ -22,7 +22,7 @@ const Register = () => {
     const handleSubmit = (e) => {
         e.preventDefault();
         addStudent(student).then(() => {
-            alert('Registration successful');
+            //alert('Registration successful');
             navigate('/login');
         }).catch(error => {
             console.error('Registration failed:', error);
@@ -51,7 +51,7 @@ const Register = () => {
                     <div className="register-content">
                         {/* Left: Image */}
                         <div className="register-image">
-                            <img src="/ASSETS/Cutie.png" alt="Register" />
+                            <img src="/ASSETS/register.png" alt="Register" />
                         </div>
                         {/* Right: Registration Form */}
                         <div className="register-form">

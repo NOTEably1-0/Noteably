@@ -19,8 +19,8 @@ public class StudentEntity {
 private String email; // Unique email for student accounts
 
 // Add unique constraint
- @Column(unique = true)
-    private String password;
+@Column
+private String password;
     private String profilePicture;
     
 

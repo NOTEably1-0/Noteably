@@ -31,7 +31,7 @@ function SettingsPage() {
         try {
             const studentId = localStorage.getItem('studentId');
             if (!studentId) {
-                alert('No student ID found. Please log in again.');
+                //alert('No student ID found. Please log in again.');
                 navigate('/login');
                 return;
             }
@@ -48,7 +48,7 @@ function SettingsPage() {
             }));
         } catch (error) {
             console.error('Error fetching student data:', error);
-            alert('Failed to fetch student data. Please try again.');
+            //alert('Failed to fetch student data. Please try again.');
         }
     }, [navigate]);
 
@@ -77,17 +77,17 @@ function SettingsPage() {
                 profilePicture: response.profilePicture
             }));
             
-            alert('Profile picture updated successfully!');
+           // alert('Profile picture updated successfully!');
         } catch (error) {
             console.error('Error uploading profile picture:', error);
-            alert('Failed to upload profile picture. Please try again.');
+           // alert('Failed to upload profile picture. Please try again.');
         }
     };
 
     const handleSubmit = async () => {
         try {
             if (student.newPassword && student.newPassword !== student.confirmPassword) {
-                alert("New passwords don't match!");
+                //alert("New passwords don't match!");
                 return;
             }
 
@@ -107,7 +107,7 @@ function SettingsPage() {
                 }
             );
 
-            alert('Settings updated successfully!');
+            //alert('Settings updated successfully!');
             if (student.newPassword) {
                 setStudent((prevState) => ({
                     ...prevState,
@@ -118,7 +118,7 @@ function SettingsPage() {
             }
         } catch (error) {
             console.error('Error updating settings:', error);
-            alert('Failed to update settings. Please try again.');
+            //alert('Failed to update settings. Please try again.');
         }
     };
 
@@ -137,6 +137,7 @@ function SettingsPage() {
             borderRadius: '30px',
             border: '1px solid lightgray',
             padding: '40px',
+            marginTop: '50px',
           }}>
         <div className="settings-container">
             <div className="profile-picture-section">

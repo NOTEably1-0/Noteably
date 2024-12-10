@@ -219,7 +219,7 @@ function FolderApp() {
                             <div className="confirm-modal">
                                 <div className="confirm-content">
                                     <div className="dialog-content-with-image">
-                                        <img src="./ASSETS/popup-edit.png" alt="Edit Icon" className="dialog-icon" />
+                                        <img src="./ASSETS/popup-alert.png" alt="Edit Icon" className="dialog-icon" />
                                         <span>Are you sure you want to rename this?</span>
                                     </div>
                                     <div className="confirm-buttons">
@@ -238,7 +238,7 @@ function FolderApp() {
             {showRenameConfirm && (
                 <div className="confirm-modal">
                     <div className="confirm-content">
-                        <img src="./ASSETS/popup-edit.png" alt="Edit Icon" />
+                        <img src="./ASSETS/popup-alert.png" alt="Edit Icon" />
                         <div className="confirm-text">
                             <h3>Are you sure you want to rename this?</h3>
                             <div className="confirm-buttons">
@@ -257,7 +257,7 @@ function FolderApp() {
                 <div className="confirm-modal">
                     <div className="confirm-content">
                         <div className="dialog-content-with-image">
-                            <img src="./ASSETS/popup-delete.png" alt="Delete Icon" className="dialog-icon" />
+                            <img src="./ASSETS/popup-delete.png" alt="Delete Icon" className="dialog-icon"  />
                             <span>Are you sure you want to delete this?</span>
                         </div>
                         <div className="confirm-buttons">

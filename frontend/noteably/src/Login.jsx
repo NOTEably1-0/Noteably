@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_ENDPOINTS } from './config/api';
+import { useAuth } from './context/AuthContext';
 import './Login.css';
 
 const Login = () => {
@@ -11,32 +12,37 @@ const Login = () => {
     const [message, setMessage] = useState('');
     const [animationPhase, setAnimationPhase] = useState('pass-hide'); // Starting frame
     const navigate = useNavigate();
+    const { login } = useAuth();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post(API_ENDPOINTS.STUDENT.LOGIN, {
-                email: email,
-                password: password,
-            }, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
-
-            if (response.data) {
-                localStorage.setItem('studentId', response.data.id);
-                localStorage.setItem('studentName', response.data.name);
-                alert('Login successful!');
-                navigate('/dashboard');
-            } else {
-                setMessage('Invalid credentials. Please try again.');
+const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+        const response = await axios.post(API_ENDPOINTS.STUDENT.LOGIN, {
+            email: email,
+            password: password,
+        }, {
+            headers: {
+                'Content-Type': 'application/json'
             }
-        } catch (error) {
-            console.error('Error during login:', error);
-            setMessage('Error logging in. Please check your credentials.');
+        });
+
+        if (response.data) {
+            const user = {
+                id: response.data.id,
+                name: response.data.name
+            };
+            console.log('User object:', user);
+            login(user);
+            alert('Login successful!');
+            navigate('/dashboard');
+        } else {
+            setMessage('Invalid credentials. Please try again.');
         }
-    };
+    } catch (error) {
+        console.error('Error during login:', error);
+        setMessage('Error logging in. Please check your credentials.');
+    }
+};
 
     const handleTogglePassword = () => {
         if (showPassword) {

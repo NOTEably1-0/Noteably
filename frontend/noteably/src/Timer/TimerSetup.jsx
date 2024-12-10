@@ -8,6 +8,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './TimerSetup.css';
 
 function TimerSetup() {
   const url = "http://localhost:8080/api/timer";
@@ -163,6 +164,7 @@ function TimerSetup() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         boxSizing: 'border-box',
+        marginTop: '50px',
       }}
     >
       <Grid container spacing={3} sx={{ width: '90%', height: '100%' }}>
@@ -186,7 +188,7 @@ function TimerSetup() {
               boxSizing: 'border-box',
             }}
           >
-            <Typography variant="h5" textAlign="center" marginBottom="100px">
+            <Typography variant="h5" textAlign="center" marginBottom="80px" color="#073B4C">
               Timer Setup
             </Typography>
 
@@ -362,7 +364,7 @@ function TimerSetup() {
               },
             }}
           >
-            <Typography variant="h5" textAlign="center" marginBottom="25px">
+            <Typography variant="h5" textAlign="center" marginBottom="25px" color="#073B4C">
               Timer List
             </Typography>
             <List>
@@ -399,7 +401,15 @@ function TimerSetup() {
           </Box>
 
           {/* Edit Dialog */}
-          <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
+          <Dialog 
+  open={editDialogOpen} 
+  onClose={() => setEditDialogOpen(false)} 
+  style={{
+    border: '2px solid lightgray', /* Border style */
+    boxShadow: '0 2px 2px rgba(0, 0, 0, 0.1)' 
+  }}
+>
+
             <DialogTitle>Edit Timer</DialogTitle>
             <DialogContent>
               <TextField
@@ -408,7 +418,8 @@ function TimerSetup() {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 inputProps={{ maxLength: 20 }}
-                sx={{ marginBottom: '10px', marginTop: '10px' }}
+                sx={{ marginBottom: '10px', marginTop: '10px' } }
+
               />
               <Grid container justifyContent="center" alignItems="center" spacing={2}>
                 <Grid item>
@@ -450,21 +461,53 @@ function TimerSetup() {
             </DialogActions>
           </Dialog>
 
-          {/* Delete Confirmation Dialog */}
-          <Dialog open={confirmDialogOpen} onClose={handleDeleteCancel}>
-            <DialogTitle>Confirm Delete</DialogTitle>
-            <DialogContent>
-              <Typography>Are you sure you want to delete this timer?</Typography>
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={handleDeleteConfirm} color="error">
-                Delete
+          {/* Confirm Delete Dialog */}
+          <Dialog open={confirmDialogOpen} onClose={handleDeleteCancel} style={{border: '2px solid lightgray', /* Border style */
+        boxShadow: '0 2px 2px rgba(0, 0, 0, 0.1)'}}>
+  <div style={{ display: 'flex', alignItems: 'center', padding: '20px' }}>
+    {/* Left side image */}
+    <img
+      src="/ASSETS/popup-delete.png"
+      alt="Delete Icon"
+      style={{ marginRight: '15px', width: '60px', height: '60px'}}
+    />
+
+    {/* Text and buttons */}
+    <div style={{ flexGrow: 1 }}>
+      <DialogTitle style={{ margin: 0, padding: 0, fontSize: '18px' }}>
+        Are you sure you want to delete this?
+      </DialogTitle>
+
+      <DialogActions style={{ marginTop: '10px', padding: 0 }}>
+              <Button
+                onClick={handleDeleteConfirm}
+                style={{
+                  backgroundColor: '#06D6A0',
+                  color: '#ffffff',
+                  marginRight: '10px',
+                  textTransform: 'none',
+                  padding: '5px 20px',
+                }}
+              >
+                Ok
               </Button>
-              <Button onClick={handleDeleteCancel} color="primary">
+              <Button
+                onClick={handleDeleteCancel}
+                style={{
+                  backgroundColor: '#EF476F',
+                  color: '#ffffff',
+                  textTransform: 'none',
+                  padding: '5px 20px',
+                }}
+              >
                 Cancel
               </Button>
             </DialogActions>
-          </Dialog>
+          </div>
+        </div>
+      </Dialog>
+
+
         </Grid>
       </Grid>
     </Box>

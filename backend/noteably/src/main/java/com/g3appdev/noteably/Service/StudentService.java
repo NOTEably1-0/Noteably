@@ -10,6 +10,8 @@ import java.io.IOException;
 import net.coobird.thumbnailator.Thumbnails;
 import java.io.File;
 import java.util.List;
+import org.mindrot.jbcrypt.BCrypt;
+import org.mindrot.jbcrypt.BCrypt;
 
 @Service
 public class StudentService {
@@ -41,41 +43,42 @@ public class StudentService {
     }
 
     // Register (save) a new student with custom StudentID
-    public StudentEntity registerStudent(StudentEntity studentEntity) {
-        // Log plain password for debugging
-        System.out.println("Registering student with password: " + studentEntity.getPassword());
-
-        // Check if a student with the same email already exists
-        if (studentRepo.findByEmail(studentEntity.getEmail()).isPresent()) {
-            throw new RuntimeException("A student with this email already exists.");
-        }
-
-        // Save the entity to assign an auto-increment ID
-        StudentEntity savedStudent = studentRepo.save(studentEntity);
-
-        // Generate and set the custom StudentID
-        savedStudent.generateStudentId();
-
-        // Save again to update the StudentID in the database
-        return studentRepo.save(savedStudent);
+public StudentEntity registerStudent(StudentEntity studentEntity) {
+    // Check if a student with the same email already exists
+    if (studentRepo.findByEmail(studentEntity.getEmail()).isPresent()) {
+        throw new RuntimeException("A student with this email already exists.");
     }
+
+    // Hash the password before saving
+    String hashedPassword = BCrypt.hashpw(studentEntity.getPassword(), BCrypt.gensalt());
+    studentEntity.setPassword(hashedPassword);
+
+    // Save the entity to assign an auto-increment ID
+    StudentEntity savedStudent = studentRepo.save(studentEntity);
+
+    // Generate and set the custom StudentID
+    savedStudent.generateStudentId();
+
+    // Save again to update the StudentID in the database
+    return studentRepo.save(savedStudent);
+}
 
     // Update an existing student
-    public StudentEntity updateStudent(StudentEntity studentEntity, int id) {
-        StudentEntity existingStudent = studentRepo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
+public StudentEntity updateStudent(StudentEntity studentEntity, int id) {
+    StudentEntity existingStudent = studentRepo.findById(id)
+            .orElseThrow(() -> new RuntimeException("Student not found with ID: " + id));
 
-        // Log plain password for debugging
-        System.out.println("Updating student with password: " + studentEntity.getPassword());
+    // Hash the password before updating
+    String hashedPassword = BCrypt.hashpw(studentEntity.getPassword(), BCrypt.gensalt());
+    existingStudent.setPassword(hashedPassword);
 
-        existingStudent.setName(studentEntity.getName());
-        existingStudent.setCourse(studentEntity.getCourse());
-        existingStudent.setContactNumber(studentEntity.getContactNumber());
-        existingStudent.setEmail(studentEntity.getEmail());
-        existingStudent.setPassword(studentEntity.getPassword());
+    existingStudent.setName(studentEntity.getName());
+    existingStudent.setCourse(studentEntity.getCourse());
+    existingStudent.setContactNumber(studentEntity.getContactNumber());
+    existingStudent.setEmail(studentEntity.getEmail());
 
-        return studentRepo.save(existingStudent);
-    }
+    return studentRepo.save(existingStudent);
+}
 
     // Delete a student by ID
     public String deleteStudent(int id) {
@@ -84,16 +87,16 @@ public class StudentService {
     }
 
     // Login student
-    public StudentEntity loginStudent(String email, String password) {
-        StudentEntity student = studentRepo.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Student not found with email: " + email));
-        
-        if (!student.getPassword().equals(password)) {
-            throw new RuntimeException("Invalid password");
-        }
-        
-        return student;
+public StudentEntity loginStudent(String email, String password) {
+    StudentEntity student = studentRepo.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("Student not found with email: " + email));
+    
+    if (!BCrypt.checkpw(password, student.getPassword())) {
+        throw new RuntimeException("Invalid password");
     }
+    
+    return student;
+}
 
     @Autowired
     private FileService fileService;

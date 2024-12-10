@@ -1,43 +1,32 @@
 package com.g3appdev.noteably.Entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "folders")
 public class FolderEntity {
+
     @Id
-    private int folderId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer folderId;
+
     private String title;
+
     private int studentId;
 
+    @OneToMany(mappedBy = "folder", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("folder")
+    private List<NoteEntity> notes = new ArrayList<>();
 
-    
-
-    @OneToMany(mappedBy = "folder")
-    @JsonManagedReference  // Manages the serialization of this list
-    private List<NoteEntity> notes;
-
-    // Default constructor
-    public FolderEntity() {
-        super();
-    }
-
-
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
-    }
-    public int getStudentId() {
-        return studentId;
-    }
     // Getters and Setters
-    public int getFolderId() {
+    public Integer getFolderId() {
         return folderId;
     }
 
-    public void setFolderId(int folderId) {
+    public void setFolderId(Integer folderId) {
         this.folderId = folderId;
     }
 
@@ -49,11 +38,36 @@ public class FolderEntity {
         this.title = title;
     }
 
+    public int getStudentId() {
+        return studentId;
+    }
+
+    public void setStudentId(int studentId) {
+        this.studentId = studentId;
+    }
+
     public List<NoteEntity> getNotes() {
         return notes;
     }
 
     public void setNotes(List<NoteEntity> notes) {
         this.notes = notes;
+        if (notes != null) {
+            for (NoteEntity note : notes) {
+                note.setFolder(this);
+            }
+        }
+    }
+
+    // Helper method to add a note
+    public void addNote(NoteEntity note) {
+        notes.add(note);
+        note.setFolder(this);
+    }
+
+    // Helper method to remove a note
+    public void removeNote(NoteEntity note) {
+        notes.remove(note);
+        note.setFolder(null);
     }
 }

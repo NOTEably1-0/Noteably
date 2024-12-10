@@ -1,70 +1,64 @@
 package com.g3appdev.noteably.Service;
 
 import java.util.List;
-import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.g3appdev.noteably.Entity.FolderEntity;
 import com.g3appdev.noteably.Entity.NoteEntity;
 import com.g3appdev.noteably.Repository.NoteRepository;
-import com.g3appdev.noteably.Repository.FolderRepository;  // Assuming you have this repository
+import com.g3appdev.noteably.Repository.FolderRepository;
 
 @Service
 public class NoteService {
 
-    private final NoteRepository noteRepository;
-    private final FolderRepository folderRepository;  // FolderRepository for folder validation
+    @Autowired
+    private NoteRepository noteRepository;
 
     @Autowired
-    public NoteService(NoteRepository noteRepository, FolderRepository folderRepository) {
-        this.noteRepository = noteRepository;
-        this.folderRepository = folderRepository;
+    private FolderRepository folderRepository;
+
+    // Create
+    public NoteEntity createNote(NoteEntity note) {
+        return noteRepository.save(note);
     }
 
-    public NoteEntity postNoteRecord(NoteEntity note) {
-        if (note.getFolder() == null) {
-            throw new IllegalArgumentException("Folder cannot be null for the note");
-        }
-        // Ensure that folder exists before saving the note
-        if (folderRepository.existsById(note.getFolder().getFolderId())) {
-            return noteRepository.save(note);
-        } else {
-            throw new NoSuchElementException("Folder with ID " + note.getFolder().getFolderId() + " not found");
-        }
-    }
-
+    // Read all notes
     public List<NoteEntity> getAllNotes() {
         return noteRepository.findAll();
     }
 
-    public NoteEntity putNoteDetails(int noteId, NoteEntity newNoteDetails) {
-        NoteEntity note = noteRepository.findById(noteId)
-                .orElseThrow(() -> new NoSuchElementException("Note " + noteId + " not found"));
-
-        if (newNoteDetails.getFolder() == null) {
-            throw new IllegalArgumentException("Folder cannot be null when updating the note");
-        }
-
-        if (!folderRepository.existsById(newNoteDetails.getFolder().getFolderId())) {
-            throw new NoSuchElementException("Folder with ID " + newNoteDetails.getFolder().getFolderId() + " not found");
-        }
-
-        note.setFolder(newNoteDetails.getFolder());
-        note.setDate(newNoteDetails.getDate());
-        note.setTitle(newNoteDetails.getTitle());
-        note.setNote(newNoteDetails.getNote());
-
-        return noteRepository.save(note);
+    // Read notes by folder
+    public List<NoteEntity> getNotesByFolder(Integer folderId) {
+        return noteRepository.findByFolder_FolderId(folderId);
     }
 
-    public String deleteNote(int noteId) {
-        NoteEntity note = noteRepository.findById(noteId)
-                .orElseThrow(() -> new NoSuchElementException("Note with ID " + noteId + " not found"));
+    // Read single note
+    public Optional<NoteEntity> getNoteById(Integer id) {
+        return noteRepository.findById(id);
+    }
 
-        noteRepository.delete(note);
-        return "Note with ID " + noteId + " has been deleted";
+    // Update
+    public Optional<NoteEntity> updateNote(Integer id, NoteEntity updatedNote) {
+        if (noteRepository.existsById(id)) {
+            updatedNote.setNoteId(id);
+            // Preserve the folder relationship if not provided in the update
+            if (updatedNote.getFolder() == null) {
+                noteRepository.findById(id)
+                    .ifPresent(existingNote -> updatedNote.setFolder(existingNote.getFolder()));
+            }
+            return Optional.of(noteRepository.save(updatedNote));
+        }
+        return Optional.empty();
+    }
+
+    // Delete
+    public boolean deleteNote(Integer id) {
+        if (noteRepository.existsById(id)) {
+            noteRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 }
-

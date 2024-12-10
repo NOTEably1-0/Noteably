@@ -7,7 +7,7 @@ import axios from 'axios';
 import KanbanBoard from './KanbanBoard'; 
 import { Box, Typography, Button, Tabs, Tab } from '@mui/material';
 
-const apiUrl = "http://localhost:8080/api/schedule";
+const apiUrl = "http://localhost:8080/api/schedules";
 
 function Calendar() {
   const [schedules, setSchedules] = useState([]);

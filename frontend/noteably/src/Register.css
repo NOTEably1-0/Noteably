@@ -30,6 +30,7 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
+  color: #073B4C;
 }
 
 .register-form p {

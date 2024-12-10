@@ -1,3 +1,6 @@
+body {
+    font-family: 'Raleway', sans-serif;
+}
 /* Back button styling */
 #back-button {
     width: 40px;
@@ -149,8 +152,8 @@
 
 /* Notes container styling */
 .folder-container {
-    height: 1000px;
-    border: 2px solid #ccc;
+    height: 100px;
+    border: 1px solid #ccc;
     background-image: url('http://localhost:3000/ASSETS/polkadot.png');
     background-size: cover;
     background-position: center;
@@ -163,6 +166,7 @@
     min-height: 100vh;
     box-sizing: border-box;
     overflow: hidden;
+    margin-top:50px;
 }
 
 .form-container {
@@ -181,6 +185,7 @@
     font-size: 14px;
     color: #999;
     margin-left: 20px;
+    margin-top: 5px;
 }
 
 .folder-actions {
@@ -349,7 +354,6 @@
     display: flex;
     align-items: center;
     gap: 15px;
-    margin-bottom: 15px;
 }
 
 .dialog-icon {

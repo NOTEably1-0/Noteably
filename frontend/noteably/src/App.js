@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText, TextField } from '@mui/material';
-import { Dashboard as DashboardIcon, Folder, Timer as TimerIcon, Assignment as ToDoIcon, Event as CalendarIcon, Settings ,CheckCircle,} from '@mui/icons-material';
+import { Box, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material';
+import { Dashboard as DashboardIcon, Folder, Timer as TimerIcon, Assignment as ToDoIcon, Event as CalendarIcon, Settings, CheckCircle } from '@mui/icons-material';
 import Dashboard from './Dashboard';
 import Schedule from './Schedule';
 import FolderApp from './FolderApp';
@@ -13,6 +13,8 @@ import Login from './Login';
 import Register from './Register';
 import LandingPage from './LandingPage';
 import SettingsPage from './Setting';
+import { AuthProvider } from './context/AuthContext';
+import PrivateRoute from './components/PrivateRoute';
 
 // Define theme colors
 const themeColors = {
@@ -31,7 +33,7 @@ function SidebarItem({ to, icon, text, color }) {
 
   return (
     <ListItem
-      button
+      button={true}
       component={Link}
       to={to}
       sx={{
@@ -61,47 +63,49 @@ function App() {
   }, []);
 
   return (
-    <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>
-      {!isFullScreenPage && (
-        <Drawer
-          variant="permanent"
-          sx={{
-            width: 240,
-            '& .MuiDrawer-paper': { width: 240, backgroundColor: '#fff', color: '#000' },
-          }}
-        >
-          <Box p={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}>
-            <img src="/ASSETS/noteably_logo.png" alt="Logo" width="100%" />
-            
-            
-          </Box>
-          <List>
-            <SidebarItem to="/dashboard" icon={<DashboardIcon />} text="Dashboard" color={themeColors.primary} />
-            <SidebarItem to="/folders" icon={<Folder />} text="Folders" color={themeColors.secondary} />
-            <SidebarItem to="/todo" icon={<ToDoIcon />} text="To-Do List" color={themeColors.accent} />
-            <SidebarItem to="/schedule" icon={<CalendarIcon />} text="Schedule" color={themeColors.green} />
-            <SidebarItem to="/timer" icon={<TimerIcon />} text="Timer" color={themeColors.blue} />
-            <SidebarItem to="/settings" icon={<Settings />} text="Settings" color={themeColors.dark} />
-          </List>
-        </Drawer>
-      )}
-      <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: '#f0f0f0' }}>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/folders" element={<FolderApp />} />
-          <Route path="/notes" element={<NoteApp />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/timer" element={<TimerSetup />} />
-          <Route path="/running" element={<TimerRunning />} />
-          <Route path="/todo" element={<ToDoList />} />
-          <Route path="/settings" element={<SettingsPage />} />
-          <Route path="/noteApp/:folderId" element={<NoteApp />} />
-        </Routes>
+    <AuthProvider>
+      <Box sx={{ display: 'flex', height: '100vh', width: '100vw' }}>
+        {!isFullScreenPage && (
+          <Drawer
+            variant="permanent"
+            sx={{
+              width: 240,
+              '& .MuiDrawer-paper': { width: 240, backgroundColor: '#fff', color: '#000' },
+            }}
+          >
+            <Box p={2} sx={{ display: 'flex', alignItems: 'center', flexDirection: 'column', gap: 1 }}>
+              <img src="/ASSETS/noteably_logo.png" alt="Logo" width="100%" />
+            </Box>
+            <List>
+              <SidebarItem to="/dashboard" icon={<DashboardIcon />} text="Dashboard" color={themeColors.primary} />
+              <SidebarItem to="/folders" icon={<Folder />} text="Folders" color={themeColors.secondary} />
+              <SidebarItem to="/todo" icon={<ToDoIcon />} text="To-Do List" color={themeColors.accent} />
+              <SidebarItem to="/schedule" icon={<CalendarIcon />} text="Schedule" color={themeColors.green} />
+              <SidebarItem to="/timer" icon={<TimerIcon />} text="Timer" color={themeColors.blue} />
+              <SidebarItem to="/settings" icon={<Settings />} text="Settings" color={themeColors.dark} />
+            </List>
+          </Drawer>
+        )}
+        <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: '#f0f0f0' }}>
+          <Routes>
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            {/* Private Routes */}
+            <Route path="/dashboard" element={<PrivateRoute element={<Dashboard />} />} />
+            <Route path="/folders" element={<PrivateRoute element={<FolderApp />} />} />
+            <Route path="/notes" element={<PrivateRoute element={<NoteApp />} />} />
+            <Route path="/schedule" element={<PrivateRoute element={<Schedule />} />} />
+            <Route path="/timer" element={<PrivateRoute element={<TimerSetup />} />} />
+            <Route path="/running" element={<PrivateRoute element={<TimerRunning />} />} />
+            <Route path="/todo" element={<PrivateRoute element={<ToDoList />} />} />
+            <Route path="/settings" element={<PrivateRoute element={<SettingsPage />} />} />
+            <Route path="/noteApp/:folderId" element={<PrivateRoute element={<NoteApp />} />} />
+          </Routes>
+        </Box>
       </Box>
-    </Box>
+    </AuthProvider>
   );
 }
 

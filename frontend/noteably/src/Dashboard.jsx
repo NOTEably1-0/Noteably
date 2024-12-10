@@ -56,6 +56,7 @@ function Dashboard() {
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         boxSizing: 'border-box',
+        marginTop: '50px',
       }}
     >
       {/* Header Section */}
@@ -68,6 +69,7 @@ function Dashboard() {
             overflow: 'hidden',
             mr: 3,
             border: `2px solid ${themeColors.dark}`,
+            
           }}
         >
           <img

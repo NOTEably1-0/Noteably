@@ -3,55 +3,73 @@ package com.g3appdev.noteably.Controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.g3appdev.noteably.Entity.NoteEntity;
+import com.g3appdev.noteably.Entity.FolderEntity;
 import com.g3appdev.noteably.Service.NoteService;
+import com.g3appdev.noteably.Service.FolderService;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
-@RequestMapping("/api/note")  // Make sure this is consistent with React
+@RequestMapping("/api/note")
 public class NoteController {
 
     @Autowired
-    private NoteService noteservice;
+    private NoteService noteService;
 
-    @GetMapping("/print")
-    public String print() {
-        return "Hello, Firstname Lastname";
-    }
+    @Autowired
+    private FolderService folderService;
 
     // Create operation
     @PostMapping("/postnoterecord")
-    public NoteEntity postNoteRecord(@RequestBody NoteEntity note) {
-        return noteservice.postNoteRecord(note);
+    public NoteEntity createNote(@RequestBody NoteEntity note) {
+        if (note.getFolderId() != null) {
+            folderService.getFolderById(note.getFolderId())
+                .ifPresent(folder -> note.setFolder(folder));
+        }
+        return noteService.createNote(note);
     }
 
-    // Read operation
+    // Read operation - get all notes
     @GetMapping("/getAllNotes")
     public List<NoteEntity> getAllNotes() {
-        return noteservice.getAllNotes();
+        return noteService.getAllNotes();
     }
 
-     // Read all Note for a specific student
+    // Read operation - get notes by folder
+    @GetMapping("/folder/{folderId}")
+    public List<NoteEntity> getNotesByFolder(@PathVariable Integer folderId) {
+        return noteService.getNotesByFolder(folderId);
+    }
+
+    // Read operation - get single note
+    @GetMapping("/{id}")
+    public NoteEntity getNoteById(@PathVariable Integer id) {
+        return noteService.getNoteById(id)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found"));
+    }
 
     // Update operation
     @PutMapping("/putNoteDetails/{id}")
-    public NoteEntity putNoteDetails(@PathVariable int id, @RequestBody NoteEntity newNoteDetails) {
-        return noteservice.putNoteDetails(id, newNoteDetails);
+    public NoteEntity updateNote(@PathVariable Integer id, @RequestBody NoteEntity note) {
+        // Set the folder if folderId is provided
+        if (note.getFolderId() != null) {
+            folderService.getFolderById(note.getFolderId())
+                .ifPresent(folder -> note.setFolder(folder));
+        }
+        
+        return noteService.updateNote(id, note)
+            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found"));
     }
 
     // Delete operation
     @DeleteMapping("/deleteNoteDetails/{id}")
-    public String deleteNote(@PathVariable int id) {
-        return noteservice.deleteNote(id);
+    public void deleteNote(@PathVariable Integer id) {
+        if (!noteService.deleteNote(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Note not found");
+        }
     }
 }

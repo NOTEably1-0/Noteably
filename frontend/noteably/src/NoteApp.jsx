@@ -202,7 +202,7 @@ function NoteApp() {
                 isOpen={showRenameConfirm}
                 message={
                     <div className="dialog-content-with-image">
-                        <img src="/ASSETS/popup-edit.png" alt="Edit" className="dialog-icon" />
+                        <img src="/ASSETS/popup-alert.png" alt="Edit" className="dialog-icon" />
                         <span>Are you sure you want to rename this?</span>
                     </div>
                 }
@@ -231,7 +231,7 @@ function NoteApp() {
                     <button id="back-button" onClick={goBack}>
                         <img src="/ASSETS/backbtn.png" alt="Back" style={{ width: '20px', height: '20px' }} />
                     </button>
-                    <div className="folder-title">{folderTitle}</div>
+                    <div className="folder-title" style={{fontSize: '23px', fontWeight: 'bold'}}>{folderTitle}</div>
                     <small className="note-count">{notes.length} notes</small>
                     <div className="folder-actions">
                         <button id="add-button" onClick={toggleForm}>+</button>
