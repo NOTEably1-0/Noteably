@@ -37,16 +37,24 @@ function Calendar() { // Remove studentId prop
     <Box sx={{ padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
       {/* Navigation Tabs */}
       <Box sx={{ width: '100%', maxWidth: '1000px', mb: 4 }}>
-        <Tabs
-          value={currentView}
-          onChange={handleViewChange}
-          centered
-          indicatorColor="primary"
-          textColor="primary"
-        >
-          <Tab value="calendar" label="Calendar View" />
-          <Tab value="board" label="Board View" />
-        </Tabs>
+      <Tabs
+            value={currentView}
+            onChange={handleViewChange}
+            centered
+            indicatorColor="#06D6A0"
+            textColor="primary"
+            sx={{
+              '& .MuiTab-root': {
+                '&:hover': {
+                  backgroundColor: '#FFFFF', 
+                },
+              },
+            }}
+          >
+            <Tab value="calendar" label="Calendar View" />
+            <Tab value="board" label="Board View" />
+      </Tabs>
+
       </Box>
 
       {currentView === "calendar" && (

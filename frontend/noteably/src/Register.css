@@ -105,4 +105,9 @@
     padding: 20px; /* Adjust padding for smaller screens */
   }
 }
-  
+
+/* Styles for the password visibility toggle checkbox */
+.show-password-checkbox {
+    margin-left: 10px; /* Space between the checkbox and the input */
+    cursor: pointer; /* Change cursor to pointer for better UX */
+}

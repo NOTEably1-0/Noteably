@@ -4,6 +4,8 @@ import { IconButton, Box } from '@mui/material';
 import './Settings.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Visibility from '@mui/icons-material/Visibility'; // Import MUI icon for showing password
+import VisibilityOff from '@mui/icons-material/VisibilityOff'; // Import MUI icon for hiding password
 
 const AVATAR_OPTIONS = [
     { name: 'Red', path: '/ASSETS/Profile_red.png' },
@@ -27,6 +29,8 @@ function SettingsPage() {
 
     const [alertMessage, setAlertMessage] = useState('');
     const [isAlertVisible, setIsAlertVisible] = useState(false);
+    const [showNewPassword, setShowNewPassword] = useState(false); // State for new password visibility
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false); // State for confirm password visibility
 
     const navigate = useNavigate();
 
@@ -235,21 +239,31 @@ function SettingsPage() {
                         <div className="card-content">
                             <div className="input-group">
                                 <label htmlFor="newPassword">New Password</label>
-                                <input
-                                    id="newPassword"
-                                    type="password"
-                                    value={student.newPassword}
-                                    onChange={handleInputChange}
-                                />
+                                <div className="password-container">
+                                    <input
+                                        id="newPassword"
+                                        type={showNewPassword ? "text" : "password"} // Toggle input type
+                                        value={student.newPassword}
+                                        onChange={handleInputChange}
+                                    />
+                                    <IconButton onClick={() => setShowNewPassword(!showNewPassword)} style={{ color: 'gray', position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: 'small' }}>
+                                        {showNewPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </div>
                             </div>
                             <div className="input-group">
                                 <label htmlFor="confirmPassword">Confirm Password</label>
-                                <input
-                                    id="confirmPassword"
-                                    type="password"
-                                    value={student.confirmPassword}
-                                    onChange={handleInputChange}
-                                />
+                                <div className="password-container">
+                                    <input
+                                        id="confirmPassword"
+                                        type={showConfirmPassword ? "text" : "password"} // Toggle input type
+                                        value={student.confirmPassword}
+                                        onChange={handleInputChange}
+                                    />
+                                    <IconButton onClick={() => setShowConfirmPassword(!showConfirmPassword)} style={{ color: 'gray', position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', fontSize: 'small' }}>
+                                        {showConfirmPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                </div>
                             </div>
                         </div>
                     </div>
