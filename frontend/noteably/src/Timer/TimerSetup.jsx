@@ -149,6 +149,22 @@ function TimerSetup() {
     (!/^\d+$/.test(minutes) || minutes === '00' || minutes === '0' || minutes === '') &&
     (!/^\d+$/.test(seconds) || seconds === '00' || seconds === '0' || seconds === '');
 
+
+    const [confirmEditDialogOpen, setConfirmEditDialogOpen] = useState(false);
+
+    const handleEditSaveClick = () => {
+      setConfirmEditDialogOpen(true);
+    };
+    
+    const handleEditConfirm = () => {
+      updateTimer();
+      setConfirmEditDialogOpen(false);
+    };
+    
+    const handleEditCancel = () => {
+      setConfirmEditDialogOpen(false);
+    };
+
   return (
     <Box
       sx={{
@@ -521,7 +537,7 @@ function TimerSetup() {
               >
                 Cancel
               </Button>
-              <Button onClick={updateTimer}
+              <Button onClick={handleEditSaveClick}
                 sx={{
                   textTransform: 'none', // Prevent text from being auto-capitalized
                   color: '#fff',
@@ -540,51 +556,100 @@ function TimerSetup() {
             </DialogActions>
           </Dialog>
 
+
+          {/* Confirm Update Dialog*/}
+
+          <Dialog open={confirmEditDialogOpen} onClose={handleEditCancel} style={{border: '2px solid lightgray', /* Border style */
+          boxShadow: '0 2px 2px rgba(0, 0, 0, 0.1)'}}>
+          <div style={{ display: 'flex', alignItems: 'center', padding: '20px' }}>
+            {/* Left side image */}
+            <img
+              src="/ASSETS/popup-alert.png"
+              alt="Alert Icon"
+              style={{ marginRight: '15px', width: '60px', height: '60px'}}
+            />
+
+            {/* Text and buttons */}
+            <div style={{ flexGrow: 1 }}>
+            <DialogTitle style={{ margin: 0, padding: 0, fontSize: '17px' }}>
+              Are you sure you want to edit this?
+            </DialogTitle>
+
+            <DialogActions style={{ marginTop: '10px', padding: 0 }}>
+                    <Button
+                      onClick={handleEditConfirm}
+                      style={{
+                        backgroundColor: '#06D6A0',
+                        color: '#ffffff',
+                        marginRight: '10px',
+                        textTransform: 'none',
+                        padding: '5px 20px',
+                      }}
+                    >
+                      Ok
+                    </Button>
+                    <Button
+                      onClick={handleEditCancel}
+                      style={{
+                        backgroundColor: '#EF476F',
+                        color: '#ffffff',
+                        textTransform: 'none',
+                        padding: '5px 20px',
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </DialogActions>
+                </div>
+              </div>
+            </Dialog>
+
+
           {/* Confirm Delete Dialog */}
           <Dialog open={confirmDialogOpen} onClose={handleDeleteCancel} style={{border: '2px solid lightgray', /* Border style */
-        boxShadow: '0 2px 2px rgba(0, 0, 0, 0.1)'}}>
-  <div style={{ display: 'flex', alignItems: 'center', padding: '20px' }}>
-    {/* Left side image */}
-    <img
-      src="/ASSETS/popup-delete.png"
-      alt="Delete Icon"
-      style={{ marginRight: '15px', width: '60px', height: '60px'}}
-    />
+          boxShadow: '0 2px 2px rgba(0, 0, 0, 0.1)'}}>
+          <div style={{ display: 'flex', alignItems: 'center', padding: '20px' }}>
+            {/* Left side image */}
+            <img
+              src="/ASSETS/popup-delete.png"
+              alt="Delete Icon"
+              style={{ marginRight: '15px', width: '60px', height: '60px'}}
+            />
 
-    {/* Text and buttons */}
-    <div style={{ flexGrow: 1 }}>
-      <DialogTitle style={{ margin: 0, padding: 0, fontSize: '17px' }}>
-        Are you sure you want to delete this?
-      </DialogTitle>
+          {/* Text and buttons */}
+          <div style={{ flexGrow: 1 }}>
+            <DialogTitle style={{ margin: 0, padding: 0, fontSize: '17px' }}>
+              Are you sure you want to delete this?
+            </DialogTitle>
 
-      <DialogActions style={{ marginTop: '10px', padding: 0 }}>
-              <Button
-                onClick={handleDeleteConfirm}
-                style={{
-                  backgroundColor: '#06D6A0',
-                  color: '#ffffff',
-                  marginRight: '10px',
-                  textTransform: 'none',
-                  padding: '5px 20px',
-                }}
-              >
-                Ok
-              </Button>
-              <Button
-                onClick={handleDeleteCancel}
-                style={{
-                  backgroundColor: '#EF476F',
-                  color: '#ffffff',
-                  textTransform: 'none',
-                  padding: '5px 20px',
-                }}
-              >
-                Cancel
-              </Button>
-            </DialogActions>
-          </div>
-        </div>
-      </Dialog>
+            <DialogActions style={{ marginTop: '10px', padding: 0 }}>
+                    <Button
+                      onClick={handleDeleteConfirm}
+                      style={{
+                        backgroundColor: '#06D6A0',
+                        color: '#ffffff',
+                        marginRight: '10px',
+                        textTransform: 'none',
+                        padding: '5px 20px',
+                      }}
+                    >
+                      Ok
+                    </Button>
+                    <Button
+                      onClick={handleDeleteCancel}
+                      style={{
+                        backgroundColor: '#EF476F',
+                        color: '#ffffff',
+                        textTransform: 'none',
+                        padding: '5px 20px',
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </DialogActions>
+                </div>
+              </div>
+            </Dialog>
 
 
         </Grid>
