@@ -1,6 +1,9 @@
+
+
 body {
     font-family: 'Raleway', sans-serif;
 }
+
 
 .folder-app {
     display: flex;
@@ -17,6 +20,7 @@ body {
     position: relative;
     min-height: 100vh;
     margin-top: 50px;
+    
     
 }
 
@@ -79,6 +83,7 @@ body {
     gap: 20px;
     width: 100%;
     justify-content: flex-start;
+    
 }
 
 .folder-item {
@@ -86,6 +91,7 @@ body {
     width: 165px;
     text-align: center;
     transition: transform 0.2s ease;
+    border: none;
 }
 
 .folder-item:hover {
@@ -95,6 +101,7 @@ body {
 .folder-icon {
     width: 170px;
     height: 120px;
+    
 }
 
 .folder-title {
@@ -108,6 +115,7 @@ body {
     padding: 5px;
     margin-left: 15px;
     z-index: 1;
+    
 }
 
 .options-icon {
@@ -116,10 +124,12 @@ body {
     padding: 5px;
     border-radius: 50%;
     transition: background-color 0.2s ease;
+    
 }
 
 .options-icon:hover {
     background-color: rgba(0, 0, 0, 0.1);
+   
 }
 
 .options-dropdown {

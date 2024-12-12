@@ -1,0 +1,13 @@
+.folder-item {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    width: 150px; /* Set a fixed width */
+    height: 145px; /* Set a fixed height */
+}
+
+.folder-icon {
+    width: 40px;
+    height: 40px;
+}

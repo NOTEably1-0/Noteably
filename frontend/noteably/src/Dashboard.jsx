@@ -1,4 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import FolderWidget from './FolderWidget';
+import ToDoListWidget from './ToDoListWidget'; // Import the ToDoListWidget
+import TimerListWidget from './TimerListWidget'; // Import the TimerListWidget
 import { Box, Grid, Typography, Paper } from '@mui/material';
 import TimerIcon from '@mui/icons-material/Timer';
 import FolderIcon from '@mui/icons-material/Folder';
@@ -69,7 +72,6 @@ function Dashboard() {
             overflow: 'hidden',
             mr: 3,
             border: `2px solid ${themeColors.dark}`,
-            
           }}
         >
           <img
@@ -128,6 +130,7 @@ function Dashboard() {
                 To-Do List
               </Typography>
             </Box>
+            <ToDoListWidget /> 
           </Paper>
         </Grid>
 
@@ -162,41 +165,13 @@ function Dashboard() {
                 Timer
               </Typography>
             </Box>
+            <TimerListWidget /> {/* Add the TimerListWidget here */}
           </Paper>
         </Grid>
 
         {/* Folders Widget */}
         <Grid item xs={12} md={4}>
-          <Paper
-            elevation={3}
-            sx={{
-              p: 2,
-              borderRadius: '20px',
-              backgroundColor: 'white',
-              border: `2px solid ${themeColors.secondary}`,
-              boxShadow: '0 3px 2px rgba(0, 0, 0, 0.15)',
-            }}
-          >
-            <Box display="flex" alignItems="center" sx={{ mb: 1 }}>
-              <Box
-                sx={{
-                  width: 40,
-                  height: 40,
-                  borderRadius: '50%',
-                  backgroundColor: themeColors.secondary,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  mr: 2,
-                }}
-              >
-                <FolderIcon sx={{ color: 'white' }} />
-              </Box>
-              <Typography variant="h6" sx={{ color: themeColors.secondary }}>
-                Folders
-              </Typography>
-            </Box>
-          </Paper>
+          <FolderWidget /> {/* Include the FolderWidget here */}
         </Grid>
       </Grid>
 
