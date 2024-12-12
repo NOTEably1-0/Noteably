@@ -4,7 +4,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
-import { Button, TextField, Select, MenuItem, Typography, Box, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Button, TextField, Select, MenuItem, Typography, Box, Dialog, DialogActions, DialogContent, DialogTitle, DialogContentText } from '@mui/material';
 import { Edit, Delete, Event, PriorityHigh, LowPriority, Star, EventNote, Add } from '@mui/icons-material';
 import './Fullcalendar.css';
 
@@ -21,7 +21,10 @@ function Schedule() {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [scheduleToDelete, setScheduleToDelete] = useState(null);
   const [newToDo, setNewToDo] = useState({ title: "", description: "", scheduleId: null });
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openEditConfirmationDialog, setOpenEditConfirmationDialog] = useState(false);
 
+ 
   useEffect(() => {
     fetchSchedules();
     fetchToDoItems();
@@ -73,6 +76,8 @@ function Schedule() {
     }
   };
 
+  
+
   const handleDeleteClick = (id) => {
     setScheduleToDelete(id);
     setOpenDeleteDialog(true);
@@ -89,17 +94,29 @@ function Schedule() {
     }
   };
 
-  const handleEdit = (schedule) => {
-    setFormData({
-      title: schedule.title,
-      priority: schedule.priority,
-      startDate: schedule.startDate,
-      endDate: schedule.endDate,
-      colorCode: schedule.colorCode,
-      todoListIds: schedule.tasks.map(task => task.toDoListID)
-    });
-    setIsEditMode(true);
-    setSelectedId(schedule.scheduleID);
+
+const handleEdit = (schedule) => {
+  setFormData({
+    title: schedule.title,
+    priority: schedule.priority,
+    startDate: schedule.startDate,
+    endDate: schedule.endDate,
+    colorCode: schedule.colorCode,
+    todoListIds: schedule.tasks.map((task) => task.toDoListID),
+  });
+  setIsEditMode(true);
+  setSelectedId(schedule.scheduleID);
+  setOpenEditConfirmationDialog(true); // Open confirmation dialog first
+};
+
+
+  
+
+  const handleCloseEditDialog = () => {
+    setOpenEditDialog(false); // Close the edit dialog
+    setIsEditMode(false);
+    setSelectedId(null);
+    setFormData({ title: "", priority: "moderate", startDate: "", endDate: "", colorCode: "", todoListIds: [] });
   };
 
   const handleFormChange = (e) => {
@@ -174,6 +191,137 @@ function Schedule() {
         </Box>
       </Box>
 
+      <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
+      <DialogTitle>Edit Schedule</DialogTitle>
+      <DialogContent>
+        <TextField
+          label="Title"
+          name="title"
+          value={formData.title}
+          onChange={handleFormChange}
+          fullWidth
+          margin="dense"
+        />
+        <TextField
+          label="Start Date"
+          type="date"
+          name="startDate"
+          value={formData.startDate}
+          onChange={handleFormChange}
+          fullWidth
+          margin="dense"
+          InputLabelProps={{ shrink: true }}
+        />
+        <TextField
+          label="End Date"
+          type="date"
+          name="endDate"
+          value={formData.endDate}
+          onChange={handleFormChange}
+          fullWidth
+          margin="dense"
+          InputLabelProps={{ shrink: true }}
+        />
+        <Select
+          name="priority"
+          value={formData.priority}
+          onChange={handleFormChange}
+          fullWidth
+          margin="dense"
+        >
+          <MenuItem value="high">High</MenuItem>
+          <MenuItem value="moderate">Moderate</MenuItem>
+          <MenuItem value="low">Low</MenuItem>
+        </Select>
+        <Select
+          name="colorCode"
+          value={formData.colorCode}
+          onChange={handleFormChange}
+          fullWidth
+          margin="dense"
+        >
+          <MenuItem value="#EF476F" style={{ color: "#EF476F" }}>Pink</MenuItem>
+          <MenuItem value="#06D6A0" style={{ color: "#06D6A0" }}>Green</MenuItem>
+          <MenuItem value="#118AB2" style={{ color: "#118AB2" }}>Blue</MenuItem>
+          <MenuItem value="#F78C6B" style={{ color: "#F78C6B" }}>Coral</MenuItem>
+          <MenuItem value="#FFD166" style={{ color: "#FFD166" }}>Yellow</MenuItem>
+          <MenuItem value="#073B4C" style={{ color: "#073B4C" }}>Dark Blue</MenuItem>
+        </Select>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseEditDialog} color="secondary">Cancel</Button>
+        <Button
+          onClick={() => {
+            addOrUpdateSchedule();
+            handleCloseEditDialog();
+          }}
+          color="primary"
+        >
+          Save Changes
+        </Button>
+      </DialogActions>
+    </Dialog>
+
+    <Dialog open={openEditConfirmationDialog} onClose={() => setOpenEditConfirmationDialog(false)}>
+      <DialogContent>
+        <Box sx={{ display: 'flex', justifyContent: 'left',  alignItems: 'left', textAlign: 'left', gap: 2 }}>
+          <Box
+            component="img"
+            src="/ASSETS/popup-alert.png" 
+            alt="Edit Confirmation"
+            sx={{ width: '80px', height: '80px' }}
+          />
+          <DialogContentText sx={{ color: 'black', fontSize: '16px', marginTop: '25px' }}>
+            Are you sure you want to edit this schedule?
+          </DialogContentText>
+        </Box>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            setOpenEditConfirmationDialog(false); // Close confirmation dialog
+            setOpenEditDialog(true); // Proceed to edit dialog
+          }}
+          sx={{
+            textTransform: 'none',
+            color: '#fff',
+            backgroundColor: '#06D6A0',
+            borderRadius: '8px',
+            padding: '5px 20px',
+            fontWeight: 'bold',
+            marginTop: '-30px',
+            marginBottom: '10px',
+            '&:hover': {
+              backgroundColor: '#F78C6B',
+            },
+          }}
+        >
+          Yes, Edit
+        </Button>
+        <Button
+          onClick={() => setOpenEditConfirmationDialog(false)}
+          sx={{
+            textTransform: 'none',
+            color: '#fff',
+            backgroundColor: '#EF476F',
+            borderRadius: '8px',
+            padding: '5px 20px',
+            fontWeight: 'bold',
+            marginTop: '-30px',
+            marginBottom: '10px',
+            '&:hover': {
+              backgroundColor: '#F78C6B',
+            },
+          }}
+        >
+          Cancel
+        </Button>
+      </DialogActions>
+    </Dialog>
+
+
+
+
       <Dialog open={openToDoDialog} onClose={() => setOpenToDoDialog(false)}>
         <DialogTitle>Add ToDo Item</DialogTitle>
         <DialogContent>
@@ -186,43 +334,91 @@ function Schedule() {
         </DialogActions>
       </Dialog>
 
-      <Dialog 
-        open={openDeleteDialog} 
-        onClose={() => setOpenDeleteDialog(false)}
+        <Dialog 
+          open={openDeleteDialog} 
+          onClose={() => setOpenDeleteDialog(false)}
+          sx={{
+            '& .MuiDialog-paper': {
+              borderRadius: '12px',
+              padding: '20px',
+              maxWidth: '600px' // Increased width for better text fit
+            }
+          }}
+>
+  <DialogContent>
+    <Box
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '20px', // Spacing between image, text, and buttons
+        padding: '10px',
+      }}
+    >
+      {/* Image */}
+      <Box
+        component="img"
+        src="/ASSETS/popup-delete.png"
+        alt="Delete Icon"
         sx={{
-          '& .MuiDialog-paper': {
-            borderRadius: '12px',
-            padding: '20px',
-            maxWidth: '400px'
-          }
+          width: '80px', // Adjust size
+          height: '80px',
+        }}
+      />
+
+      {/* Text */}
+      <DialogContentText
+        sx={{
+          color: 'black',
+          fontSize: '16px',
+          flex: '1', // Allow text to take up remaining space
         }}
       >
-        <DialogTitle sx={{ textAlign: 'center', color: '#073B4C' }}>
-          Delete Schedule
-        </DialogTitle>
-        <DialogContent>
-          <Typography>
-            Are you sure you want to delete this file?
-          </Typography>
-        </DialogContent>
-        <DialogActions sx={{ justifyContent: 'center', gap: 2 }}>
-          <Button 
-            onClick={() => deleteSchedule(scheduleToDelete)}
-            variant="contained"
-            color="error"
-            sx={{ borderRadius: '20px' }}
-          >
-            OK
-          </Button>
-          <Button 
-            onClick={() => setOpenDeleteDialog(false)}
-            variant="contained"
-            sx={{ borderRadius: '20px', bgcolor: '#6c757d' }}
-          >
-            Cancel
-          </Button>
-        </DialogActions>
-      </Dialog>
+        Are you sure you want to delete this schedule?
+      </DialogContentText>
+
+      {/* Buttons */}
+      <Box
+        sx={{
+          display: 'flex',
+          gap: '10px', // Spacing between buttons
+        }}
+      >
+        <Button
+          onClick={() => deleteSchedule(scheduleToDelete)}
+          sx={{
+            textTransform: 'none', // Prevent text from being auto-capitalized
+            color: '#fff',
+            backgroundColor: '#06D6A0',
+            borderRadius: '8px',
+            padding: '5px 20px',
+            fontWeight: 'bold',
+            '&:hover': {
+              backgroundColor: '#F78C6B',
+            },
+          }}
+        >
+          Ok
+        </Button>
+        <Button
+          onClick={() => setOpenDeleteDialog(false)}
+          sx={{
+            textTransform: 'none', // Prevent text from being auto-capitalized
+            color: '#fff',
+            backgroundColor: '#EF476F',
+            borderRadius: '8px',
+            padding: '5px 20px',
+            fontWeight: 'bold',
+            '&:hover': {
+              backgroundColor: '#F78C6B',
+            },
+          }}
+        >
+          Cancel
+        </Button>
+      </Box>
+    </Box>
+  </DialogContent>
+</Dialog>
 
       <Box sx={{ width: '100%', maxWidth: '1000px', backgroundColor: '#ffffff', borderRadius: '12px', boxShadow: 3, overflow: 'hidden', p: 3, mb: 4, color: '#073B4C' }}>
         <FullCalendar

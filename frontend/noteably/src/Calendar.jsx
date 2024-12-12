@@ -4,22 +4,25 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import axios from 'axios';
-import KanbanBoard from './KanbanBoard'; 
-import { Box, Typography, Button, Tabs, Tab } from '@mui/material';
+import KanbanBoard from './KanbanBoard';
+import { Box, Tabs, Tab } from '@mui/material';
 
-const apiUrl = "http://localhost:8080/api/schedules";
+const apiUrl = "http://localhost:8080/api/schedules"; // Corrected the API URL
 
-function Calendar() {
+function Calendar() { // Remove studentId prop
+  const studentId = localStorage.getItem('studentId'); // Get studentId from local storage
   const [schedules, setSchedules] = useState([]);
   const [currentView, setCurrentView] = useState("calendar");
 
   useEffect(() => {
-    fetchSchedules();
-  }, []);
+    if (studentId) {
+      fetchSchedules(studentId); // Fetch schedules for the specific student
+    }
+  }, [studentId]);
 
-  const fetchSchedules = async () => {
+  const fetchSchedules = async (studentId) => {
     try {
-      const response = await axios.get(`${apiUrl}/getAll`);
+      const response = await axios.get(`${apiUrl}/getByStudent/${studentId}`);
       setSchedules(response.data);
     } catch (error) {
       console.error("Error fetching schedules", error);
@@ -63,13 +66,13 @@ function Calendar() {
               color: s.colorCode,
             }))}
             height="600px"
-          buttonText={{
-            today: 'Today',
-            month: 'Month',
-            week: 'Week',
-            day: 'Day',
-            list: 'List'
-          }}
+            buttonText={{
+              today: 'Today',
+              month: 'Month',
+              week: 'Week',
+              day: 'Day',
+              list: 'List'
+            }}
           />
         </Box>
       )}

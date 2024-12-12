@@ -302,15 +302,12 @@ function ToDoList() {
                 <Box style={{ display: 'flex', alignItems: 'center' }}>
                 <Checkbox
                           checked={item.completed}
-    onChange={() => handleCheckboxToggle(item.toDoListID)}
-  sx={{
-    color: item.completed ? '#06D6A0' : '#EF476F',
-    '&.Mui-checked': {
-      color: '#06D6A0',
-    },
-  }}
-/>
-
+                          onChange={() => handleCheckboxToggle(item.toDoListID)}
+                          sx={{
+                                color: item.completed ? '#06D6A0' : '#FFFFFF',
+                                '&.Mui-checked': { color: '#06D6A0',},
+                    }}
+                />
 
                   <Box>
                     <Typography

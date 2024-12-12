@@ -1,4 +1,4 @@
-Login css
+
 
 /* Reset default styles */
 * {
@@ -73,7 +73,7 @@ body, html {
     border: 1px solid lightgray; /* Border style */
     border-radius: 30px; /* Rounded corners */
     padding: 20px; /* Inner padding */
-    background: url('C:\Users\Janine P. Giducos\OneDrive\Desktop\NEW_NEW_GIT_NOTEABLY\Noteably\frontend\noteably\public\ASSETS\polkadot.png') no-repeat center center; /* Polkadot background */
+    background: url('C:\Users\Janine P. Giducos\OneDrive\Desktop\NEW_NEW_GIT_NOTEABLY\Noteably\frontend\noteably\public\ASSETS\polkadot.png') no-repeat center center;
     background-size: cover; /*  Ensure background image fills the area */
     box-sizing: border-box; /* Ensure padding and border are included in size */
     overflow: hidden; /* Prevent overflow */
