@@ -46,7 +46,7 @@ const TimerListWidget = () => {
             ) : (
                 <List>
                     {timerList.map((timer) => (
-                            <ListItem key={timer.timerID} sx={{ marginBottom: '10px', backgroundColor: '#F78C6B', borderRadius: '5px', color: 'white', width: '100%' }}>
+                            <ListItem key={timer.timerID} sx={{ marginBottom: '10px', backgroundColor: '#118AB2', borderRadius: '5px', color: 'white', width: '100%' }}>
                             <ListItemText
                                 primary={timer.title}
                                 secondary={`${timer.hours}h ${timer.minutes}m ${timer.seconds}s`}
