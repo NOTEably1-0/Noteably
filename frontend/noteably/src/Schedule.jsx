@@ -23,6 +23,9 @@ function Schedule() {
   const [newToDo, setNewToDo] = useState({ title: "", description: "", scheduleId: null });
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openEditConfirmationDialog, setOpenEditConfirmationDialog] = useState(false);
+  const [openAlertDialog, setOpenAlertDialog] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+
 
  
   useEffect(() => {
@@ -57,15 +60,22 @@ function Schedule() {
   const addOrUpdateSchedule = async () => {
     const today = new Date().toISOString().split('T')[0];
     if (formData.startDate < today) {
-        alert("Start date cannot be in the past. Please select today or a future date.");
-        return;
+      setAlertMessage("Start date cannot be in the past. Please select today or a future date.");
+      setOpenAlertDialog(true);
+      return;
     }
+    if (formData.endDate < formData.startDate) {
+      setAlertMessage("End date cannot be earlier than the start date.");
+      setOpenAlertDialog(true);
+      return;
+    }
+  
     try {
       const url = isEditMode ? `${apiUrl}/editSched/${selectedId}` : `${apiUrl}/postSched`;
       const method = isEditMode ? "put" : "post";
-
+  
       const scheduleData = { ...formData, studentId: parseInt(studentId, 10) }; // Include studentId
-
+  
       await axios({ method, url, data: scheduleData, headers: { "Content-Type": "application/json" } });
       setFormData({ title: "", priority: "moderate", startDate: "", endDate: "", colorCode: "", todoListIds: [] });
       setIsEditMode(false);
@@ -75,7 +85,7 @@ function Schedule() {
       console.error("Error saving schedule", error);
     }
   };
-
+  
   
 
   const handleDeleteClick = (id) => {
@@ -190,6 +200,43 @@ const handleEdit = (schedule) => {
           </Button>
         </Box>
       </Box>
+
+      <Dialog open={openAlertDialog} onClose={() => setOpenAlertDialog(false)}>
+  <DialogContent>
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Box
+        component="img"
+        src="/ASSETS/popup-alert.png"// Path to your image
+        alt="Alert Icon"
+        sx={{ width: '50px', height: '50px' }}
+      />
+      <DialogContentText sx={{ fontSize: '16px', color: '#333' }}>
+        {alertMessage}
+      </DialogContentText>
+    </Box>
+  </DialogContent>
+  <DialogActions>
+    <Button
+      onClick={() => setOpenAlertDialog(false)}
+      sx={{
+        textTransform: 'none',
+        color: '#fff',
+        backgroundColor: '#EF476F',
+        borderRadius: '8px',
+        padding: '5px 20px',
+        fontWeight: 'bold',
+        '&:hover': {
+          backgroundColor: '#F78C6B',
+        },
+      }}
+    >
+      Close
+    </Button>
+  </DialogActions>
+</Dialog>
+
+
+
 
       <Dialog open={openEditDialog} onClose={handleCloseEditDialog}>
       <DialogTitle>Edit Schedule</DialogTitle>

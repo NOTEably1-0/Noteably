@@ -7,9 +7,9 @@ import axios from 'axios';
 import KanbanBoard from './KanbanBoard';
 import { Box, Tabs, Tab } from '@mui/material';
 
-const apiUrl = "http://localhost:8080/api/schedules"; // Corrected the API URL
+const apiUrl = "http://localhost:8080/api/schedules"; 
 
-function Calendar() { // Remove studentId prop
+function Calendar() { 
   const studentId = localStorage.getItem('studentId'); // Get studentId from local storage
   const [schedules, setSchedules] = useState([]);
   const [currentView, setCurrentView] = useState("calendar");

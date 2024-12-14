@@ -273,9 +273,7 @@ function ToDoList() {
           border: '1px solid lightgray',
         }}
       >
-        <Typography variant="h5" style={{ marginBottom: '10px', color: '#073B4C' }}>
-          To-do List
-        </Typography>
+     
         {/* Task Items */}
         {toDoItems.length === 0 ? (
           <Typography style={{ textAlign: 'center', color: '#999' }}>

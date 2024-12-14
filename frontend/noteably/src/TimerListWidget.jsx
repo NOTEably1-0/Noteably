@@ -30,15 +30,16 @@ const TimerListWidget = () => {
     }, []);
 
     return (
-        <Box sx={{
+        <Box className="scrollable" sx={{
             padding: '20px',
             borderRadius: '10px',
-            backgroundColor: '#FFFFFF',
+            backgroundColor: '',
             boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
             width: '400px',
             height: '300px',
             overflowY: 'auto',
         }}>
+            
             {timerList.length === 0 ? (
                 <Typography style={{ textAlign: 'center', color: '#999' }}>
                     No timers added yet.

@@ -2,8 +2,8 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 10px;
-    max-height: 300px; /* Set a maximum height */
-    overflow-y: auto; /* Enable vertical scrolling */
+    max-height: 300px;
+    overflow-y: auto; 
 }
 
 .todolist-container {

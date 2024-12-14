@@ -4,8 +4,8 @@ import { IconButton, Box } from '@mui/material';
 import './Settings.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Visibility from '@mui/icons-material/Visibility'; // Import MUI icon for showing password
-import VisibilityOff from '@mui/icons-material/VisibilityOff'; // Import MUI icon for hiding password
+import Visibility from '@mui/icons-material/Visibility'; 
+import VisibilityOff from '@mui/icons-material/VisibilityOff'; 
 
 const AVATAR_OPTIONS = [
     { name: 'Red', path: '/ASSETS/Profile_red.png' },
@@ -242,7 +242,7 @@ function SettingsPage() {
                                 <div className="password-container">
                                     <input
                                         id="newPassword"
-                                        type={showNewPassword ? "text" : "password"} // Toggle input type
+                                        type={showNewPassword ? "text" : "password"} 
                                         value={student.newPassword}
                                         onChange={handleInputChange}
                                     />
@@ -256,7 +256,7 @@ function SettingsPage() {
                                 <div className="password-container">
                                     <input
                                         id="confirmPassword"
-                                        type={showConfirmPassword ? "text" : "password"} // Toggle input type
+                                        type={showConfirmPassword ? "text" : "password"} 
                                         value={student.confirmPassword}
                                         onChange={handleInputChange}
                                     />

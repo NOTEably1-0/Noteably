@@ -11,6 +11,7 @@ import Calendar from './Calendar';
 import { API_ENDPOINTS, axiosConfig } from './config/api';
 import { getImageUrl } from './studentService';
 import axios from 'axios';
+import './antioverflow.css';
 
 // Define theme colors
 const themeColors = {
@@ -121,7 +122,7 @@ function Dashboard() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  mr: 2,
+                  mr: 1,
                 }}
               >
                 <CheckCircleIcon sx={{ color: 'white' }} />
@@ -156,7 +157,7 @@ function Dashboard() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  mr: 2,
+                  mr: 1,
                 }}
               >
                 <TimerIcon sx={{ color: 'white' }} />
@@ -171,7 +172,7 @@ function Dashboard() {
 
         {/* Folders Widget */}
         <Grid item xs={12} md={4}>
-          <FolderWidget /> {/* Include the FolderWidget here */}
+          <FolderWidget /> 
         </Grid>
       </Grid>
 
@@ -197,7 +198,7 @@ function Dashboard() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                mr: 2,
+                mr: 1,
               }}
             >
               <EventNoteIcon sx={{ color: 'white' }} />

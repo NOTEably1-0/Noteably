@@ -60,7 +60,14 @@ const FolderWidget = () => {
                     Folders
                 </Typography>
             </Box>
-            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 2 }}>
+            <Box sx={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: 2,
+                    ml: '16px',
+                    overflow: 'auto',
+                    maxHeight: '300px',
+                }}>
                 {folders.map((folder, index) => (
                     <Box key={folder.folderId} className="folder-item" sx={{ width: '150px', textAlign: 'center' }} onClick={() => openFolder(folder.folderId)}>
                         <img
@@ -68,7 +75,7 @@ const FolderWidget = () => {
                             alt="Folder Icon"
                             className="folder-icon"
                         />
-                        <Typography variant="body2">{folder.title}</Typography>
+                        <Typography variant="body2" >{folder.title}</Typography>
                     </Box>
                 ))}
             </Box>
